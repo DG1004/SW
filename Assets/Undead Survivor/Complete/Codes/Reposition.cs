@@ -23,18 +23,18 @@ namespace Goldmetal.UndeadSurvivor
 
             switch (transform.tag) {
                 case "Ground":
-                    float diffX = playerPos.x - myPos.x; // 플레이어 위치와 타일맵의 위치로 거리 구하기
+                    float diffX = playerPos.x - myPos.x;
                     float diffY = playerPos.y - myPos.y;
-                    float dirX = diffX < 0 ? -1 : 1; // 플레이어의 이동 방향
+                    float dirX = diffX < 0 ? -1 : 1;
                     float dirY = diffY < 0 ? -1 : 1;
-                    diffX = Mathf.Abs(diffX); // 거리가 음수면 안되기 때문에 절대값
+                    diffX = Mathf.Abs(diffX);
                     diffY = Mathf.Abs(diffY);
 
                     if (diffX > diffY) {
-                        transform.Translate(Vector3.right * dirX * 80);
+                        transform.Translate(Vector3.right * dirX * 40);
                     }
                     else if (diffX < diffY) {
-                        transform.Translate(Vector3.up * dirY * 60);
+                        transform.Translate(Vector3.up * dirY * 40);
                     }
                     break;
                 case "Enemy":
