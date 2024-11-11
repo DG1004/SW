@@ -1,3 +1,4 @@
 # SW
 유니티 버전: 2022.3.51f1  
-유니티 다운받아야 할 것: Input System, Cinemachine
+유니티 다운받아야 할 것: Input System, Cinemachine  
+비주얼 스튜디오 버전: 가장 최근 버전(현재 2022 17.11.5)
