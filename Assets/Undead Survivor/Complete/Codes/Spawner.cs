@@ -8,27 +8,18 @@ namespace Goldmetal.UndeadSurvivor
     {
         public Transform[] spawnPoint;
         public SpawnData[] spawnData;
-        public float levelTime;
-
-        int level;
-        float timer;
+        public int initialEnemyCount = 5; // Set the number of initial enemies
 
         void Awake()
         {
             spawnPoint = GetComponentsInChildren<Transform>();
-            levelTime = GameManager.instance.maxGameTime / spawnData.Length;
+            SpawnInitialEnemies();
         }
 
-        void Update()
+        void SpawnInitialEnemies()
         {
-            if (!GameManager.instance.isLive)
-                return;
-
-            timer += Time.deltaTime;
-            level = Mathf.Min(Mathf.FloorToInt(GameManager.instance.gameTime / levelTime), spawnData.Length - 1);
-
-            if (timer > spawnData[level].spawnTime) {
-                timer = 0;
+            for (int i = 0; i < initialEnemyCount; i++)
+            {
                 Spawn();
             }
         }
@@ -37,16 +28,18 @@ namespace Goldmetal.UndeadSurvivor
         {
             GameObject enemy = GameManager.instance.pool.Get(0);
             enemy.transform.position = spawnPoint[Random.Range(1, spawnPoint.Length)].position;
-            enemy.GetComponent<Enemy>().Init(spawnData[level]);
+
+            // Use random spawnData for initial enemies
+            int randomIndex = Random.Range(0, spawnData.Length);
+            enemy.GetComponent<Enemy>().Init(spawnData[randomIndex]);
         }
     }
-
     [System.Serializable]
     public class SpawnData
     {
-        public float spawnTime;
         public int spriteType;
         public int health;
         public float speed;
     }
+
 }

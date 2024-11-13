@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -57,21 +55,23 @@ namespace Goldmetal.UndeadSurvivor
 
             anim.SetFloat("Speed", inputVec.magnitude);
 
-
-            if (inputVec.x != 0) {
+            if (inputVec.x != 0)
+            {
                 spriter.flipX = inputVec.x < 0;
             }
         }
 
-        void OnCollisionStay2D(Collision2D collision)
+        public void OnDamaged(float damage)
         {
             if (!GameManager.instance.isLive)
                 return;
 
-            GameManager.instance.health -= Time.deltaTime * 10;
+            GameManager.instance.health -= damage;
 
-            if (GameManager.instance.health < 0) {
-                for (int index = 2; index < transform.childCount; index++) {
+            if (GameManager.instance.health <= 0)
+            {
+                for (int index = 2; index < transform.childCount; index++)
+                {
                     transform.GetChild(index).gameObject.SetActive(false);
                 }
 

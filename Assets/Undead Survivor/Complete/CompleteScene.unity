@@ -1439,7 +1439,11 @@ CompositeCollider2D:
   m_ColliderPaths:
   - m_Collider: {fileID: 253594448}
     m_ColliderPaths:
-    - - X: 100000040
+    - - X: 100000096
+        Y: -100000040
+      - X: 100000096
+        Y: 100000040
+      - X: 100000040
         Y: 100000096
       - X: -100000040
         Y: 100000096
@@ -1451,10 +1455,6 @@ CompositeCollider2D:
         Y: -100000096
       - X: 100000040
         Y: -100000096
-      - X: 100000096
-        Y: -100000040
-      - X: 100000096
-        Y: 100000040
   m_CompositePaths:
     m_Paths:
     - - {x: 9.999974, y: -10.00001}
@@ -6408,7 +6408,7 @@ GameObject:
   - component: {fileID: 539536293}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7125,7 +7125,11 @@ CompositeCollider2D:
   m_ColliderPaths:
   - m_Collider: {fileID: 616361937}
     m_ColliderPaths:
-    - - X: 100000040
+    - - X: 100000096
+        Y: -100000040
+      - X: 100000096
+        Y: 100000040
+      - X: 100000040
         Y: 100000096
       - X: -100000040
         Y: 100000096
@@ -7137,10 +7141,6 @@ CompositeCollider2D:
         Y: -100000096
       - X: 100000040
         Y: -100000096
-      - X: 100000096
-        Y: -100000040
-      - X: 100000096
-        Y: 100000040
   m_CompositePaths:
     m_Paths:
     - - {x: 9.999974, y: -10.00001}
@@ -18070,7 +18070,11 @@ CompositeCollider2D:
   m_ColliderPaths:
   - m_Collider: {fileID: 1182539734}
     m_ColliderPaths:
-    - - X: 100000040
+    - - X: 100000096
+        Y: -100000040
+      - X: 100000096
+        Y: 100000040
+      - X: 100000040
         Y: 100000096
       - X: -100000040
         Y: 100000096
@@ -18082,10 +18086,6 @@ CompositeCollider2D:
         Y: -100000096
       - X: 100000040
         Y: -100000096
-      - X: 100000096
-        Y: -100000040
-      - X: 100000096
-        Y: 100000040
   m_CompositePaths:
     m_Paths:
     - - {x: 9.999974, y: -10.00001}
@@ -19891,15 +19891,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnPoint: []
   spawnData:
-  - spawnTime: 0.3
-    spriteType: 0
+  - spriteType: 0
     health: 15
     speed: 1.5
-  - spawnTime: 0.1
-    spriteType: 1
+  - spriteType: 1
     health: 35
     speed: 2
-  levelTime: 0
+  initialEnemyCount: 5
 --- !u!1 &1453797367
 GameObject:
   m_ObjectHideFlags: 0
@@ -22030,7 +22028,11 @@ CompositeCollider2D:
   m_ColliderPaths:
   - m_Collider: {fileID: 1938858655}
     m_ColliderPaths:
-    - - X: 100000040
+    - - X: 100000096
+        Y: -100000040
+      - X: 100000096
+        Y: 100000040
+      - X: 100000040
         Y: 100000096
       - X: -100000040
         Y: 100000096
@@ -22042,10 +22044,6 @@ CompositeCollider2D:
         Y: -100000096
       - X: 100000040
         Y: -100000096
-      - X: 100000096
-        Y: -100000040
-      - X: 100000096
-        Y: 100000040
   m_CompositePaths:
     m_Paths:
     - - {x: 9.999974, y: -10.00001}
