@@ -52,6 +52,7 @@ namespace Goldmetal.UndeadSurvivor
         // 게임 승리 시 남은 적들을 제거하기 위한 오브젝트입니다.
         public GameObject enemyCleaner;
 
+       
         // Awake는 스크립트가 처음 로드될 때 호출되는 함수입니다.
         void Awake()
         {
