@@ -118,7 +118,7 @@ namespace Goldmetal.UndeadSurvivor
         {
             if (!isLive)
                 return;
-
+            Debug.Log($"È÷È÷È÷---{collision.collider.tag}");
             if (collision.collider.CompareTag("Bullet"))
             {
                 health -= collision.collider.GetComponent<Bullet>().damage;
