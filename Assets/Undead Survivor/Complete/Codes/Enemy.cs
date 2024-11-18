@@ -113,8 +113,34 @@ namespace Goldmetal.UndeadSurvivor
                 circleCollider.radius = originalColliderRadius * scaleValue;
             }
         }
+        void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (!collision.CompareTag("Bullet") || !isLive)
+                return;
 
-        void OnCollisionEnter2D(Collision2D collision)
+            health -= collision.GetComponent<Bullet>().damage;
+            StartCoroutine(KnockBack());
+
+            if (health > 0)
+            {
+                anim.SetTrigger("Hit");
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.Hit);
+            }
+            else
+            {
+                isLive = false;
+                coll.enabled = false;
+                rigid.simulated = false;
+                spriter.sortingOrder = 1;
+                anim.SetBool("Dead", true);
+                GameManager.instance.kill++;
+                GameManager.instance.GetExp();
+
+                if (GameManager.instance.isLive)
+                    AudioManager.instance.PlaySfx(AudioManager.Sfx.Dead);
+            }
+        }
+        /*void OnCollisionEnter2D(Collision2D collision)
         {
             if (!isLive)
                 return;
@@ -134,7 +160,7 @@ namespace Goldmetal.UndeadSurvivor
                     Die();
                 }
             }
-        }
+        }*/
 
         void OnCollisionStay2D(Collision2D collision)
         {
@@ -155,14 +181,14 @@ namespace Goldmetal.UndeadSurvivor
                     Player player = collision.collider.GetComponent<Player>();
                     if (player != null)
                     {
-                        player.OnDamaged(1); // 필요에 따라 데미지 값 조정
+                        player.OnDamaged(0.01f); // 필요에 따라 데미지 값 조정
                     }
 
                     // 에너지가 100 이상이면 번식
-                    if (energy >= 100)
+                    if (energy >= this.health/4.0f)
                     {
                         Reproduce();
-                        energy = 0; // 번식 후 에너지 초기화
+                        energy -= this.health/4.0f; // 번식 후 에너지 초기화
                     }
                 }
             }
@@ -191,12 +217,12 @@ namespace Goldmetal.UndeadSurvivor
             GameObject enemy = GameManager.instance.pool.Get(0);
 
             // 적의 위치를 부모 근처로 설정합니다.
-            enemy.transform.position = transform.position + (Vector3)(Random.insideUnitCircle.normalized * 1f);
+            enemy.transform.position = transform.position + (Vector3)(Random.insideUnitCircle.normalized * 10f);
 
             // 약간의 무작위성을 가진 새로운 spawnData를 생성합니다.
             SpawnData newSpawnData = new SpawnData();
             newSpawnData.spriteType = spawnData.spriteType; // 부모의 spriteType을 상속
-            newSpawnData.health = Mathf.Max(1, spawnData.health + Random.Range(-5, 6)); // 체력을 약간 변형
+            newSpawnData.health = Mathf.Max(1, spawnData.health + Random.Range(-20, 20)); // 체력을 약간 변형
             newSpawnData.speed = Mathf.Max(0.1f, spawnData.speed + Random.Range(-0.5f, 0.6f)); // 속도를 약간 변형
 
             // 적을 초기화합니다.

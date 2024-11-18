@@ -30,13 +30,19 @@ namespace Goldmetal.UndeadSurvivor
             enemy.transform.position = spawnPoint[Random.Range(1, spawnPoint.Length)].position;
 
             // Use random spawnData for initial enemies
-            int randomIndex = Random.Range(0, spawnData.Length);
-            enemy.GetComponent<Enemy>().Init(spawnData[randomIndex]);
+            //int randomIndex = Random.Range(0, spawnData.Length);
+            enemy.GetComponent<Enemy>().Init(new SpawnData());
         }
     }
     [System.Serializable]
     public class SpawnData
     {
+        public SpawnData(int spriteType=0,int health=100,float speed=5)
+        {
+            this.spriteType = spriteType;
+            this.health = health;
+            this.speed = speed;
+        }
         public int spriteType;
         public int health;
         public float speed;
