@@ -161,6 +161,10 @@ namespace Goldmetal.UndeadSurvivor
                 }
             }
         }*/
+        public void OnDeal(float damage)
+        {
+
+        }
 
         void OnCollisionStay2D(Collision2D collision)
         {
