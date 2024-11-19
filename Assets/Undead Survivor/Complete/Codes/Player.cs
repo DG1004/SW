@@ -68,15 +68,24 @@ namespace Goldmetal.UndeadSurvivor
             if (!GameManager.instance.isLive)
                 return;
 
-            GameManager.instance.health -= Time.deltaTime * 10;
+            if (collision.gameObject.CompareTag("travellingMerchant"))
+            {
+                GameManager.instance.ShowShop();
+            }
+            else if (collision.gameObject.CompareTag("Enemy"))
+            {
+                GameManager.instance.health -= Time.deltaTime * 10;
 
-            if (GameManager.instance.health < 0) {
-                for (int index = 2; index < transform.childCount; index++) {
-                    transform.GetChild(index).gameObject.SetActive(false);
+                if (GameManager.instance.health < 0)
+                {
+                    for (int index = 2; index < transform.childCount; index++)
+                    {
+                        transform.GetChild(index).gameObject.SetActive(false);
+                    }
+
+                    anim.SetTrigger("Dead");
+                    GameManager.instance.GameOver();
                 }
-
-                anim.SetTrigger("Dead");
-                GameManager.instance.GameOver();
             }
         }
 

@@ -40,4 +40,14 @@ public class travellingMerchant : MonoBehaviour
     {
         target = GameManager.instance.player.GetComponent<Rigidbody2D>();
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+
+        if (collision.gameObject.CompareTag("Player"))
+        {
+        //    Destroy(gameObject); // 이 객체를 파괴하여 사라지게 합니다.
+        }
+    }
+
 }
