@@ -72,7 +72,7 @@ namespace Goldmetal.UndeadSurvivor
         
         void OnCollisionEnter2D(Collision2D collision)
 		{
-			//if (gameObject.CompareTag("Store"))
+			if (gameObject.CompareTag("Store"))
 			transform.position = new Vector3(store_inside.transform.position.x, store_inside.transform.position.y, store_inside.transform.position.z);
 			vcam.GetComponent<CinemachineVirtualCamera>().Priority = 11;
 			//gameObject.SetActive(false);
