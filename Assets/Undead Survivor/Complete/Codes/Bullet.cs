@@ -30,7 +30,7 @@ namespace Goldmetal.UndeadSurvivor
         {
             if (!collision.CompareTag("Enemy") || per == -100)
                 return;
-
+                
             per--;
 
             if (per < 0) {
