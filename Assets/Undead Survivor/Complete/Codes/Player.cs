@@ -18,6 +18,7 @@ namespace Goldmetal.UndeadSurvivor
 		public GameObject store_background;
 		public GameObject ground;
 		public GameObject vcam;
+		public GameObject Pool;
 
 		Rigidbody2D rigid;
 		SpriteRenderer spriter;
@@ -72,9 +73,12 @@ namespace Goldmetal.UndeadSurvivor
         
         void OnCollisionEnter2D(Collision2D collision)
 		{
-			if (gameObject.CompareTag("Store"))
-			transform.position = new Vector3(store_inside.transform.position.x, store_inside.transform.position.y, store_inside.transform.position.z);
-			vcam.GetComponent<CinemachineVirtualCamera>().Priority = 11;
+			if (collision.gameObject.CompareTag("Store"))
+			{
+				Pool.gameObject.SetActive(false);
+				transform.position = new Vector3(store_inside.transform.position.x, store_inside.transform.position.y, store_inside.transform.position.z);
+				vcam.GetComponent<CinemachineVirtualCamera>().Priority = 11;
+			}
 			//gameObject.SetActive(false);
 			//ground.SetActive(false);
 			//store_inside.SetActive(true);
@@ -84,6 +88,8 @@ namespace Goldmetal.UndeadSurvivor
 		void OnCollisionStay2D(Collision2D collision)
 		{
 			if (!GameManager.instance.isLive)
+				return;
+			if (!collision.gameObject.CompareTag("Enemy"))
 				return;
 
 			// 만약 몬스터가 아니면 return
