@@ -2,31 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 namespace Goldmetal.UndeadSurvivor
 {
-    public class coefficient
-    {
-        float S;
-        float H;
-        float A;
-        float D;
-    }
-    public class Stats
-    {
-        float speed;
-        float health;
-        float attack;
-        float defense;
-    }
     public class Enemy : MonoBehaviour
     {
-        coefficient coefficient;
-        Stats stats;
+        public float speed;
+        public float health;
+        public float maxHealth;
         public float energy; // 에너지 필드 추가
+        public SpawnData spawnData; // 자신의 spawnData 저장
         public RuntimeAnimatorController[] animCon;
         public Rigidbody2D target;
-
+            
         // 크기 조정을 위한 변수
         public float baseScale = 1.0f; // 기본 스케일 값
         public float scaleMultiplier = 0.05f; // health 당 스케일 증가량
@@ -126,7 +113,7 @@ namespace Goldmetal.UndeadSurvivor
                 circleCollider.radius = originalColliderRadius * scaleValue;
             }
         }
-        /**/
+       /**/
         void OnTriggerEnter2D(Collider2D collision)
         {
             if (!collision.CompareTag("Bullet") || !isLive)
@@ -203,10 +190,10 @@ namespace Goldmetal.UndeadSurvivor
                     }
 
                     // 에너지가 100 이상이면 번식
-                    if (energy >= this.health / 4.0f)
+                    if (energy >= this.health/4.0f)
                     {
                         Reproduce();
-                        energy -= this.health / 4.0f; // 번식 후 에너지 초기화
+                        energy -= this.health/4.0f; // 번식 후 에너지 초기화
                     }
                 }
             }

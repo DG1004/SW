@@ -2,15 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 namespace Goldmetal.UndeadSurvivor
 {
-    public class Melee : Enemy
+    public class Enemy_ : MonoBehaviour
     {
-        public float speed;
-        public float health;
-        public float maxHealth;
+    }
+/*    public class coefficient
+    {
+        float S;
+        float H;
+        float A;
+        float D;
+    }
+    public class Stats
+    {
+        float speed;
+        float health;
+        float attack;
+        float defense;
+    }
+    public class Enemy_ : MonoBehaviour
+    {
+        coefficient coefficient;
+        Stats stats;
         public float energy; // 에너지 필드 추가
-        public SpawnData spawnData; // 자신의 spawnData 저장
         public RuntimeAnimatorController[] animCon;
         public Rigidbody2D target;
 
@@ -113,7 +129,7 @@ namespace Goldmetal.UndeadSurvivor
                 circleCollider.radius = originalColliderRadius * scaleValue;
             }
         }
-       /**/
+        *//**//*
         void OnTriggerEnter2D(Collider2D collision)
         {
             if (!collision.CompareTag("Bullet") || !isLive)
@@ -141,7 +157,7 @@ namespace Goldmetal.UndeadSurvivor
                     AudioManager.instance.PlaySfx(AudioManager.Sfx.Dead);
             }
         }
-        /*void OnCollisionEnter2D(Collision2D collision)
+        *//*void OnCollisionEnter2D(Collision2D collision)
         {
             if (!isLive)
                 return;
@@ -161,7 +177,7 @@ namespace Goldmetal.UndeadSurvivor
                     Die();
                 }
             }
-        }*/
+        }*//*
         public void OnDeal(float damage)
         {
 
@@ -190,10 +206,10 @@ namespace Goldmetal.UndeadSurvivor
                     }
 
                     // 에너지가 100 이상이면 번식
-                    if (energy >= this.health/4.0f)
+                    if (energy >= this.health / 4.0f)
                     {
                         Reproduce();
-                        energy -= this.health/4.0f; // 번식 후 에너지 초기화
+                        energy -= this.health / 4.0f; // 번식 후 에너지 초기화
                     }
                 }
             }
@@ -231,7 +247,7 @@ namespace Goldmetal.UndeadSurvivor
             newSpawnData.speed = Mathf.Max(0.1f, spawnData.speed + Random.Range(-0.5f, 0.6f)); // 속도를 약간 변형
 
             // 적을 초기화합니다.
-            enemy.GetComponent<Enemy>().Init(newSpawnData);
+            enemy.GetComponent<Enemy_>().Init(newSpawnData);
         }
 
         void Die()
@@ -252,5 +268,5 @@ namespace Goldmetal.UndeadSurvivor
         {
             gameObject.SetActive(false);
         }
-    }
+    }*/
 }
