@@ -12,7 +12,7 @@ namespace Goldmetal.UndeadSurvivor
         public RuntimeAnimatorController[] animCon;
         public Rigidbody2D target;
 
-        bool isLive;
+        public bool isLive;
 
         Rigidbody2D rigid;
         Collider2D coll;
