@@ -12,7 +12,7 @@ namespace Goldmetal.UndeadSurvivor
     {
         // 싱글톤 패턴을 사용하여 어디서든 GameManager.instance로 접근할 수 있게 합니다.
         public static GameManager instance;
-
+        public int EnemyNum = 0;
 
         // [Header]는 인스펙터에서 변수들을 그룹화하여 보기 좋게 만듭니다.
         [Header("# Game Control")]
@@ -175,13 +175,13 @@ namespace Goldmetal.UndeadSurvivor
                 }
             }
             // 플레이어가 상점에 있을 때 아래 로직을 실행합니다.
-            if (player.isStore == 1)
+            /*if (player.isStore == 1)
             {
                 player.inputVec.x = Input.GetAxisRaw("Horizontal");
                 player.inputVec.y = Input.GetAxisRaw("Vertical");
                 Vector2 nextVec = player.inputVec.normalized * player.speed * Time.fixedDeltaTime;
                 player.rigid.MovePosition(player.rigid.position + nextVec);
-            }
+            }*/
         }
 
         // 경험치를 획득할 때 호출되는 함수입니다.

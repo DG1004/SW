@@ -22,7 +22,7 @@ namespace Goldmetal.UndeadSurvivor
         public GameObject Get(int index)
         {
             GameObject select = null;
-
+            GameManager.instance.EnemyNum++;
             foreach (GameObject item in pools[index]) {
                 if (!item.activeSelf) {
                     select = item;

@@ -74,7 +74,9 @@ namespace Goldmetal.UndeadSurvivor
             }
             else if (collision.gameObject.CompareTag("Enemy"))
             {
-                GameManager.instance.health -= Time.deltaTime * 10;
+                var offender = collision.gameObject.GetComponent<Enemy>();
+                float damage = offender.attack * 1.0f;
+                GameManager.instance.health -= damage;
 
                 if (GameManager.instance.health < 0)
                 {
@@ -86,8 +88,14 @@ namespace Goldmetal.UndeadSurvivor
                     anim.SetTrigger("Dead");
                     GameManager.instance.GameOver();
                 }
+                else
+                {
+                    offender.OnAttack(damage);
+                }
             }
         }
+
+
 
         void OnMove(InputValue value)
         {
