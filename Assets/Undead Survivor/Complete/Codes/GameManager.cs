@@ -12,7 +12,7 @@ namespace Goldmetal.UndeadSurvivor
     {
         // 싱글톤 패턴을 사용하여 어디서든 GameManager.instance로 접근할 수 있게 합니다.
         public static GameManager instance;
-
+        public int EnemyNum=0;
 
         // [Header]는 인스펙터에서 변수들을 그룹화하여 보기 좋게 만듭니다.
         [Header("# Game Control")]
@@ -29,7 +29,7 @@ namespace Goldmetal.UndeadSurvivor
         // 플레이어의 현재 체력을 나타냅니다.
         public float health;
         // 플레이어의 최대 체력을 설정합니다.
-        public float maxHealth = 100;
+        public float maxHealth = 1000;
         // 플레이어의 현재 레벨을 나타냅니다.
         public int level;
         // 플레이어가 처치한 적의 수를 기록합니다.

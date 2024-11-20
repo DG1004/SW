@@ -7576,7 +7576,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 30
+  m_Mass: 500
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
@@ -13881,6 +13881,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3eb25048e1b6fe4ea7462424c79196e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EnemyNum: 0
   isLive: 0
   gameTime: 0
   maxGameTime: 300
@@ -14787,6 +14788,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabs:
   - {fileID: 8995485532009590293, guid: 731a50f9cefda2d4d95f127db144b33b, type: 3}
+  - {fileID: 6244259535483167940, guid: 2075e7dd5c2e2c3449df77f5cbc8682a, type: 3}
   - {fileID: 7308793349900079891, guid: fe2a05f2bb2a19c418e2015e390757a0, type: 3}
   - {fileID: 4122565992612807282, guid: 00818f04400b8354c96f7dbafdd74b81, type: 3}
   - {fileID: 1632277346728026, guid: 78e2e9c4bb80e2e46b091eefb8b4efa4, type: 3}
@@ -24262,16 +24264,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPoint: []
-  spawnData:
-  - spawnTime: 0.3
-    spriteType: 0
-    health: 15
-    speed: 1.5
-  - spawnTime: 0.1
-    spriteType: 1
-    health: 35
-    speed: 2
-  levelTime: 0
+  initialEnemyCount: 50
 --- !u!1 &1453797367
 GameObject:
   m_ObjectHideFlags: 0
