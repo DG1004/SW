@@ -11,6 +11,7 @@ namespace Goldmetal.UndeadSurvivor
 		public Vector2 inputVec;
 		public float speed;
 		public int isStore;
+		Vector3 prePos;
 		public Scanner scanner;
 		public Hand[] hands;
 		public RuntimeAnimatorController[] animCon;
@@ -73,16 +74,37 @@ namespace Goldmetal.UndeadSurvivor
 		
 		void OnCollisionEnter2D(Collision2D collision)
 		{
-			if (collision.gameObject.CompareTag("Store"))
+			// 플레이어가 상점 입구에 충돌했을 때
+			if (collision.gameObject.CompareTag("StoreEntrance"))
 			{
 				// 플레이어가 상점에 있다는 것을 표시합니다.
 				isStore = 1;
 				// 게임 진행 상태를 false로 설정합니다.
 				GameManager.instance.isLive = false;
-				// 플레이어의 위치를 상점으로 순간이동합니다.
-				transform.position = new Vector3(store_inside.transform.position.x, store_inside.transform.position.y, store_inside.transform.position.z);
+                // 플레이어의 기존 위치를 기억합니다.
+                prePos = transform.position;
+                // 플레이어의 위치를 상점으로 순간이동합니다.
+                transform.position = new Vector3(store_inside.transform.position.x, store_inside.transform.position.y, store_inside.transform.position.z);
 				// 카메라를 바꿉니다.
 				vcam.GetComponent<CinemachineVirtualCamera>().Priority = 11;
+			}
+			// 플레이어가 상점 출구에 충돌했을 때
+			if (collision.gameObject.CompareTag("StoreExit"))
+			{
+				isStore = 0;
+				GameManager.instance.isLive = true;
+				transform.position = new Vector3(prePos.x + 1, prePos.y + 1, prePos.z + 1);
+				// 상점에서 나갈 때 카메라가 cut방식으로 바로 전환되지 않는 것 수정 필요
+				vcam.GetComponent<CinemachineVirtualCamera>().Priority = 9;
+			}
+			// 플레이어가 기본상점에 충돌했을 때
+			if (collision.gameObject.CompareTag("StoreStd"))
+			{
+
+			}
+			// 플레이어가 대장장이에 충돌했을 때
+			if(collision.gameObject.CompareTag("StoreSmith")){
+
 			}
 		}
 		

@@ -8,7 +8,10 @@ TagManager:
   - Bullet
   - Area
   - Enemy
-  - Store
+  - StoreExit
+  - StoreEntrance
+  - StoreStd
+  - StoreSmith
   layers:
   - Default
   - TransparentFX
