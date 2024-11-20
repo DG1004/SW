@@ -17,9 +17,7 @@ namespace Goldmetal.UndeadSurvivor
         public RuntimeAnimatorController[] animCon;
         public Rigidbody2D rigid;
 
-        public GameObject store_inside;
-        public GameObject store_background;
-        public GameObject ground;
+        public GameObject store_entrance;
         public GameObject vcam;
         public GameObject Pool;
 
@@ -84,7 +82,7 @@ namespace Goldmetal.UndeadSurvivor
                 // 플레이어의 기존 위치를 기억합니다.
                 prePos = transform.position;
                 // 플레이어의 위치를 상점으로 순간이동합니다.
-                transform.position = new Vector3(store_inside.transform.position.x, store_inside.transform.position.y, store_inside.transform.position.z);
+                transform.position = new Vector3(store_entrance.transform.position.x, store_entrance.transform.position.y, store_entrance.transform.position.z);
                 // 카메라를 바꿉니다.
                 vcam.GetComponent<CinemachineVirtualCamera>().Priority = 11;
             }
