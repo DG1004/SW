@@ -18,14 +18,21 @@ namespace Goldmetal.UndeadSurvivor
         void Awake()
         {
             spawnPoint = GetComponentsInChildren<Transform>();
-            SpawnInitialEnemies();
+            
         }
-
-        void SpawnInitialEnemies()
+        void Start()
+        {
+            // 코루틴 시작
+            StartCoroutine(SpawnInitialEnemies());
+        }
+        IEnumerator SpawnInitialEnemies()
         {
             for (int i = 0; i < initialEnemyCount; i++)
             {
-                Spawn();
+                Spawn(); // 적 스폰
+
+                // spawnInterval 만큼 대기
+                yield return new WaitForSeconds(0.1f);
             }
         }
 
@@ -110,7 +117,7 @@ namespace Goldmetal.UndeadSurvivor
         // 랜덤 변화를 위한 메서드 (±10%)
         private double RandomVariation()
         {
-            return (UnityEngine.Random.value * 0.4) - 0.2; // -0.1부터 0.1 사이의 값
+            return (UnityEngine.Random.value * 1.0) - 0.5; // -0.1부터 0.1 사이의 값
         }
 
         public int race_index;

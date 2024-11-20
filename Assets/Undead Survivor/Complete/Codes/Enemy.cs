@@ -46,7 +46,6 @@ namespace Goldmetal.UndeadSurvivor
 
             if (!isLive || anim.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
                 return;
-            energy += Time.fixedDeltaTime;
             Vector2 dirVec = target.position - rigid.position;
             Vector2 nextVec = dirVec.normalized * speed * Time.fixedDeltaTime;
             rigid.MovePosition(rigid.position + nextVec);
@@ -77,7 +76,7 @@ namespace Goldmetal.UndeadSurvivor
 
         public void Init(SpawnData data)
         {
-            float k = 1;//Mathf.Log(GameManager.instance.gameTime);
+            float k = 1;// Mathf.Log(GameManager.instance.gameTime+2.71f);
             //anim.runtimeAnimatorController = animCon[data.spriteType];
             energy = 0;
             spawnData = data;
@@ -91,6 +90,7 @@ namespace Goldmetal.UndeadSurvivor
             Debug.Log($"속도는 --> {speed}");
             transform.localScale = new Vector3(defence/3, health/10/3, 1);
             rigid.mass = defence*health*0.1f;
+            InvokeRepeating("energr_updater", 0f, 4f);
         }
 
         void OnTriggerEnter2D(Collider2D collision)
@@ -121,9 +121,10 @@ namespace Goldmetal.UndeadSurvivor
                     AudioManager.instance.PlaySfx(AudioManager.Sfx.Dead);
             }
         }
-        public void Update()
+        public void energr_updater()
         {
             if (!isLive) return;
+            energy +=16 * (30 / GameManager.instance.EnemyNum);//몬스터 수에 따라 유동적으로 조정하기 위해서
             OnAttack(0);
         }
         public void OnAttack(float damage)
@@ -162,6 +163,7 @@ namespace Goldmetal.UndeadSurvivor
 
         void Dead()
         {
+            CancelInvoke("energr_updater");
             gameObject.SetActive(false);
         }
     }
