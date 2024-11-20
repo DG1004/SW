@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Goldmetal.UndeadSurvivor
@@ -38,6 +39,13 @@ namespace Goldmetal.UndeadSurvivor
                     }
                     break;
                 case "Enemy":
+                    if (coll.enabled) {
+                        Vector3 dist = playerPos - myPos;
+                        Vector3 ran = new Vector3(Random.Range(-3, 3), Random.Range(-3, 3), 0);
+                        transform.Translate(ran + dist * 2);
+                    }
+                    break;
+                case "travellingMerchant":
                     if (coll.enabled) {
                         Vector3 dist = playerPos - myPos;
                         Vector3 ran = new Vector3(Random.Range(-3, 3), Random.Range(-3, 3), 0);

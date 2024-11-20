@@ -13,6 +13,7 @@ namespace Goldmetal.UndeadSurvivor
         // 싱글톤 패턴을 사용하여 어디서든 GameManager.instance로 접근할 수 있게 합니다.
         public static GameManager instance;
 
+
         // [Header]는 인스펙터에서 변수들을 그룹화하여 보기 좋게 만듭니다.
         [Header("# Game Control")]
         // 게임이 진행 중인지 여부를 나타내는 변수입니다.
@@ -51,6 +52,7 @@ namespace Goldmetal.UndeadSurvivor
         public Transform uiJoy;
         // 게임 승리 시 남은 적들을 제거하기 위한 오브젝트입니다.
         public GameObject enemyCleaner;
+        public TMSHOP tmShop;  // Inspector에서 반드시 할당해야 함
 
         // Awake는 스크립트가 처음 로드될 때 호출되는 함수입니다.
         void Awake()
@@ -59,6 +61,8 @@ namespace Goldmetal.UndeadSurvivor
             instance = this;
             // 애플리케이션의 최대 프레임 레이트를 60으로 설정합니다.
             Application.targetFrameRate = 60;
+
+           
         }
 
         // 게임을 시작할 때 호출되는 함수입니다.
@@ -214,6 +218,11 @@ namespace Goldmetal.UndeadSurvivor
             Time.timeScale = 1;
             // 조이스틱 UI를 표시합니다 (크기를 원래대로 설정).
             uiJoy.localScale = Vector3.one;
+        }
+        public void ShowShop()
+        {
+            Stop();  // Stop the game
+            tmShop.Show();  // Show the travelling merchant shop
         }
     }
 }
