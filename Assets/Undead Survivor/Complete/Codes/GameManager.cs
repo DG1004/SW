@@ -154,20 +154,29 @@ namespace Goldmetal.UndeadSurvivor
         // 매 프레임마다 호출되는 업데이트 함수입니다.
         void Update()
         {
-            // 게임이 진행 중이 아니면 아래 로직을 실행하지 않습니다.
-            if (!isLive)
-                return;
-
-            // 게임 시간을 증가시킵니다.
-            gameTime += Time.deltaTime;
-
-            // 게임 시간이 최대 시간을 초과하면 승리 처리를 합니다.
-            if (gameTime > maxGameTime)
+            // 게임이 진행 중일 때 아래 로직을 실행합니다.
+            if (isLive)
             {
-                // 게임 시간을 최대 시간으로 고정합니다.
-                gameTime = maxGameTime;
-                // 게임 승리 함수를 호출합니다.
-                GameVictroy();
+
+                // 게임 시간을 증가시킵니다.
+                gameTime += Time.deltaTime;
+
+                // 게임 시간이 최대 시간을 초과하면 승리 처리를 합니다.
+                if (gameTime > maxGameTime)
+                {
+                    // 게임 시간을 최대 시간으로 고정합니다.
+                    gameTime = maxGameTime;
+                    // 게임 승리 함수를 호출합니다.
+                    GameVictroy();
+                }
+            }
+            // 플레이어가 상점에 있을 때 아래 로직을 실행합니다.
+            if (player.isStore == 1)
+            {
+                player.inputVec.x = Input.GetAxisRaw("Horizontal");
+                player.inputVec.y = Input.GetAxisRaw("Vertical");
+                Vector2 nextVec = player.inputVec.normalized * player.speed * Time.fixedDeltaTime;
+                player.rigid.MovePosition(player.rigid.position + nextVec);
             }
         }
 

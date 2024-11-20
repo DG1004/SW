@@ -10,6 +10,7 @@ namespace Goldmetal.UndeadSurvivor
 	{
 		public Vector2 inputVec;
 		public float speed;
+		public int isStore;
 		public Scanner scanner;
 		public Hand[] hands;
 		public RuntimeAnimatorController[] animCon;
@@ -20,7 +21,7 @@ namespace Goldmetal.UndeadSurvivor
 		public GameObject vcam;
 		public GameObject Pool;
 
-		Rigidbody2D rigid;
+		public Rigidbody2D rigid;
 		SpriteRenderer spriter;
 		Animator anim;
 
@@ -52,7 +53,6 @@ namespace Goldmetal.UndeadSurvivor
 		{
 			if (!GameManager.instance.isLive)
 				return;
-
 			Vector2 nextVec = inputVec.normalized * speed * Time.fixedDeltaTime;
 			rigid.MovePosition(rigid.position + nextVec);
 		}
@@ -70,19 +70,20 @@ namespace Goldmetal.UndeadSurvivor
 			}
 		}
 
-        
-        void OnCollisionEnter2D(Collision2D collision)
+		
+		void OnCollisionEnter2D(Collision2D collision)
 		{
 			if (collision.gameObject.CompareTag("Store"))
 			{
-				Pool.gameObject.SetActive(false);
+				// 플레이어가 상점에 있다는 것을 표시합니다.
+				isStore = 1;
+				// 게임 진행 상태를 false로 설정합니다.
+				GameManager.instance.isLive = false;
+				// 플레이어의 위치를 상점으로 순간이동합니다.
 				transform.position = new Vector3(store_inside.transform.position.x, store_inside.transform.position.y, store_inside.transform.position.z);
+				// 카메라를 바꿉니다.
 				vcam.GetComponent<CinemachineVirtualCamera>().Priority = 11;
 			}
-			//gameObject.SetActive(false);
-			//ground.SetActive(false);
-			//store_inside.SetActive(true);
-			//store_background.SetActive(true);
 		}
 		
 		void OnCollisionStay2D(Collision2D collision)
