@@ -90,7 +90,7 @@ namespace Goldmetal.UndeadSurvivor
             Debug.Log($"속도는 --> {speed}");
             transform.localScale = new Vector3(defence / 3, health / 10 / 3, 1);
             rigid.mass = defence * health * 0.1f;
-            InvokeRepeating("energr_updater", 0f, 4f);
+            InvokeRepeating("energr_updater", 0f, 5f);
         }
 
         void OnTriggerEnter2D(Collider2D collision)
@@ -124,13 +124,14 @@ namespace Goldmetal.UndeadSurvivor
         public void energr_updater()
         {
             if (!isLive) return;
-            energy += 13 * (30 / GameManager.instance.EnemyNum);//몬스터 수에 따라 유동적으로 조정하기 위해서
+            Debug.Log($"몬스터 수: {GameManager.instance.EnemyNum}");
+            energy += health * (15 / GameManager.instance.EnemyNum);//몬스터 수에 따라 유동적으로 조정하기 위해서
             OnAttack(0);
         }
         public void OnAttack(float damage)
         {
             if (!isLive) return;
-            energy += 8 * damage;
+            energy += 16 * damage;
             while (energy > health)
             {
                 Reproduce();

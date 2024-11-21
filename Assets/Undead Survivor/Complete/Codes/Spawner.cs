@@ -62,7 +62,7 @@ namespace Goldmetal.UndeadSurvivor
             stats_health = 25;
             stats_attack = 0.01 / stats_health;
             stats_defence = 3 / stats_health;
-            stats_speed = 1.3 * stats_health;
+            stats_speed = 1.4 * stats_health;
 
 
             coe_health = 1 / stats_health;
