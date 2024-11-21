@@ -46,7 +46,7 @@ public class travellingMerchant : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Player"))
         {
-        //    Destroy(gameObject); // 이 객체를 파괴하여 사라지게 합니다.
+            Destroy(gameObject); // 이 객체를 파괴하여 사라지게 합니다.
         }
     }
 
