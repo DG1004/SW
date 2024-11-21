@@ -9,6 +9,10 @@ TagManager:
   - Area
   - Enemy
   - travellingMerchant
+  - StoreEntrance
+  - StoreExit
+  - StoreStd
+  - StoreSmith
   layers:
   - Default
   - TransparentFX

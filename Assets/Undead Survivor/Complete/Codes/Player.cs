@@ -17,7 +17,7 @@ namespace Goldmetal.UndeadSurvivor
         public RuntimeAnimatorController[] animCon;
         public Rigidbody2D rigid;
 
-        public GameObject store_entrance;
+        public GameObject store_inside;
         public GameObject vcam;
         public GameObject Pool;
 
@@ -82,7 +82,7 @@ namespace Goldmetal.UndeadSurvivor
                 // 플레이어의 기존 위치를 기억합니다.
                 prePos = transform.position;
                 // 플레이어의 위치를 상점으로 순간이동합니다.
-                transform.position = new Vector3(store_entrance.transform.position.x, store_entrance.transform.position.y, store_entrance.transform.position.z);
+                transform.position = new Vector3(store_inside.transform.position.x, store_inside.transform.position.y, store_inside.transform.position.z);
                 // 카메라를 바꿉니다.
                 vcam.GetComponent<CinemachineVirtualCamera>().Priority = 11;
             }
@@ -90,8 +90,10 @@ namespace Goldmetal.UndeadSurvivor
             if (collision.gameObject.CompareTag("StoreExit"))
             {
                 isStore = 0;
-                GameManager.instance.isLive = true;
                 transform.position = new Vector3(prePos.x + 1, prePos.y + 1, prePos.z + 1);
+                //wait();
+                GameManager.instance.isLive = true;
+
                 // 상점에서 나갈 때 카메라가 cut방식으로 바로 전환되지 않는 것 수정 필요
                 vcam.GetComponent<CinemachineVirtualCamera>().Priority = 9;
             }
@@ -135,6 +137,11 @@ namespace Goldmetal.UndeadSurvivor
         void OnMove(InputValue value)
         {
             inputVec = value.Get<Vector2>();
+        }
+
+        IEnumerator wait()
+        {
+            yield return new WaitForSecondsRealtime(10);
         }
     }
 }
