@@ -39,6 +39,7 @@ namespace Goldmetal.UndeadSurvivor
 
             inputVec.x = Input.GetAxisRaw("Horizontal");
             inputVec.y = Input.GetAxisRaw("Vertical");
+            //Debug.Log($"몬스터 수 : {GameManager.instance.EnemyNum}");
         }
 
         void FixedUpdate()

@@ -2,9 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 // Goldmetal.UndeadSurvivor 네임스페이스 내에 모든 코드를 포함합니다.
 namespace Goldmetal.UndeadSurvivor
@@ -45,10 +42,10 @@ namespace Goldmetal.UndeadSurvivor
 
             GameObject enemy = GameManager.instance.pool.Get(0);
             enemy.transform.position = spawnPoint[Random.Range(1, spawnPoint.Length)].position;
-            Debug.Log($"여기는 스폰 {enemy.transform.position}");
             // Use random spawnData for initial enemies
             //int randomIndex = Random.Range(0, spawnData.Length);
-            enemy.GetComponent<Enemy>().Init(new SpawnData(0));//////!!!!!!!!!!!!!
+            var initspawndata = new SpawnData(0);
+            enemy.GetComponent<Enemy>().Init(new SpawnData(initspawndata));//////!!!!!!!!!!!!!
         }
     }
     public class SpawnData
@@ -60,9 +57,9 @@ namespace Goldmetal.UndeadSurvivor
             //(a * 공격력 + b * 방어력 + c) * 크기 + (d * 속도) / (c * 크기) == 1
             this.race_index = race_index;
             stats_health = 25;
-            stats_attack = 0.01 / stats_health;
+            stats_attack = 0.05 / stats_health;
             stats_defence = 3 / stats_health;
-            stats_speed = 1.4 * stats_health;
+            stats_speed = 1.6 * stats_health;
 
 
             coe_health = 1 / stats_health;
@@ -83,14 +80,18 @@ namespace Goldmetal.UndeadSurvivor
             double b = coe_defence;
             double c = coe_health;
             double d = coe_speed;
+            int count = 0;  
             do
             {
+                if (count++>0)
+                {
+                    Debug.Log("!!!!!!!!!!!!!!!!!!!번식이슈!!!!!!!!!!!!!!!!");
+                }
+
                 // 2. 스탯에 ±10%의 랜덤 변화를 가합니다.
                 stats_attack = data.stats_attack * (1 + RandomVariation());
                 stats_defence = data.stats_defence * (1 + RandomVariation());
                 stats_speed = data.stats_speed * (1 + RandomVariation());
-
-
 
                 double A = a * stats_attack + b * stats_defence + c;
                 double B = d * stats_speed / c;
@@ -121,7 +122,7 @@ namespace Goldmetal.UndeadSurvivor
         // 랜덤 변화를 위한 메서드 (±10%)
         private double RandomVariation()
         {
-            return (UnityEngine.Random.value * 1.0) - 0.5; // -0.1부터 0.1 사이의 값
+            return (UnityEngine.Random.value * 0.4) - 0.2; // -0.1부터 0.1 사이의 값
         }
 
         public int race_index;
