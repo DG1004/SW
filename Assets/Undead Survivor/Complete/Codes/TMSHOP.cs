@@ -26,6 +26,14 @@ public class TMSHOP : MonoBehaviour
         AudioManager.instance.PlaySfx(AudioManager.Sfx.LevelUp);
         AudioManager.instance.EffectBgm(true);
 
+        if (travellingMerchant != null)
+        {
+            Destroy(travellingMerchant); // 객체 삭제
+            travellingMerchant = null;  // 참조 초기화
+        }
+        else
+        {
+        }
     }
 
     public void Hide()

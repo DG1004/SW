@@ -23,15 +23,23 @@ namespace Goldmetal.UndeadSurvivor
         {
             GameObject select = null;
 
-            foreach (GameObject item in pools[index]) {
-                if (!item.activeSelf) {
+            // 리스트를 정리하여 null 객체 제거
+            pools[index].RemoveAll(item => item == null);
+
+            // 비활성화된 객체를 찾아 재사용
+            foreach (GameObject item in pools[index])
+            {
+                if (item != null && !item.activeSelf)
+                {
                     select = item;
                     select.SetActive(true);
                     break;
                 }
             }
 
-            if (!select) {
+            // 사용할 객체가 없으면 새로 생성
+            if (!select)
+            {
                 select = Instantiate(prefabs[index], transform);
                 pools[index].Add(select);
             }
