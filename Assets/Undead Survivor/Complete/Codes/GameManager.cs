@@ -53,6 +53,8 @@ namespace Goldmetal.UndeadSurvivor
         // 게임 승리 시 남은 적들을 제거하기 위한 오브젝트입니다.
         public GameObject enemyCleaner;
         public TMSHOP tmShop;  // Inspector에서 반드시 할당해야 함
+        public Store store;
+        public Arrow arrow;
 
         // Awake는 스크립트가 처음 로드될 때 호출되는 함수입니다.
         void Awake()
@@ -75,6 +77,11 @@ namespace Goldmetal.UndeadSurvivor
 
             // 플레이어 오브젝트를 활성화하여 게임에 등장시킵니다.
             player.gameObject.SetActive(true);
+            // 상점 오브젝트를 활성화하여 게임에 등장시키고, 위치를 지정합니다.
+            store.gameObject.SetActive(true);
+            store.changePosition();
+            // 화살표 오브젝트를 활성화하여 게임에 등장시킵니다.
+            arrow.gameObject.SetActive(true);
             // 레벨업 UI에서 플레이어 ID에 따른 선택을 설정합니다.
             uiLevelUp.Select(playerId % 2);
             // 게임을 재개합니다 (일시정지 상태에서 풀기 등).
