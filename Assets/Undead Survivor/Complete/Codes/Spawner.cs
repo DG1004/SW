@@ -28,45 +28,61 @@ namespace Goldmetal.UndeadSurvivor
         }
         IEnumerator SpawnInitialEnemies()
         {
+   
             for (int i = 0; i < initialEnemyCount; i++)
             {
-                Spawn(); // 적 스폰
+                Spawn(0); // 적 스폰
+
+                // spawnInterval 만큼 대기
+                yield return new WaitForSeconds(0.1f);
+            }
+
+            for (int i = 0; i < initialEnemyCount; i++)
+            {
+                Spawn(1); // 적 스폰
 
                 // spawnInterval 만큼 대기
                 yield return new WaitForSeconds(0.1f);
             }
         }
 
-        void Spawn()
+        void Spawn(int race_index)
         {
-
-            GameObject enemy = GameManager.instance.pool.Get(0);
+            GameObject enemy = GameManager.instance.pool.Get(race_index); 
             enemy.transform.position = spawnPoint[Random.Range(1, spawnPoint.Length)].position;
             // Use random spawnData for initial enemies
             //int randomIndex = Random.Range(0, spawnData.Length);
-            var initspawndata = new SpawnData(0);
-            enemy.GetComponent<Enemy>().Init(new SpawnData(initspawndata));//////!!!!!!!!!!!!!
+            switch (race_index)
+            {
+                case 0:
+                    enemy.GetComponent<Enemy>().Init();//////!!!!!!!!!!!!!
+                    break;
+                case 1:
+                    enemy.GetComponent<Enemy3>().Init();
+                    break;
+            }
         }
     }
     public class SpawnData
     {
-        static float formula_cst = 52;
-        public SpawnData(int race_index)
+        float formula_cst = 52;
+        public SpawnData(int race_index,double stats_health,double stats_attack ,double stats_defence,double stats_speed)
         {
-
+            this.formula_cst = (float)(2 * stats_health + 2);
             //(a * 공격력 + b * 방어력 + c) * 크기 + (d * 속도) / (c * 크기) == 1
             this.race_index = race_index;
-            stats_health = 25;
-            stats_attack = 0.05 / stats_health;
-            stats_defence = 3 / stats_health;
-            stats_speed = 1.6 * stats_health;
+            this.stats_health = stats_health;
+            this.stats_attack = stats_attack / this.stats_health;
+            this.stats_defence = stats_defence / this.stats_health;
+            this.stats_speed = stats_speed * this.stats_health;
 
 
-            coe_health = 1 / stats_health;
-            coe_attack = 1 / stats_attack;
-            coe_defence = 1 / stats_defence;
-            coe_speed = 1 / stats_speed;
+            this.coe_health = 1 / this.stats_health;
+            this.coe_attack = 1 / this.stats_attack;
+            this.coe_defence = 1 / this.stats_defence;
+            this.coe_speed = 1 / this.stats_speed;
         }
+
         public SpawnData(SpawnData data)
         {
             // 1. 기존 데이터의 계수를 복사합니다.
@@ -74,7 +90,7 @@ namespace Goldmetal.UndeadSurvivor
             coe_defence = data.coe_defence; // b
             coe_speed = data.coe_speed;     // d
             coe_health = data.coe_health;   // c
-
+            formula_cst = data.formula_cst;
             // 3. 공식의 A와 B를 계산합니다.
             double a = coe_attack;
             double b = coe_defence;
