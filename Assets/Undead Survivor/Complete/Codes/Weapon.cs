@@ -119,7 +119,10 @@ namespace Goldmetal.UndeadSurvivor
         void Fire()
         {
             if (!player.scanner.nearestTarget)
+            {
+                Debug.Log("noTarget");
                 return;
+            }
 
             Vector3 targetPos = player.scanner.nearestTarget.position;
             Vector3 dir = targetPos - transform.position;
