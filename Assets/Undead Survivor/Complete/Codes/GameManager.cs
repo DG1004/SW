@@ -12,7 +12,7 @@ namespace Goldmetal.UndeadSurvivor
     {
         // 싱글톤 패턴을 사용하여 어디서든 GameManager.instance로 접근할 수 있게 합니다.
         public static GameManager instance;
-
+        public int EnemyNum;
 
         // [Header]는 인스펙터에서 변수들을 그룹화하여 보기 좋게 만듭니다.
         [Header("# Game Control")]
@@ -70,6 +70,7 @@ namespace Goldmetal.UndeadSurvivor
         // 게임을 시작할 때 호출되는 함수입니다.
         public void GameStart(int id)
         {
+            EnemyNum = 0;
             // 플레이어의 ID를 설정합니다.
             playerId = id;
             // 플레이어의 체력을 최대 체력으로 초기화합니다.

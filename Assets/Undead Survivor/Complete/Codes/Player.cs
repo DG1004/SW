@@ -71,7 +71,8 @@ namespace Goldmetal.UndeadSurvivor
 			}
 		}
 
-		void OnCollisionEnter2D(Collision2D collision)
+
+        void OnCollisionEnter2D(Collision2D collision)
 		{
 			// 플레이어가 상점 입구에 충돌했을 때
 			if (collision.gameObject.CompareTag("StoreEntrance"))
@@ -124,19 +125,24 @@ namespace Goldmetal.UndeadSurvivor
 			}
 			else if (collision.gameObject.CompareTag("Enemy"))
 			{
-				GameManager.instance.health -= Time.deltaTime * 10;
+                var offender = collision.gameObject.GetComponent<Enemy_Parent>();
+                float damage = offender.attack * 1.0f;
+                GameManager.instance.health -= damage;
 
-				if (GameManager.instance.health < 0)
-				{
-					for (int index = 2; index < transform.childCount; index++)
-					{
-						transform.GetChild(index).gameObject.SetActive(false);
-					}
-
-					anim.SetTrigger("Dead");
-					GameManager.instance.GameOver();
-				}
-			}
+                if (GameManager.instance.health < 0)
+                {
+                    for (int index = 2; index < transform.childCount; index++)
+                    {
+                        transform.GetChild(index).gameObject.SetActive(false);
+                    }
+                    anim.SetTrigger("Dead");
+                    GameManager.instance.GameOver();
+                }
+                else
+                {
+                    offender.OnAttack(damage);
+                }
+            }
 		}
 
 		void OnMove(InputValue value)
