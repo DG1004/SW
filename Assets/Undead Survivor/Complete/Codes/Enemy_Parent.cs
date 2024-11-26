@@ -154,7 +154,7 @@ namespace Goldmetal.UndeadSurvivor
             // 약간의 무작위성을 가진 새로운 spawnData를 생성합니다.
             SpawnData newSpawnData = new SpawnData(spawnData);
             // 적을 초기화합니다.
-            enemy.GetComponent<Enemy>().Init(newSpawnData);
+            enemy.GetComponent<Enemy_Parent>().Init(newSpawnData);
         }
         IEnumerator KnockBack()
         {
