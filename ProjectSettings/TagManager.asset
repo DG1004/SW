@@ -13,6 +13,7 @@ TagManager:
   - StoreExit
   - StoreStd
   - StoreSmith
+  - Coin
   layers:
   - Default
   - TransparentFX

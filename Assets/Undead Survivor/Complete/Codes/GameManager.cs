@@ -34,12 +34,10 @@ namespace Goldmetal.UndeadSurvivor
         // 플레이어가 처치한 적의 수를 기록합니다.
         public int kill;
         // 플레이어가 획득한 코인의 수를 기록합니다.
-        //public int Coin;
+        public int Coin;
         // 삭제 예정
         public int level;
-        // 삭제 예정
         public int exp;
-        // 삭제 예정
         public int[] nextExp = { 3, 5, 10, 100, 150, 210, 280, 360, 450, 600 };
 
         [Header("# Game Object")]
@@ -194,24 +192,18 @@ namespace Goldmetal.UndeadSurvivor
         // 삭제 예정
         public void GetExp()
         {
-            // 삭제 예정
             if (!isLive)
                 return;
 
-            // 삭제 예정
             exp++;
 
-            // 삭제 예정
             if (exp == nextExp[Mathf.Min(level, nextExp.Length - 1)])
             {
-                // 삭제 예정
                 level++;
-                // 삭제 예정
                 exp = 0;
-                // 삭제 예정
-                uiLevelUp.Show();
             }
         }
+
 
         // 게임을 일시정지할 때 호출되는 함수입니다.
         public void Stop()
