@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static Cinemachine.DocumentationSortingAttribute;
 
 // Goldmetal.UndeadSurvivor 네임스페이스 안에 모든 코드를 포함시킵니다.
 namespace Goldmetal.UndeadSurvivor
@@ -33,7 +34,13 @@ namespace Goldmetal.UndeadSurvivor
         // 플레이어가 처치한 적의 수를 기록합니다.
         public int kill;
         // 플레이어가 획득한 코인의 수를 기록합니다.
-        public int Coin;
+        //public int Coin;
+        // 삭제 예정
+        public int level;
+        // 삭제 예정
+        public int exp;
+        // 삭제 예정
+        public int[] nextExp = { 3, 5, 10, 100, 150, 210, 280, 360, 450, 600 };
 
         [Header("# Game Object")]
         // 오브젝트 풀링을 관리하는 매니저입니다 (적, 아이템 등을 효율적으로 관리).
@@ -181,6 +188,28 @@ namespace Goldmetal.UndeadSurvivor
                 player.inputVec.y = Input.GetAxisRaw("Vertical");
                 Vector2 nextVec = player.inputVec.normalized * player.speed * Time.fixedDeltaTime;
                 player.rigid.MovePosition(player.rigid.position + nextVec);
+            }
+        }
+
+        // 삭제 예정
+        public void GetExp()
+        {
+            // 삭제 예정
+            if (!isLive)
+                return;
+
+            // 삭제 예정
+            exp++;
+
+            // 삭제 예정
+            if (exp == nextExp[Mathf.Min(level, nextExp.Length - 1)])
+            {
+                // 삭제 예정
+                level++;
+                // 삭제 예정
+                exp = 0;
+                // 삭제 예정
+                uiLevelUp.Show();
             }
         }
 
