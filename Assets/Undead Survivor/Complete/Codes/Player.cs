@@ -104,17 +104,17 @@ namespace Goldmetal.UndeadSurvivor
 			// 플레이어가 기본상점에 충돌했을 때
 			if (collision.gameObject.CompareTag("StoreStd"))
 			{
-
-			}
-			// 플레이어가 대장장이에 충돌했을 때
-			if (collision.gameObject.CompareTag("StoreSmith"))
+                GameManager.instance.ShowShop(1);
+            }
+            // 플레이어가 대장장이에 충돌했을 때
+            if (collision.gameObject.CompareTag("StoreSmith"))
 			{
 
 			}
 			// 플레이어가 보따리상인에 충돌했을 때
             if (collision.gameObject.CompareTag("travellingMerchant"))
             {
-                GameManager.instance.ShowShop();
+                GameManager.instance.ShowShop(2);
             }
         }
 		void OnCollisionStay2D(Collision2D collision)

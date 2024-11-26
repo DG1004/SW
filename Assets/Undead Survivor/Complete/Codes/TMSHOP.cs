@@ -10,18 +10,17 @@ public class TMSHOP : MonoBehaviour
 
     public GameObject player;
     public GameObject travellingMerchant;
-
+    
     void Awake()
     {
         rect = GetComponent<RectTransform>();
         // 시작할 때 숨기기
-       
     }
 
     public void Show()
     {
        
-       rect.localScale = Vector3.one;
+        rect.localScale = Vector3.one;
         GameManager.instance.Stop();
         AudioManager.instance.PlaySfx(AudioManager.Sfx.LevelUp);
         AudioManager.instance.EffectBgm(true);

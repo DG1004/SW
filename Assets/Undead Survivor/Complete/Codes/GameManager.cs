@@ -50,6 +50,7 @@ namespace Goldmetal.UndeadSurvivor
         public Result uiResult;
         // 게임 승리 시 남은 적들을 제거하기 위한 오브젝트입니다.
         public GameObject enemyCleaner;
+        public StoreStd storeStd;
         public TMSHOP tmShop;  // Inspector에서 반드시 할당해야 함
         public StoreEntrance store;
         public Arrow arrow;
@@ -221,10 +222,18 @@ namespace Goldmetal.UndeadSurvivor
             // 게임의 시간 흐름을 정상으로 돌립니다.
             Time.timeScale = 1;
         }
-        public void ShowShop()
+        public void ShowShop(int id)
         {
-            Stop();  // Stop the game
-            tmShop.Show();  // Show the travelling merchant shop
+            if (id == 1) // 기본상점 UI
+            {
+                // 상점에 들어가 있는 동안은 isLive = false 이기 때문에 Stop함수를 호출할 필요가 없음
+                storeStd.Show();
+            }
+            else if (id == 2) // 보따리상점 UI
+            {
+                Stop();  // Stop the game
+                tmShop.Show();  // Show the travelling merchant shop
+            }
         }
     }
 }

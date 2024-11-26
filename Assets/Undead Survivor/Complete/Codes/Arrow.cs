@@ -21,14 +21,14 @@ public class Arrow : MonoBehaviour
 		Vector3 playerScreenPosition = mainCamera.WorldToScreenPoint(player.position);
 
 		// 물체가 화면 안에 있는지 체크
+		// 물체와 가까울 때 화살표에 오차가 있어서 +-30으로 물체가 보이기 전에 화살표를 없앰
 		bool isOffScreen = targetScreenPosition.z > 0 &&
-						   (targetScreenPosition.x < 0 || targetScreenPosition.x > Screen.width ||
-							targetScreenPosition.y < 0 || targetScreenPosition.y > Screen.height);
+						   (targetScreenPosition.x < -30 || targetScreenPosition.x > Screen.width+30 ||
+							targetScreenPosition.y < -30 || targetScreenPosition.y > Screen.height+30);
 
 		if (isOffScreen)
 		{
 			// 물체가 화면 밖에 있으면 화살표 활성화
-			//gameObject.SetActive(true);
 			GetComponent<RectTransform>().localScale = Vector3.one;
 
             // 물체 방향 계산 (물체 -> 플레이어)
@@ -38,8 +38,8 @@ public class Arrow : MonoBehaviour
 			Vector3 edgePosition = playerScreenPosition + direction * Mathf.Min(Screen.width, Screen.height);
 			edgePosition = ClampToScreenEdge(edgePosition);
 
-			// 화살표 위치와 회전 설정
-			arrow.position = edgePosition;
+            // 화살표 위치와 회전 설정
+            arrow.position = edgePosition;
 			float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 			arrow.rotation = Quaternion.Euler(0, 0, angle);
 
