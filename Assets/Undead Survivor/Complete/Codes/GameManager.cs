@@ -44,8 +44,6 @@ namespace Goldmetal.UndeadSurvivor
         public LevelUp uiLevelUp;
         // 게임 결과 화면을 관리하는 스크립트입니다.
         public Result uiResult;
-        // 조이스틱 UI의 Transform입니다 (모바일 조작 등을 위해).
-        public Transform uiJoy;
         // 게임 승리 시 남은 적들을 제거하기 위한 오브젝트입니다.
         public GameObject enemyCleaner;
         public TMSHOP tmShop;  // Inspector에서 반드시 할당해야 함
@@ -59,8 +57,6 @@ namespace Goldmetal.UndeadSurvivor
             instance = this;
             // 애플리케이션의 최대 프레임 레이트를 60으로 설정합니다.
             Application.targetFrameRate = 60;
-
-           
         }
 
         // 게임을 시작할 때 호출되는 함수입니다.
@@ -194,8 +190,6 @@ namespace Goldmetal.UndeadSurvivor
             isLive = false;
             // 게임의 시간 흐름을 멈춥니다.
             Time.timeScale = 0;
-            // 조이스틱 UI를 숨깁니다 (크기를 0으로 설정).
-            uiJoy.localScale = Vector3.zero;
         }
 
         // 게임을 재개할 때 호출되는 함수입니다.
@@ -205,8 +199,6 @@ namespace Goldmetal.UndeadSurvivor
             isLive = true;
             // 게임의 시간 흐름을 정상으로 돌립니다.
             Time.timeScale = 1;
-            // 조이스틱 UI를 표시합니다 (크기를 원래대로 설정).
-            uiJoy.localScale = Vector3.one;
         }
         public void ShowShop()
         {
