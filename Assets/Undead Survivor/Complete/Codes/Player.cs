@@ -16,11 +16,9 @@ namespace Goldmetal.UndeadSurvivor
 		public Hand[] hands;
 		public RuntimeAnimatorController[] animCon;
 		public Rigidbody2D rigid;
-
 		public GameObject store_inside;
 		public GameObject vcam;
-		public GameObject Pool;
-		public Store store;
+		public StoreEntrance store;
 
 		SpriteRenderer spriter;
 		Animator anim;
@@ -113,17 +111,18 @@ namespace Goldmetal.UndeadSurvivor
 			{
 
 			}
-		}
+			// 플레이어가 보따리상인에 충돌했을 때
+            if (collision.gameObject.CompareTag("travellingMerchant"))
+            {
+                GameManager.instance.ShowShop();
+            }
+        }
 		void OnCollisionStay2D(Collision2D collision)
 		{
 			if (!GameManager.instance.isLive)
 				return;
-			
-			if (collision.gameObject.CompareTag("travellingMerchant"))
-			{
-				GameManager.instance.ShowShop();
-			}
-			else if (collision.gameObject.CompareTag("Enemy"))
+
+			if (collision.gameObject.CompareTag("Enemy"))
 			{
                 var offender = collision.gameObject.GetComponent<Enemy_Parent>();
                 float damage = offender.attack * 1.0f;

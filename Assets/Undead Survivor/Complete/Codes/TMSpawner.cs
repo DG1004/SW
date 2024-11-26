@@ -16,6 +16,9 @@ public class TMSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!GameManager.instance.isLive)
+            return;
+
         timer1 += Time.deltaTime;
 
         if (timer1 > 10f) {
