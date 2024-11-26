@@ -30,14 +30,10 @@ namespace Goldmetal.UndeadSurvivor
         public float health;
         // 플레이어의 최대 체력을 설정합니다.
         public float maxHealth = 100;
-        // 플레이어의 현재 레벨을 나타냅니다.
-        public int level;
         // 플레이어가 처치한 적의 수를 기록합니다.
         public int kill;
-        // 현재 누적된 경험치를 저장합니다.
-        public int exp;
-        // 레벨업에 필요한 다음 경험치 양을 저장한 배열입니다.
-        public int[] nextExp = { 3, 5, 10, 100, 150, 210, 280, 360, 450, 600 };
+        // 플레이어가 획득한 코인의 수를 기록합니다.
+        public int Coin;
 
         [Header("# Game Object")]
         // 오브젝트 풀링을 관리하는 매니저입니다 (적, 아이템 등을 효율적으로 관리).
@@ -188,29 +184,6 @@ namespace Goldmetal.UndeadSurvivor
                 player.inputVec.y = Input.GetAxisRaw("Vertical");
                 Vector2 nextVec = player.inputVec.normalized * player.speed * Time.fixedDeltaTime;
                 player.rigid.MovePosition(player.rigid.position + nextVec);
-            }
-        }
-
-        // 경험치를 획득할 때 호출되는 함수입니다.
-        public void GetExp()
-        {
-            // 게임이 진행 중이 아니면 아래 로직을 실행하지 않습니다.
-            if (!isLive)
-                return;
-
-            // 경험치를 1 증가시킵니다.
-            exp++;
-
-            // 현재 레벨에서 필요한 경험치에 도달했는지 확인합니다.
-            // Mathf.Min을 사용하여 배열 범위를 넘지 않도록 합니다.
-            if (exp == nextExp[Mathf.Min(level, nextExp.Length - 1)])
-            {
-                // 레벨을 1 증가시킵니다.
-                level++;
-                // 경험치를 0으로 초기화합니다.
-                exp = 0;
-                // 레벨업 UI를 표시합니다.
-                uiLevelUp.Show();
             }
         }
 
