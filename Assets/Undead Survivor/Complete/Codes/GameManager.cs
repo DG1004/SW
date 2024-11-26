@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using static Cinemachine.DocumentationSortingAttribute;
 
 // Goldmetal.UndeadSurvivor 네임스페이스 안에 모든 코드를 포함시킵니다.
@@ -46,6 +47,8 @@ namespace Goldmetal.UndeadSurvivor
         public Player player;
         // 레벨업 UI를 관리하는 스크립트입니다.
         public LevelUp uiLevelUp;
+        //  상점 UI 관리
+        public StoreStd uiStore;
         // 게임 결과 화면을 관리하는 스크립트입니다.
         public Result uiResult;
         // 게임 승리 시 남은 적들을 제거하기 위한 오브젝트입니다.
@@ -80,8 +83,8 @@ namespace Goldmetal.UndeadSurvivor
             store.changePosition();
             // 화살표 오브젝트를 활성화하여 게임에 등장시킵니다.
             arrow.gameObject.SetActive(true);
-            // 레벨업 UI에서 플레이어 ID에 따른 선택을 설정합니다.
-            uiLevelUp.Select(playerId % 2);
+            // 상점 UI에서 플레이어 ID에 따른 선택을 설정합니다.
+            //uiStore.Select(playerId % 2);
             // 게임을 재개합니다 (일시정지 상태에서 풀기 등).
             Resume();
 
