@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Coin : MonoBehaviour
 {
+    // 코인 1개의 값어치
     public int value;
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -12,9 +13,6 @@ public class Coin : MonoBehaviour
         {
             // 코인 매니저에 코인 추가
             CoinManager.playerCoins += value;
-
-            // UI 업데이트 (나중에 구현)
-            Debug.Log("코인 수집! 현재 코인: " + CoinManager.playerCoins);
 
             // 코인 오브젝트 제거
             Destroy(gameObject);
