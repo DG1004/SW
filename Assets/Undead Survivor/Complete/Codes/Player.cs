@@ -30,7 +30,8 @@ namespace Goldmetal.UndeadSurvivor
 			anim = GetComponent<Animator>();
 			scanner = GetComponent<Scanner>();
 			hands = GetComponentsInChildren<Hand>(true);
-		}
+           
+        }
 
 		void OnEnable()
 		{
