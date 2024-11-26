@@ -7,11 +7,12 @@ public class Arrow : MonoBehaviour
 	public RectTransform arrow; // 화살표 UI 이미지
     public RectTransform objectImage; // 물체의 이미지 UI
     public Camera mainCamera; // 메인 카메라
-	public Transform player; // 플레이어 (유저)
+	public Transform player; // 플레이어 (기준점)
 
 
 	void Update()
 	{
+		// 게임이 진행중일 때만 실행한다
 		if (!GameManager.instance.isLive || target == null || arrow == null || mainCamera == null || player == null)
 			return;
 

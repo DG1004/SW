@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -53,7 +52,7 @@ namespace Goldmetal.UndeadSurvivor
         // 게임 승리 시 남은 적들을 제거하기 위한 오브젝트입니다.
         public GameObject enemyCleaner;
         public TMSHOP tmShop;  // Inspector에서 반드시 할당해야 함
-        public Store store;
+        public StoreEntrance store;
         public Arrow arrow;
 
         // Awake는 스크립트가 처음 로드될 때 호출되는 함수입니다.

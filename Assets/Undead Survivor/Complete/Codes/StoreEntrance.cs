@@ -1,17 +1,9 @@
 using Goldmetal.UndeadSurvivor;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel.Design.Serialization;
-using Unity.Mathematics;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 using Random = UnityEngine.Random;
 
-
-public class Store : MonoBehaviour
+public class StoreEntrance : MonoBehaviour
 {
 	public Player player;
 
@@ -32,7 +24,7 @@ public class Store : MonoBehaviour
 		}
 	}
 
-
+	//상점입구의 위치를 바꾸는 함수
     public void changePosition()
 	{
 		// 상점의 위치
@@ -69,7 +61,7 @@ public class Store : MonoBehaviour
 			//transform.position = new Vector3(player.transform.position.x - pos_x, player.transform.position.y - pos_y, 0);
 			dir_x = -1;
 			dir_y = -1;
-            Debug.Log("--");
+            Debug.Log("상점을 플레이어 기준 왼쪽아래 생성");
 		}
 		else if ((double)ran_x + weight_x < 50 && (double)ran_y + weight_y >= 50)
 		{
@@ -77,7 +69,7 @@ public class Store : MonoBehaviour
 			//transform.position = new Vector3(player.transform.position.x + pos_x, player.transform.position.y - pos_y, 0);
 			dir_x = 1;
 			dir_y = -1;
-            Debug.Log("+-");
+            Debug.Log("상점을 플레이어 기준 오른쪽아래 생성");
         }
         else if ((double)ran_x + weight_x >= 50 && (double)ran_y + weight_y < 50)
 		{
@@ -85,7 +77,7 @@ public class Store : MonoBehaviour
 			//transform.position = new Vector3(player.transform.position.x - pos_x, player.transform.position.y + pos_y, 0);
 			dir_x = -1;
 			dir_y = 1;
-            Debug.Log("-+");
+            Debug.Log("상점을 플레이어 기준 왼쪽위 생성");
 
         }
         else if ((double)ran_x + weight_x < 50 && (double)ran_y + weight_y < 50)
@@ -94,9 +86,9 @@ public class Store : MonoBehaviour
 			//transform.position = new Vector3(player.transform.position.x + pos_x, player.transform.position.y + pos_y, 0);
 			dir_x = 1;
 			dir_y = 1;
-            Debug.Log("++");
+            Debug.Log("상점을 플레이어 기준 오른쪽위 생성");
         }
-		transform.position = new Vector3(player.transform.position.x + (dir_x * pos_x), player.transform.position.y + (dir_y * pos_y), 0);
+        transform.position = new Vector3(player.transform.position.x + (dir_x * pos_x), player.transform.position.y + (dir_y * pos_y), 0);
 
 		if (transform.position.x >= maxX || transform.position.x <= -maxX || transform.position.y >= maxY || transform.position.y <= -maxY)
 		{
