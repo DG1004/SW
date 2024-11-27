@@ -39,8 +39,9 @@ namespace Goldmetal.UndeadSurvivor
         public int level;
         public int exp;
         public int[] nextExp = { 3, 5, 10, 100, 150, 210, 280, 360, 450, 600 };
-
         [Header("# Game Object")]
+        // 코인을 관리하는 매니저임
+        public CoinManager CoinManager;
         // 오브젝트 풀링을 관리하는 매니저입니다 (적, 아이템 등을 효율적으로 관리).
         public PoolManager pool;
         // 플레이어 캐릭터를 제어하는 스크립트입니다.

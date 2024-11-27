@@ -111,7 +111,7 @@ namespace Goldmetal.UndeadSurvivor
             else
             {
                 Debug.Log($"¿©±â´Â OnTriggerEnter2D {GameManager.instance.EnemyNum--}");
-
+                GameManager.instance.CoinManager.DropCoins(transform.position);
                 CancelInvoke("energr_updater");
                 isLive = false;
                 coll.enabled = false;
