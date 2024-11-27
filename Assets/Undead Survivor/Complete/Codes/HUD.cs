@@ -7,7 +7,7 @@ namespace Goldmetal.UndeadSurvivor
 {
     public class HUD : MonoBehaviour
     {
-        public enum InfoType { Exp, Level, Kill, Time, Health }
+        public enum InfoType { Coin, Kill, Time, Health }
         public InfoType type;
 
         Text myText;
@@ -22,13 +22,8 @@ namespace Goldmetal.UndeadSurvivor
         void LateUpdate()
         {
             switch (type) {
-                case InfoType.Exp:
-                    float curExp = GameManager.instance.exp;
-                    float maxExp = GameManager.instance.nextExp[Mathf.Min(GameManager.instance.level, GameManager.instance.nextExp.Length - 1)];
-                    mySlider.value = curExp / maxExp;
-                    break;
-                case InfoType.Level:
-                    myText.text = string.Format("Lv.{0:F0}", GameManager.instance.level);
+                case InfoType.Coin:
+                    myText.text = string.Format(":{0:F0}", CoinManager.playerCoins);
                     break;
                 case InfoType.Kill:
                     myText.text = string.Format("{0:F0}", GameManager.instance.kill);

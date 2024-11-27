@@ -7,7 +7,7 @@ namespace Goldmetal.UndeadSurvivor
     [CreateAssetMenu(fileName = "Item", menuName = "Scriptble Object/ItemData")]
     public class ItemData : ScriptableObject
     {
-        public enum ItemType { Melee, Range, Glove, Shoe, Heal }
+        public enum ItemType { Melee, Range, Glove, Shoe, Heal,rare1,rare2 }
 
         [Header("# Main Info")]
         public ItemType itemType;

@@ -1,7 +1,8 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using static Cinemachine.DocumentationSortingAttribute;
 
 // Goldmetal.UndeadSurvivor 네임스페이스 안에 모든 코드를 포함시킵니다.
 namespace Goldmetal.UndeadSurvivor
@@ -30,13 +31,13 @@ namespace Goldmetal.UndeadSurvivor
         public float health;
         // 플레이어의 최대 체력을 설정합니다.
         public float maxHealth = 100;
-        // 플레이어의 현재 레벨을 나타냅니다.
-        public int level;
         // 플레이어가 처치한 적의 수를 기록합니다.
         public int kill;
-        // 현재 누적된 경험치를 저장합니다.
+        // 플레이어가 획득한 코인의 수를 기록합니다.
+        public int Coin;
+        // 삭제 예정
+        public int level;
         public int exp;
-        // 레벨업에 필요한 다음 경험치 양을 저장한 배열입니다.
         public int[] nextExp = { 3, 5, 10, 100, 150, 210, 280, 360, 450, 600 };
 
         [Header("# Game Object")]
@@ -46,14 +47,15 @@ namespace Goldmetal.UndeadSurvivor
         public Player player;
         // 레벨업 UI를 관리하는 스크립트입니다.
         public LevelUp uiLevelUp;
+        //  상점 UI 관리
+        public StoreStd uiStore;
         // 게임 결과 화면을 관리하는 스크립트입니다.
         public Result uiResult;
-        // 조이스틱 UI의 Transform입니다 (모바일 조작 등을 위해).
-        public Transform uiJoy;
         // 게임 승리 시 남은 적들을 제거하기 위한 오브젝트입니다.
         public GameObject enemyCleaner;
+        public StoreStd storeStd;
         public TMSHOP tmShop;  // Inspector에서 반드시 할당해야 함
-        public Store store;
+        public StoreEntrance store;
         public Arrow arrow;
 
         // Awake는 스크립트가 처음 로드될 때 호출되는 함수입니다.
@@ -63,8 +65,6 @@ namespace Goldmetal.UndeadSurvivor
             instance = this;
             // 애플리케이션의 최대 프레임 레이트를 60으로 설정합니다.
             Application.targetFrameRate = 60;
-
-           
         }
 
         // 게임을 시작할 때 호출되는 함수입니다.
@@ -83,8 +83,8 @@ namespace Goldmetal.UndeadSurvivor
             store.changePosition();
             // 화살표 오브젝트를 활성화하여 게임에 등장시킵니다.
             arrow.gameObject.SetActive(true);
-            // 레벨업 UI에서 플레이어 ID에 따른 선택을 설정합니다.
-            uiLevelUp.Select(playerId % 2);
+            // 상점 UI에서 플레이어 ID에 따른 선택을 설정합니다.
+            //uiStore.Select(playerId % 2);
             // 게임을 재개합니다 (일시정지 상태에서 풀기 등).
             Resume();
 
@@ -192,28 +192,21 @@ namespace Goldmetal.UndeadSurvivor
             }
         }
 
-        // 경험치를 획득할 때 호출되는 함수입니다.
+        // 삭제 예정
         public void GetExp()
         {
-            // 게임이 진행 중이 아니면 아래 로직을 실행하지 않습니다.
             if (!isLive)
                 return;
 
-            // 경험치를 1 증가시킵니다.
             exp++;
 
-            // 현재 레벨에서 필요한 경험치에 도달했는지 확인합니다.
-            // Mathf.Min을 사용하여 배열 범위를 넘지 않도록 합니다.
             if (exp == nextExp[Mathf.Min(level, nextExp.Length - 1)])
             {
-                // 레벨을 1 증가시킵니다.
                 level++;
-                // 경험치를 0으로 초기화합니다.
                 exp = 0;
-                // 레벨업 UI를 표시합니다.
-                uiLevelUp.Show();
             }
         }
+
 
         // 게임을 일시정지할 때 호출되는 함수입니다.
         public void Stop()
@@ -222,8 +215,6 @@ namespace Goldmetal.UndeadSurvivor
             isLive = false;
             // 게임의 시간 흐름을 멈춥니다.
             Time.timeScale = 0;
-            // 조이스틱 UI를 숨깁니다 (크기를 0으로 설정).
-            uiJoy.localScale = Vector3.zero;
         }
 
         // 게임을 재개할 때 호출되는 함수입니다.
@@ -233,13 +224,19 @@ namespace Goldmetal.UndeadSurvivor
             isLive = true;
             // 게임의 시간 흐름을 정상으로 돌립니다.
             Time.timeScale = 1;
-            // 조이스틱 UI를 표시합니다 (크기를 원래대로 설정).
-            uiJoy.localScale = Vector3.one;
         }
-        public void ShowShop()
+        public void ShowShop(int id)
         {
-            Stop();  // Stop the game
-            tmShop.Show();  // Show the travelling merchant shop
+            if (id == 1) // 기본상점 UI
+            {
+                // 상점에 들어가 있는 동안은 isLive = false 이기 때문에 Stop함수를 호출할 필요가 없음
+                storeStd.Show();
+            }
+            else if (id == 2) // 보따리상점 UI
+            {
+                Stop();  // Stop the game
+                tmShop.Show();  // Show the travelling merchant shop
+            }
         }
     }
 }

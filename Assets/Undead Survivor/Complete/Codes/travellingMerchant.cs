@@ -41,13 +41,16 @@ public class travellingMerchant : MonoBehaviour
         target = GameManager.instance.player.GetComponent<Rigidbody2D>();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-
         if (collision.gameObject.CompareTag("Player"))
         {
             Destroy(gameObject); // 이 객체를 파괴하여 사라지게 합니다.
         }
     }
 
+    private void LateUpdate()
+    {
+        spriter.flipX = target.position.x > rigid.position.x;
+    }
 }

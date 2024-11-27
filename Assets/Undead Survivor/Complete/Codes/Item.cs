@@ -36,6 +36,8 @@ namespace Goldmetal.UndeadSurvivor
             switch (data.itemType) {
                 case ItemData.ItemType.Melee:
                 case ItemData.ItemType.Range:
+                case ItemData.ItemType.rare1:
+                case ItemData.ItemType.rare2:
                     textDesc.text = string.Format(data.itemDesc, data.damages[level] * 100, data.counts[level]);
                     break;
                 case ItemData.ItemType.Glove:
@@ -53,6 +55,8 @@ namespace Goldmetal.UndeadSurvivor
             switch (data.itemType) {
                 case ItemData.ItemType.Melee:
                 case ItemData.ItemType.Range:
+                case ItemData.ItemType.rare1:
+                case ItemData.ItemType.rare2:
                     if (level == 0) {
                         GameObject newWeapon = new GameObject();
                         weapon = newWeapon.AddComponent<Weapon>();
