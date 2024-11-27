@@ -14,6 +14,7 @@ namespace Goldmetal.UndeadSurvivor
         void Awake()
         {
             rigid = GetComponent<Rigidbody2D>();
+            transform.localScale = Vector3.one;
         }
 
         public void Init(float damage, int per, Vector3 dir)

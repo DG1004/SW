@@ -88,22 +88,22 @@ namespace Goldmetal.UndeadSurvivor
 				vcam.GetComponent<CinemachineVirtualCamera>().Priority = 11;
 				store.gameObject.SetActive(false);
 			}
-			// 플레이어가 상점 출구에 충돌했을 때
-			if (collision.gameObject.CompareTag("StoreExit"))
-			{
-				isStore = 0;
-				transform.position = new Vector3(prePos.x + 1, prePos.y + 1, prePos.z + 1);
-				//wait();
-				GameManager.instance.isLive = true;
+            // 플레이어가 상점 출구에 충돌했을 때
+            if (collision.gameObject.CompareTag("StoreExit"))
+            {
+                isStore = 0;
+                transform.position = new Vector3(prePos.x, prePos.y, prePos.z);
+                //wait();
+                GameManager.instance.isLive = true;
 
-				store.changePosition();
-				store.gameObject.SetActive(true);
+                store.changePosition();
+                store.gameObject.SetActive(true);
 
-				// 상점에서 나갈 때 카메라가 cut방식으로 바로 전환되지 않는 것 수정 필요
-				vcam.GetComponent<CinemachineVirtualCamera>().Priority = 9;
-			}
-			// 플레이어가 기본상점에 충돌했을 때
-			if (collision.gameObject.CompareTag("StoreStd"))
+                // 상점에서 나갈 때 카메라가 cut방식으로 바로 전환되지 않는 것 수정 필요
+                vcam.GetComponent<CinemachineVirtualCamera>().Priority = 9;
+            }
+            // 플레이어가 기본상점에 충돌했을 때
+            if (collision.gameObject.CompareTag("StoreStd"))
 			{
                 GameManager.instance.ShowShop(1);
             }
