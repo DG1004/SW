@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
+using static UnityEditor.Progress;
 
 namespace Goldmetal.UndeadSurvivor
 {
@@ -98,7 +99,14 @@ namespace Goldmetal.UndeadSurvivor
 
                 store.changePosition();
                 store.gameObject.SetActive(true);
-
+                GameObject[] enemys = GameObject.FindGameObjectsWithTag("Enemy");
+				foreach(GameObject enemy in enemys)
+				{
+					if (enemy.activeSelf)
+					{
+                        enemy.transform.position = transform.position + (Vector3)(Random.insideUnitCircle.normalized * 20f);
+                    }
+                }
                 // 상점에서 나갈 때 카메라가 cut방식으로 바로 전환되지 않는 것 수정 필요
                 vcam.GetComponent<CinemachineVirtualCamera>().Priority = 9;
             }
