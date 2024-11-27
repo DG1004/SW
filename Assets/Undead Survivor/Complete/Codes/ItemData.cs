@@ -13,6 +13,8 @@ namespace Goldmetal.UndeadSurvivor
         public ItemType itemType;
         public int itemId;
         public string itemName;
+        public int itemPrice;
+
         [TextArea]
         public string itemDesc;
         public Sprite itemIcon;
