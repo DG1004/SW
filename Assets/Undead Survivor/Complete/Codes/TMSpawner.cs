@@ -31,7 +31,7 @@ public class TMSpawner : MonoBehaviour
     }
     void Spawn()
     {
-        GameObject travellingMerchant = GameManager.instance.pool.Get(3);
+        GameObject travellingMerchant = GameManager.instance.pool.Get(4);
         travellingMerchant.transform.position = spawnPoint1[Random.Range(1,spawnPoint1.Length)].position;
         // TMSHOP에 생성된 인스턴스 연결
         TMSHOP shop = FindObjectOfType<TMSHOP>();
