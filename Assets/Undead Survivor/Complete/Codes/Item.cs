@@ -27,8 +27,8 @@ namespace Goldmetal.UndeadSurvivor
             textLevel = texts[0];
             textName = texts[1];
             textDesc = texts[2];
-            textName.text = data.itemName;
             textPrice = texts[3];
+            textName.text = data.itemName;
         }
 
         void OnEnable()
