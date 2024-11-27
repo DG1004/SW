@@ -127,7 +127,7 @@ namespace Goldmetal.UndeadSurvivor
         }
         public void energr_updater()
         {
-            if (!isLive) return;
+            if (!isLive||!GameManager.instance.isLive) return;
             energy += health * (30 / GameManager.instance.EnemyNum);//몬스터 수에 따라 유동적으로 조정하기 위해서
             OnAttack(0);
         }
