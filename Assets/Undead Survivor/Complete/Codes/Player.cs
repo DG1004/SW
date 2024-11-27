@@ -90,7 +90,7 @@ namespace Goldmetal.UndeadSurvivor
 				store.gameObject.SetActive(false);
 			}
             // 플레이어가 상점 출구에 충돌했을 때
-            if (collision.gameObject.CompareTag("StoreExit"))
+            else if (collision.gameObject.CompareTag("StoreExit"))
             {
                 isStore = 0;
                 transform.position = new Vector3(prePos.x, prePos.y, prePos.z);
@@ -99,6 +99,7 @@ namespace Goldmetal.UndeadSurvivor
 
                 store.changePosition();
                 store.gameObject.SetActive(true);
+				// 상점탈출시 몬스터 위치 재조정 코드
                 GameObject[] enemys = GameObject.FindGameObjectsWithTag("Enemy");
 				foreach(GameObject enemy in enemys)
 				{
@@ -111,17 +112,17 @@ namespace Goldmetal.UndeadSurvivor
                 vcam.GetComponent<CinemachineVirtualCamera>().Priority = 9;
             }
             // 플레이어가 기본상점에 충돌했을 때
-            if (collision.gameObject.CompareTag("StoreStd"))
+            else if (collision.gameObject.CompareTag("StoreStd"))
 			{
                 GameManager.instance.ShowShop(1);
             }
             // 플레이어가 대장장이에 충돌했을 때
-            if (collision.gameObject.CompareTag("StoreSmith"))
+            else if (collision.gameObject.CompareTag("StoreSmith"))
 			{
 
 			}
 			// 플레이어가 보따리상인에 충돌했을 때
-            if (collision.gameObject.CompareTag("travellingMerchant"))
+            else if (collision.gameObject.CompareTag("travellingMerchant"))
             {
                 GameManager.instance.ShowShop(2);
             }
