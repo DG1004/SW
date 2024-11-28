@@ -8,7 +8,7 @@ namespace Goldmetal.UndeadSurvivor
     {
         public static float Speed
         {
-            get { return GameManager.instance.playerId == 0 ? 2.1f : 2f; }
+            get { return GameManager.instance.playerId == 0 ? 1.6f : 1.5f; }
         }
 
         public static float WeaponSpeed
