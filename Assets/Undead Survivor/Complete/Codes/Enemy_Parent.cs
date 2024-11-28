@@ -147,9 +147,9 @@ namespace Goldmetal.UndeadSurvivor
         {
             // 풀에서 새로운 적 오브젝트를 가져옵니다.
             GameObject enemy = GameManager.instance.pool.Get(spawnData.race_index);
-
+            Vector2 dirVec = target.position - rigid.position;
             // 적의 위치를 부모 근처로 설정합니다.
-            enemy.transform.position = transform.position;// + (Vector3)(Random.insideUnitCircle.normalized * 1f);
+            enemy.transform.position = transform.position - (Vector3)(dirVec.normalized * 1f);
 
             // 약간의 무작위성을 가진 새로운 spawnData를 생성합니다.
             SpawnData newSpawnData = new SpawnData(spawnData);
