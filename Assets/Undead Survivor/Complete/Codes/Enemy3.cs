@@ -12,7 +12,7 @@ namespace Goldmetal.UndeadSurvivor
     {
         public void Init()//오버라이딩 초기 스탯결정
         {
-            SpawnData data = new SpawnData(1, 35, 0.05, 6, 0.8);
+            SpawnData data = new SpawnData(1, 35, 0.05, 6, 1.5);
             Init(data);
         }
     }

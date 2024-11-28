@@ -79,6 +79,7 @@ namespace Goldmetal.UndeadSurvivor
 			// 플레이어가 상점 입구에 충돌했을 때
 			if (collision.gameObject.CompareTag("StoreEntrance"))
 			{
+				Debug.Log("상점진입");
 				// 플레이어가 상점에 있다는 것을 표시합니다.
 				isStore = 1;
 				// 게임 진행 상태를 false로 설정합니다.
