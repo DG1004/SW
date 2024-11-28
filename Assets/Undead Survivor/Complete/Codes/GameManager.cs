@@ -170,6 +170,16 @@ namespace Goldmetal.UndeadSurvivor
             // esc 키를 눌러 게임을 멈추거나 재개한다.
             // 상점에서 esc키를 누를 경우 오류가 생기니 조심
             // isLive가 true일 때 몬스터가 계속해서 생성되는 것 고치기
+            if (Input.GetKeyDown(KeyCode.H))
+            {
+                SceneController scene = GetComponent<SceneController>();
+                scene.LoadScene("StoreScene");
+            }
+            if (Input.GetKeyDown(KeyCode.J))
+            {
+                SceneController scene = GetComponent<SceneController>();
+                scene.LoadScene("CompleteScene");
+            }
             if (Input.GetKeyDown(KeyCode.Escape) && isLive) {
                 Stop();
                 return;

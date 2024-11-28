@@ -17,10 +17,6 @@ namespace Goldmetal.UndeadSurvivor
 		public Hand[] hands;
 		public RuntimeAnimatorController[] animCon;
 		public Rigidbody2D rigid;
-		public GameObject store_inside;
-		public GameObject vcam1;
-        public GameObject vcam2;
-        public GameObject PrePos;
         public StoreEntrance store;
 
 		SpriteRenderer spriter;
@@ -85,24 +81,13 @@ namespace Goldmetal.UndeadSurvivor
 				// 게임 진행 상태를 false로 설정합니다.
 				GameManager.instance.isLive = false;
 				// 플레이어의 기존 위치를 기억합니다.
-				PrePos.transform.position = transform.position;
-				// 플레이어의 위치를 상점으로 순간이동합니다.
-				transform.position = new Vector3(store_inside.transform.position.x, store_inside.transform.position.y, store_inside.transform.position.z);
-				// 카메라를 바꿉니다.
-				vcam1.GetComponent<CinemachineVirtualCamera>().Priority = 11;
-				vcam2.GetComponent<CinemachineVirtualCamera>().Follow = PrePos.transform;
-
+				
 				store.gameObject.SetActive(false);
 			}
             // 플레이어가 상점 출구에 충돌했을 때
             else if (collision.gameObject.CompareTag("StoreExit"))
             {
                 isStore = 0;
-                transform.position = new Vector3(PrePos.transform.position.x, PrePos.transform.position.y, PrePos.transform.position.z);
-
-                // 상점에서 나갈 때 카메라가 cut방식으로 바로 전환되지 않는 것 수정 필요
-                vcam1.GetComponent<CinemachineVirtualCamera>().Priority = 9;
-                vcam2.GetComponent<CinemachineVirtualCamera>().Follow = transform;
 
                 //wait();
                 GameManager.instance.isLive = true;
