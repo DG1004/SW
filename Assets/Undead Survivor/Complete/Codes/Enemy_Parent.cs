@@ -125,31 +125,41 @@ namespace Goldmetal.UndeadSurvivor
                     AudioManager.instance.PlaySfx(AudioManager.Sfx.Dead);
             }
         }
+        private bool _lock=false;
         public void energr_updater()
         {
-            if (!isLive) return;
+            if (!isLive||!GameManager.instance.isLive) return;
             energy += health * (30 / GameManager.instance.EnemyNum);//몬스터 수에 따라 유동적으로 조정하기 위해서
-            OnAttack(0);
+            
+            while (energy > health&&!_lock)
+            {
+                Vector2 dirVec = target.position - rigid.position;
+                var newPos = (Vector3)(target.position + dirVec.normalized * 20f);
+                Reproduce(newPos);
+                energy -= health;
+            }
         }
         public void OnAttack(float damage)
         {
             if (!isLive) return;
-            energy += 10 * damage;
+            _lock = true;
+            energy += 15 * damage;
             while (energy > health)
             {
-                Reproduce();
+                Vector2 dirVec = target.position - rigid.position;
+                var newPos = transform.position - (Vector3)(dirVec.normalized * 1f);
+                Reproduce(newPos);
                 energy -= health;
             }
-
+            _lock = false;
         }
 
-        void Reproduce()
+        void Reproduce(Vector3 newPos)
         {
             // 풀에서 새로운 적 오브젝트를 가져옵니다.
             GameObject enemy = GameManager.instance.pool.Get(spawnData.race_index);
-
             // 적의 위치를 부모 근처로 설정합니다.
-            enemy.transform.position = transform.position;// + (Vector3)(Random.insideUnitCircle.normalized * 1f);
+            enemy.transform.position = newPos;
 
             // 약간의 무작위성을 가진 새로운 spawnData를 생성합니다.
             SpawnData newSpawnData = new SpawnData(spawnData);

@@ -18,14 +18,14 @@ MonoBehaviour:
   itemPrice: 500
   itemDesc: "\uB370\uBBF8\uC9C0 {0}% \uC99D\uAC00\n\uAD00\uD1B5\uB825 {1} \uCD94\uAC00"
   itemIcon: {fileID: -205726582, guid: d71a3dc7aa20fad4f9a99fc76a9254ba, type: 3}
-  baseDamage: 3
-  baseCount: 0
+  baseDamage: 6
+  baseCount: 3
   damages:
-  - 0.35
-  - 0.7
-  - 1
-  - 1.4
-  - 2
-  counts: 0100000001000000020000000300000004000000
+  - 0.1
+  - 0.1
+  - 0.15
+  - 0.15
+  - 0.2
+  counts: 0300000003000000040000000500000006000000
   projectile: {fileID: 4122565992612807282, guid: 00818f04400b8354c96f7dbafdd74b81, type: 3}
   hand: {fileID: -353751291, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}

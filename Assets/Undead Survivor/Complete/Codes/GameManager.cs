@@ -167,6 +167,17 @@ namespace Goldmetal.UndeadSurvivor
         // 매 프레임마다 호출되는 업데이트 함수입니다.
         void Update()
         {
+            // esc 키를 눌러 게임을 멈추거나 재개한다.
+            // 상점에서 esc키를 누를 경우 오류가 생기니 조심
+            // isLive가 true일 때 몬스터가 계속해서 생성되는 것 고치기
+            if (Input.GetKeyDown(KeyCode.Escape) && isLive) {
+                Stop();
+                return;
+                }
+            if (Input.GetKeyDown(KeyCode.Escape) && !isLive)
+            {
+                Resume();
+            }
             // 게임이 진행 중일 때 아래 로직을 실행합니다.
             if (isLive)
             {
