@@ -10,20 +10,29 @@ namespace Goldmetal.UndeadSurvivor
 
     public class Enemy_Parent : MonoBehaviour
     {
-        protected SpawnData spawnData;
+        SpawnData spawnData;
 
-        protected float energy;
+        float energy;//몬스터 에너지
 
+        //몬스터의 종족적의 특성을 정의하는 변수들
+        protected double coe_attack;
+        protected double coe_defence;
+        protected double coe_speed;
+        protected double coe_health;
+        protected int race_index;
+
+        //몬스터의 실제스탯들
         public float attack;
-        public float defence;
-        public float speed;
-        public float health;
+        float defence;
+        float speed;
+        float health;
+
+        bool isLive;
+
         //public float maxHealth;
         public RuntimeAnimatorController[] animCon;
         public Rigidbody2D target;
-
-        protected bool isLive;
-
+        
         protected Rigidbody2D rigid;
         protected Collider2D coll;
         protected Animator anim;
@@ -74,27 +83,6 @@ namespace Goldmetal.UndeadSurvivor
             anim.SetBool("Dead", false);
             //health = maxHealth;
         }
-
-        public void Init(SpawnData data)
-        {
-            float k = 1;//Mathf.Log(Mathf.Log(GameManager.instance.gameTime+2.71f)+1.71f);
-            //anim.runtimeAnimatorController = animCon[data];
-            energy = 0;
-            spawnData = data;
-            attack = (float)(k * data.stats_attack * data.stats_health);
-            defence = (float)(k * data.stats_defence * data.stats_health);
-            health = (float)(k * data.stats_health);
-            speed = (float)(data.stats_speed / data.stats_health);
-            /*Debug.Log($"공격는 --> {attack}");
-            Debug.Log($"방어는 --> {defence}");
-            Debug.Log($"체력는 --> {health}");
-            Debug.Log($"속도는 --> {speed}");*/
-            transform.localScale = new Vector3(defence / 3, health / 10 / 3, 1);
-            rigid.mass = defence * health * 0.1f;
-            InvokeRepeating("energr_updater", 0f, 5f);
-            Debug.Log($"여기는 init {GameManager.instance.EnemyNum++}");
-        }
-
         void OnTriggerEnter2D(Collider2D collision)
         {
             if (!collision.CompareTag("Bullet") || !isLive)
@@ -125,6 +113,38 @@ namespace Goldmetal.UndeadSurvivor
                     AudioManager.instance.PlaySfx(AudioManager.Sfx.Dead);
             }
         }
+        protected void Init(SpawnData data)
+        {
+            race_init();
+            float k = 1;//Mathf.Log(Mathf.Log(GameManager.instance.gameTime+2.71f)+1.71f);
+            //anim.runtimeAnimatorController = animCon[data];
+            energy = 0;
+            spawnData = data;
+            attack = (float)(k * data.stats_attack);
+            defence = (float)(k * data.stats_defence);
+            health = (float)(k * data.stats_health);
+            speed = (float)(data.stats_speed);
+            /* attack = (float)(k * data.stats_attack * data.stats_health);
+             defence = (float)(k * data.stats_defence * data.stats_health);
+             health = (float)(k * data.stats_health);
+             speed = (float)(data.stats_speed / data.stats_health);*/
+            /*Debug.Log($"공격는 --> {attack}");
+            Debug.Log($"방어는 --> {defence}");
+            Debug.Log($"체력는 --> {health}");
+            Debug.Log($"속도는 --> {speed}");*/
+            transform.localScale = new Vector3(defence, health / 10 , 1);
+            rigid.mass = defence * health * 0.1f;
+            InvokeRepeating("energr_updater", 0f, 5f);
+            Debug.Log($"여기는 init {GameManager.instance.EnemyNum++}");
+        }
+        public void Init()
+        {
+            race_init();
+            Init(new SpawnData(coe_attack, coe_defence, coe_speed, coe_health));
+        }
+        protected virtual void race_init() { }
+
+       
         private bool _lock=false;
         public void energr_updater()
         {
@@ -153,19 +173,22 @@ namespace Goldmetal.UndeadSurvivor
             }
             _lock = false;
         }
-
+        SpawnData MakeMutation()
+        {
+            return new SpawnData(spawnData, coe_attack, coe_defence, coe_speed, coe_health);
+        }
         void Reproduce(Vector3 newPos)
         {
             // 풀에서 새로운 적 오브젝트를 가져옵니다.
-            GameObject enemy = GameManager.instance.pool.Get(spawnData.race_index);
+            GameObject enemy_object = GameManager.instance.pool.Get(race_index);
             // 적의 위치를 부모 근처로 설정합니다.
-            enemy.transform.position = newPos;
+            enemy_object.transform.position = newPos;
 
-            // 약간의 무작위성을 가진 새로운 spawnData를 생성합니다.
-            SpawnData newSpawnData = new SpawnData(spawnData);
             // 적을 초기화합니다.
-            enemy.GetComponent<Enemy_Parent>().Init(newSpawnData);
+            var enemy = enemy_object.GetComponent<Enemy_Parent>();
+            enemy.Init(MakeMutation());
         }
+
         IEnumerator KnockBack()
         {
             yield return wait; // 다음 하나의 물리 프레임 딜레이
