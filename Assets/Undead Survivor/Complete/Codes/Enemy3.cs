@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Goldmetal.UndeadSurvivor
 {
 
-    public class Enemy3 : Enemy_Parent
+    public class Enemy3 : Enemy
     {
         protected override void race_init()//오버라이딩 초기 스탯결정
         {

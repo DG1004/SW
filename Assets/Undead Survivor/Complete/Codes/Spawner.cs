@@ -52,7 +52,7 @@ namespace Goldmetal.UndeadSurvivor
             enemy.transform.position = spawnPoint[Random.Range(1, spawnPoint.Length)].position;
             // Use random spawnData for initial enemies
             // int randomIndex = Random.Range(0, spawnData.Length);
-            enemy.GetComponent<Enemy_Parent>().Init();
+            enemy.GetComponent<Enemy>().Init();
            /* switch (race_index)
             {
                 case 0:

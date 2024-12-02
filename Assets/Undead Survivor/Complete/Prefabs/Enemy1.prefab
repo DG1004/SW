@@ -13,10 +13,10 @@ GameObject:
   - component: {fileID: 8995485532009590290}
   - component: {fileID: 8995485532009590291}
   - component: {fileID: 8995485532009590292}
-  - component: {fileID: 8995485532009590303}
+  - component: {fileID: 7628039063476196946}
   - component: {fileID: 8995485532009590302}
   m_Layer: 6
-  m_Name: Enemy
+  m_Name: Enemy1
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -173,7 +173,7 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.7, y: 0.9}
   m_Direction: 0
---- !u!114 &8995485532009590303
+--- !u!114 &7628039063476196946
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -182,15 +182,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 8995485532009590293}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e7730628a738514b891021b68752f21, type: 3}
+  m_Script: {fileID: 11500000, guid: 6922c9741c41fd74a9b8e0a59cea8047, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   attack: 0
-  defence: 0
-  speed: 0
-  health: 0
-  animCon:
-  - {fileID: 22100000, guid: 050556270436d4f4288557291a1a99c0, type: 2}
+  animCon: []
   target: {fileID: 0}
 --- !u!114 &8995485532009590302
 MonoBehaviour:
