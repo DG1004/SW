@@ -47,7 +47,7 @@ namespace Goldmetal.UndeadSurvivor
             // 사용할 객체가 없으면 새로 생성
             if (!select)
             {
-                select = Instantiate(prefabs[index], transform);
+                select = Instantiate(bullet_prefabs[index], transform);
                 bullet_pools[index].Add(select);
             }
 
