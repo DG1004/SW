@@ -53,7 +53,6 @@ namespace Goldmetal.UndeadSurvivor
         {
             if (!GameManager.instance.isLive)
                 return;
-
             if (!isLive || anim.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
                 return;
             Vector2 dirVec = target.position - rigid.position;
@@ -66,10 +65,8 @@ namespace Goldmetal.UndeadSurvivor
         {
             if (!GameManager.instance.isLive)
                 return;
-
             if (!isLive)
                 return;
-
             spriter.flipX = target.position.x < rigid.position.x;
         }
 
@@ -134,7 +131,7 @@ namespace Goldmetal.UndeadSurvivor
             Debug.Log($"속도는 --> {speed}");*/
             transform.localScale = new Vector3(defence, health / 10 , 1);
             rigid.mass = defence * health * 0.1f;
-            InvokeRepeating("energr_updater", 0f, 5f);
+            InvokeRepeating("energr_updater", 0f, 5/speed);
             Debug.Log($"여기는 init {GameManager.instance.EnemyNum++}");
         }
         public void Init()
@@ -146,10 +143,10 @@ namespace Goldmetal.UndeadSurvivor
 
        
         private bool _lock=false;
-        public void energr_updater()
+        public void energr_updater() 
         {
             if (!isLive||!GameManager.instance.isLive) return;
-            energy += health * (30 / GameManager.instance.EnemyNum);//몬스터 수에 따라 유동적으로 조정하기 위해서
+            energy += speed * (GameManager.instance.EnemyNum);//몬스터 수에 따라 유동적으로 조정하기 위해서
             
             while (energy > health&&!_lock)
             {
