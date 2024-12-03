@@ -116,7 +116,7 @@ namespace Goldmetal.UndeadSurvivor
             }
         }
 
-        public void Fire()
+        public virtual void Fire()
         {
             if (!player.scanner.nearestTarget)
             {
