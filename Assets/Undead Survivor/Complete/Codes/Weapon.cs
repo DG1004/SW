@@ -13,14 +13,14 @@ namespace Goldmetal.UndeadSurvivor
         public float speed;
 
         float timer;
-        Player player;
+        protected Player player;
 
         void Awake()
         {
             player = GameManager.instance.player;
         }
 
-        void Update()
+        public virtual void Update()
         {
             if (!GameManager.instance.isLive)
                 return;
@@ -33,8 +33,11 @@ namespace Goldmetal.UndeadSurvivor
                     timer += Time.deltaTime;
 
                     if (timer > speed) {
-                        timer = 0f;
-                        Fire();
+                        if (Input.GetKey(KeyCode.Z))
+                        {
+                            timer = 0f;
+                            Fire();
+                        }
                     }
                     break;
             }
@@ -45,7 +48,7 @@ namespace Goldmetal.UndeadSurvivor
             }
         }
 
-        public void LevelUp(float damage, int count)
+        public virtual void LevelUp(float damage, int count)
         {
             this.damage = damage * Character.Damage;
             this.count += count;
@@ -56,7 +59,7 @@ namespace Goldmetal.UndeadSurvivor
             player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver);
         }
 
-        public void Init(ItemData data)
+        public virtual void Init(ItemData data)
         {
             // Basic Set
             name = "Weapon " + data.itemId;
@@ -68,8 +71,8 @@ namespace Goldmetal.UndeadSurvivor
             damage = data.baseDamage * Character.Damage;
             count = data.baseCount + Character.Count;
 
-            for (int index = 0; index < GameManager.instance.pool.prefabs.Length; index++) {
-                if (data.projectile == GameManager.instance.pool.prefabs[index]) {
+            for (int index = 0; index < GameManager.instance.pool.bullet_prefabs.Length; index++) {
+                if (data.projectile == GameManager.instance.pool.bullet_prefabs[index]) {
                     prefabId = index;
                     break;
                 }
@@ -102,7 +105,7 @@ namespace Goldmetal.UndeadSurvivor
                     bullet = transform.GetChild(index);
                 }
                 else {
-                    bullet = GameManager.instance.pool.Get(prefabId).transform;
+                    bullet = GameManager.instance.pool.Get_Bullet(prefabId).transform;
                     bullet.parent = transform;
                 }
 
@@ -116,7 +119,7 @@ namespace Goldmetal.UndeadSurvivor
             }
         }
 
-        void Fire()
+        public virtual void Fire()
         {
             if (!player.scanner.nearestTarget)
             {
@@ -128,7 +131,7 @@ namespace Goldmetal.UndeadSurvivor
             Vector3 dir = targetPos - transform.position;
             dir = dir.normalized;
 
-            Transform bullet = GameManager.instance.pool.Get(prefabId).transform;
+            Transform bullet = GameManager.instance.pool.Get_Bullet(prefabId).transform;
             bullet.position = transform.position;
             bullet.rotation = Quaternion.FromToRotation(Vector3.up, dir);
             bullet.GetComponent<Bullet>().Init(damage, count, dir);

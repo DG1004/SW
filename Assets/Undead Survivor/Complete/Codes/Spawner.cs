@@ -48,92 +48,47 @@ namespace Goldmetal.UndeadSurvivor
 
         void Spawn(int race_index)
         {
-            GameObject enemy = GameManager.instance.pool.Get(race_index);
+            GameObject enemy = GameManager.instance.pool.Get_Enemy(race_index);
             enemy.transform.position = spawnPoint[Random.Range(1, spawnPoint.Length)].position;
             // Use random spawnData for initial enemies
-            //int randomIndex = Random.Range(0, spawnData.Length);
-            switch (race_index)
+            // int randomIndex = Random.Range(0, spawnData.Length);
+            enemy.GetComponent<Enemy>().Init();
+           /* switch (race_index)
             {
                 case 0:
                     enemy.GetComponent<Enemy>().Init();//////!!!!!!!!!!!!!
+                    이거  Enemy_parent로 해도된는지 볼것
                     break;
                 case 1:
                     enemy.GetComponent<Enemy3>().Init();
                     break;
-            }
+            }*/
         }
     }
     public class SpawnData
     {
-        float formula_cst = 52;
-        public SpawnData(int race_index, double stats_health, double stats_attack, double stats_defence, double stats_speed)
+        public SpawnData(double coe_attack,double coe_defence, double coe_speed, double coe_health)
         {
-            this.formula_cst = (float)(2 * stats_health + 2);
-            //(a * 공격력 + b * 방어력 + c) * 크기 + (d * 속도) / (c * 크기) == 1
-            this.race_index = race_index;
-            this.stats_health = stats_health;
-            this.stats_attack = stats_attack / this.stats_health;
-            this.stats_defence = stats_defence / this.stats_health;
-            this.stats_speed = stats_speed * this.stats_health;
+            // 계수를 가지고 적절한 스탯을 만들어내는 함수 spawner에서 처음 몬스터 만들때 필요함
+            this.stats_attack = 0.25/coe_attack;
+            this.stats_defence = 0.25 / coe_defence;
+            this.stats_speed = 0.25 / coe_speed;
+            this.stats_health = 0.25 / coe_health;
 
-
-            this.coe_health = 1 / this.stats_health;
-            this.coe_attack = 1 / this.stats_attack;
-            this.coe_defence = 1 / this.stats_defence;
-            this.coe_speed = 1 / this.stats_speed;
         }
-
-        public SpawnData(SpawnData data)
+ 
+        public SpawnData(SpawnData data, double coe_attack, double coe_defence, double coe_speed, double coe_health)
         {
-            // 1. 기존 데이터의 계수를 복사합니다.
-            coe_attack = data.coe_attack;   // a
-            coe_defence = data.coe_defence; // b
-            coe_speed = data.coe_speed;     // d
-            coe_health = data.coe_health;   // c
-            formula_cst = data.formula_cst;
-            // 3. 공식의 A와 B를 계산합니다.
-            double a = coe_attack;
-            double b = coe_defence;
-            double c = coe_health;
-            double d = coe_speed;
-            int count = 0;
             do
             {
-                if (count++ > 0)
-                {
-                    Debug.Log("!!!!!!!!!!!!!!!!!!!번식이슈!!!!!!!!!!!!!!!!");
-                }
-
-                // 2. 스탯에 ±10%의 랜덤 변화를 가합니다.
                 stats_attack = data.stats_attack * (1 + RandomVariation());
                 stats_defence = data.stats_defence * (1 + RandomVariation());
                 stats_speed = data.stats_speed * (1 + RandomVariation());
-
-                double A = a * stats_attack + b * stats_defence + c;
-                double B = d * stats_speed / c;
-
-                // 4. 판별식 D를 계산하여 크기를 구합니다.
-                double D = formula_cst * formula_cst - 4 * A * B;
-
-                if (D < 0)
-                {
-                    // 판별식이 음수인 경우, 현실적인 해가 없으므로 예외 처리합니다.
-                    Debug.LogError("판별식이 음수입니다. 스탯 값을 확인하세요.");
-                    stats_health = 1; // 기본값 설정 또는 다른 예외 처리 방법 적용
-                }
-                else
-                {
-                    double sqrtD = Mathf.Sqrt((float)D);
-                    double size1 = (formula_cst + sqrtD) / (2 * A);
-                    double size2 = (formula_cst - sqrtD) / (2 * A);
-
-                    // 양수인 크기 중 하나를 선택합니다.
-                    stats_health = Mathf.Max((float)size1, (float)size2);
-                }
+                stats_health = (1 - coe_attack * stats_attack - coe_defence * stats_defence - coe_speed * stats_speed) / coe_health;
             } while (stats_health <= 0 || stats_attack <= 0 || stats_defence <= 0 || stats_speed <= 0);
-            // 5. race_index 등 필요한 다른 값들을 복사합니다.
-            this.race_index = data.race_index;
+
         }
+        
 
         // 랜덤 변화를 위한 메서드 (±10%)
         private double RandomVariation()
@@ -141,18 +96,72 @@ namespace Goldmetal.UndeadSurvivor
             return (UnityEngine.Random.value * 0.6) - 0.3; // -0.1부터 0.1 사이의 값
         }
 
-        public int race_index;
+        
 
         public double stats_attack;
         public double stats_defence;
         public double stats_speed;
         public double stats_health;
 
-        public double coe_attack;
-        public double coe_defence;
-        public double coe_speed;
-        public double coe_health;
+        
     }
+    /*public SpawnData()//무시할것
+    {
+        //돌연변이를 만들어내는 함수
+        돌연변이를 만들어 formula_cst이거 초기화 어떻게 할건지 결정
+
+        data
+            // 1. 기존 데이터의 계수를 복사합니다.
+            coe_attack = data.coe_attack;   // a
+        coe_defence = data.coe_defence; // b
+        coe_speed = data.coe_speed;     // d
+        coe_health = data.coe_health;   // c
+        formula_cst = data.formula_cst;
+        // 3. 공식의 A와 B를 계산합니다.
+        double a = coe_attack;
+        double b = coe_defence;
+        double c = coe_health;
+        double d = coe_speed;
+        int count = 0;
+        do
+        {
+            if (count++ > 0)
+            {
+                Debug.Log("!!!!!!!!!!!!!!!!!!!번식이슈!!!!!!!!!!!!!!!!");
+            }
+
+            // 2. 스탯에 ±10%의 랜덤 변화를 가합니다.
+            stats_attack = data.stats_attack * (1 + RandomVariation());
+            stats_defence = data.stats_defence * (1 + RandomVariation());
+            stats_speed = data.stats_speed * (1 + RandomVariation());
+
+            double A = a * stats_attack + b * stats_defence + c;
+            double B = d * stats_speed / c;
+
+            // 4. 판별식 D를 계산하여 크기를 구합니다.
+            double D = formula_cst * formula_cst - 4 * A * B;
+
+            if (D < 0)
+            {
+                // 판별식이 음수인 경우, 현실적인 해가 없으므로 예외 처리합니다.
+                Debug.LogError("판별식이 음수입니다. 스탯 값을 확인하세요.");
+                stats_health = 1; // 기본값 설정 또는 다른 예외 처리 방법 적용
+            }
+            else
+            {
+                double sqrtD = Mathf.Sqrt((float)D);
+                double size1 = (formula_cst + sqrtD) / (2 * A);
+                double size2 = (formula_cst - sqrtD) / (2 * A);
+
+                // 양수인 크기 중 하나를 선택합니다.
+                stats_health = Mathf.Max((float)size1, (float)size2);
+            }
+        } while (stats_health <= 0 || stats_attack <= 0 || stats_defence <= 0 || stats_speed <= 0);
+        // 5. race_index 등 필요한 다른 값들을 복사합니다.
+        this.race_index = data.race_index;
+    }
+*/
+
     /*
         [System.Serializable]
         public class SpawnData
