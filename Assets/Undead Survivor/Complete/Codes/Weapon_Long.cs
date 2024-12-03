@@ -5,14 +5,27 @@ using UnityEngine;
 
 public class Weapon_Long : Weapon
 {
+    float timer;
+
     public override void Update()
     {
         if (!GameManager.instance.isLive)
             return;
-
-        if (Input.GetMouseButtonDown(0))
+        /*
+        if (Input.GetKey(KeyCode.Z))
         {
             Fire();
+        }
+        */
+        timer += Time.deltaTime;
+
+        if (timer > speed)
+        {
+            if (Input.GetKey(KeyCode.Z))
+            {
+                timer = 0f;
+                Fire();
+            }
         }
     }
 

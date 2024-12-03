@@ -5,14 +5,22 @@ using UnityEngine;
 
 public class Weapon_knife : Weapon
 {
+    float timer;
+
     public override void Update()
     {
         if (!GameManager.instance.isLive)
             return;
 
-        if (Input.GetMouseButtonDown(0))
+        timer += Time.deltaTime;
+
+        if (timer > speed)
         {
-            Fire();
+            if (Input.GetKey(KeyCode.Z))
+            {
+                timer = 0f;
+                Fire();
+            }
         }
     }
 

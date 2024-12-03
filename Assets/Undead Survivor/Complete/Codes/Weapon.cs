@@ -33,8 +33,11 @@ namespace Goldmetal.UndeadSurvivor
                     timer += Time.deltaTime;
 
                     if (timer > speed) {
-                        timer = 0f;
-                        Fire();
+                        if (Input.GetKey(KeyCode.Z))
+                        {
+                            timer = 0f;
+                            Fire();
+                        }
                     }
                     break;
             }
