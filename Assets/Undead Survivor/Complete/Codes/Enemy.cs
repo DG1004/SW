@@ -131,7 +131,7 @@ namespace Goldmetal.UndeadSurvivor
             Debug.Log($"속도는 --> {speed}");*/
             transform.localScale = new Vector3(defence, health / 10 , 1);
             rigid.mass = defence * health * 0.1f;
-            InvokeRepeating("energr_updater", 0f, 5/speed);
+            InvokeRepeating("energr_updater", Random.Range(1f,5f), 5f);
             Debug.Log($"여기는 init {GameManager.instance.EnemyNum++}");
         }
         public void Init()
@@ -143,32 +143,29 @@ namespace Goldmetal.UndeadSurvivor
 
        
         private bool _lock=false;
-        public void energr_updater() 
+        void energr_updater() 
         {
             if (!isLive||!GameManager.instance.isLive) return;
-            energy += speed * (GameManager.instance.EnemyNum);//몬스터 수에 따라 유동적으로 조정하기 위해서
-            
-            while (energy > health&&!_lock)
+            energy += speed *100/ (GameManager.instance.EnemyNum);//몬스터 수에 따라 유동적으로 조정하기 위해서
+            if(!_lock) TryReproduce();
+        }
+        public void OnAttack(float damage)
+        {
+            if (!isLive) return;
+            energy += 5 * damage;
+            _lock = true;
+            TryReproduce();
+            _lock = false;
+        }
+        void TryReproduce()
+        {
+            while (energy > health)
             {
                 Vector2 dirVec = target.position - rigid.position;
                 var newPos = (Vector3)(target.position + dirVec.normalized * 20f);
                 Reproduce(newPos);
                 energy -= health;
             }
-        }
-        public void OnAttack(float damage)
-        {
-            if (!isLive) return;
-            _lock = true;
-            energy += 15 * damage;
-            while (energy > health)
-            {
-                Vector2 dirVec = target.position - rigid.position;
-                var newPos = transform.position - (Vector3)(dirVec.normalized * 1f);
-                Reproduce(newPos);
-                energy -= health;
-            }
-            _lock = false;
         }
         SpawnData MakeMutation()
         {
