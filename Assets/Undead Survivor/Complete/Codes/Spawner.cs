@@ -48,7 +48,7 @@ namespace Goldmetal.UndeadSurvivor
 
         void Spawn(int race_index)
         {
-            GameObject enemy = GameManager.instance.pool.Get(race_index);
+            GameObject enemy = GameManager.instance.pool.Get_Enemy(race_index);
             enemy.transform.position = spawnPoint[Random.Range(1, spawnPoint.Length)].position;
             // Use random spawnData for initial enemies
             // int randomIndex = Random.Range(0, spawnData.Length);

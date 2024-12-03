@@ -174,7 +174,7 @@ namespace Goldmetal.UndeadSurvivor
         void Reproduce(Vector3 newPos)
         {
             // 풀에서 새로운 적 오브젝트를 가져옵니다.
-            GameObject enemy_object = GameManager.instance.pool.Get(race_index);
+            GameObject enemy_object = GameManager.instance.pool.Get_Enemy(race_index);
             // 적의 위치를 부모 근처로 설정합니다.
             enemy_object.transform.position = newPos;
 

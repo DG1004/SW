@@ -102,7 +102,7 @@ namespace Goldmetal.UndeadSurvivor
                     bullet = transform.GetChild(index);
                 }
                 else {
-                    bullet = GameManager.instance.pool.Get(prefabId).transform;
+                    bullet = GameManager.instance.pool.Get_Enemy(prefabId).transform;
                     bullet.parent = transform;
                 }
 
@@ -128,7 +128,7 @@ namespace Goldmetal.UndeadSurvivor
             Vector3 dir = targetPos - transform.position;
             dir = dir.normalized;
 
-            Transform bullet = GameManager.instance.pool.Get(prefabId).transform;
+            Transform bullet = GameManager.instance.pool.Get_Enemy(prefabId).transform;
             bullet.position = transform.position;
             bullet.rotation = Quaternion.FromToRotation(Vector3.up, dir);
             bullet.GetComponent<Bullet>().Init(damage, count, dir);
