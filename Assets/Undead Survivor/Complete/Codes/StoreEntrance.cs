@@ -29,7 +29,7 @@ public class StoreEntrance : MonoBehaviour
 	{
 		// 상점의 위치
 		// x^2 + y^2 = distance^2
-		float distance = player.GetComponent<Player>().speed * Time.fixedDeltaTime * 200;
+		float distance = player.GetComponent<Player>().speed * Time.fixedDeltaTime * 2000;	// 2000일 때 약 1분
 		// x^2 < distance^2   ,   x < distance
 		float pos_x = Random.Range(0, distance);
 		// y^2 = distance^2 - x^2   ,   y = root(distance^2 - x^2)

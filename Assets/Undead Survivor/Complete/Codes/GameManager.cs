@@ -81,7 +81,6 @@ namespace Goldmetal.UndeadSurvivor
             player.gameObject.SetActive(true);
             // 상점 오브젝트를 활성화하여 게임에 등장시키고, 위치를 지정합니다.
             store.gameObject.SetActive(true);
-            store.changePosition();
             // 화살표 오브젝트를 활성화하여 게임에 등장시킵니다.
             arrow.gameObject.SetActive(true);
             // 상점 UI에서 플레이어 ID에 따른 선택을 설정합니다.
