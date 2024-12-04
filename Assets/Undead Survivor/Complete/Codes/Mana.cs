@@ -22,13 +22,13 @@ using UnityEngine;
 }*/
 public class Mana : MonoBehaviour
 {
-    // 코인 1개의 값어치
+    // 마나 1개의 값어치
     public int value;
     private bool isLive;
     private bool isFollow;
     private Transform target;
 
-    private float speed = 5f; // 코인 이동 속도
+    private float speed = 5f; // 마나 이동 속도
 
     void OnEnable()
     {
