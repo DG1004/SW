@@ -21,6 +21,7 @@ namespace Goldmetal.UndeadSurvivor
 
 		SpriteRenderer spriter;
 		Animator anim;
+		int a;
 
 		void Awake()
 		{
