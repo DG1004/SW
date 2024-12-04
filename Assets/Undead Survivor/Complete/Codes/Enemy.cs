@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Net;
 using UnityEngine;
 
-
-
 namespace Goldmetal.UndeadSurvivor
 {
 
