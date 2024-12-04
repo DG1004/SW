@@ -11,7 +11,7 @@ namespace Goldmetal.UndeadSurvivor
 
     public class EnemyRanged1 : Enemy
     {
-        float time = 0;
+        //float time = 0; 안쓰인다는 오류 있음
         public float fireRate = 10f;        // 발사 간격 (초 단위)
         private float nextFireTime = 0f;   // 다음 발사 시간
         protected override void FixedUpdate()

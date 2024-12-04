@@ -61,13 +61,13 @@ public class Weapon_Long_slow : Weapon
         hand.spriter.sprite = data.hand;
         hand.gameObject.SetActive(true);
 
-        Debug.Log("NewGun");
+        Debug.Log("NewArrow");
     }
     public override void LevelUp(float damage, int count)
     {
         this.damage = damage * Character.Damage;
         this.count += count;
 
-        Debug.Log("New Gun");
+        Debug.Log("New Arrow");
     }
 }

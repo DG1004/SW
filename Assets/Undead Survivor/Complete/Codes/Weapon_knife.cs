@@ -47,7 +47,7 @@ public class Weapon_knife : Weapon
             }
         }
 
-        speed = 0.5f * Character.WeaponRate;
+        speed = 0.3f * Character.WeaponRate;
 
         // Hand Set
         Hand hand = player.hands[(int)data.itemType];

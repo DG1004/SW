@@ -10,7 +10,7 @@ namespace Goldmetal.UndeadSurvivor
         public Image cooldownImage;  
         public float cooldownTime = 5f;  // 쿨다운 시간 설정 (초 단위)
         private bool isCooldown = false;
-        private bool isPaused = false;
+       
 
         private void Start()
         {
