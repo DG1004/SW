@@ -29,6 +29,7 @@ public class EnemyBullet : MonoBehaviour
     /// <param name="damage">총알이 입히는 피해량</param>
     public void Init(Enemy master, float speed, float lifetime, float damage)
     {
+        rb = GetComponent<Rigidbody2D>();
         this.master = master;
         this.speed = speed;
         this.lifetime = lifetime;
