@@ -23,7 +23,8 @@ namespace Goldmetal.UndeadSurvivor
         public GameObject PrePos;
         public StoreEntrance store;
 
-		private bool isdash = false;
+		private bool isDash = false;
+		float dashCool;
 		public float dashSpeed;
 		public float defaultTime;
 		private float dashTime;
@@ -59,19 +60,19 @@ namespace Goldmetal.UndeadSurvivor
 
 		void FixedUpdate()
 		{
-			if (!GameManager.instance.isLive)
+			if (!GameManager.instance.isLive || isDash)
 				return;
 
 			Vector2 nextVec = inputVec.normalized * speed * Time.fixedDeltaTime;
 			rigid.MovePosition(rigid.position + nextVec);
-
+			/*
 			if (Input.GetKey(GameManager.instance.dashKey)) {
-				isdash = true;
+				isDash = true;
 			}
 			if (dashTime <= 0)
 			{
 				speed = defaultSpeed;
-				if (isdash)
+				if (isDash)
 				{
 					dashTime = defaultTime;
 				}
@@ -82,8 +83,17 @@ namespace Goldmetal.UndeadSurvivor
 				speed = dashSpeed;
 
 			}
-			isdash = false;
-
+			isDash = false;
+			*/
+			dashCool -= Time.fixedDeltaTime;
+			if (Input.GetKeyDown(GameManager.instance.dashKey))
+			{
+				if (dashCool <= 0)
+				{
+					dashCool = 5;
+					Dash(nextVec);
+				}
+			}
 
 		}
 
@@ -210,7 +220,13 @@ namespace Goldmetal.UndeadSurvivor
 			inputVec = value.Get<Vector2>();
 		}
 
-		IEnumerator wait()
+		void Dash(Vector2 nextVec)
+		{
+			nextVec = inputVec.normalized * speed * 20 * Time.fixedDeltaTime;
+            rigid.MovePosition(rigid.position + nextVec);
+        }
+
+        IEnumerator wait()
 		{
 			yield return new WaitForSecondsRealtime(10);
 		}
