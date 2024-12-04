@@ -15,6 +15,7 @@ TagManager:
   - StoreSmith
   - Coin
   - Mana
+  - EnemyBullet
   layers:
   - Default
   - TransparentFX
