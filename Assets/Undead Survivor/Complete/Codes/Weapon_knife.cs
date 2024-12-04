@@ -83,5 +83,13 @@ public class Weapon_knife : Weapon
         //.Init(damage, count, dir);
 
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Range);
+
+        // 코루틴 시작: 일정 시간 후 bullet 비활성화
+        StartCoroutine(DeactivateBullet(bullet.gameObject, 0.5f)); // 0.5초 후 비활성화
+    }
+    private IEnumerator DeactivateBullet(GameObject bullet, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        bullet.SetActive(false); // Bullet을 비활성화
     }
 }
