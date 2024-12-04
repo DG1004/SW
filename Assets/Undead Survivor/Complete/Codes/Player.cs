@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
 using static UnityEditor.Progress;
+using UnityEditor;
 
 namespace Goldmetal.UndeadSurvivor
 {
@@ -23,13 +24,16 @@ namespace Goldmetal.UndeadSurvivor
         public GameObject PrePos;
         public StoreEntrance store;
 
-		private bool isdash = false;
+		public int[] usingWeaponIdx = new int[2];// 사용하는 무기의 인덱스
+		public int curWeapon;
+
+        private bool isdash = false;
 		public float dashSpeed;
 		public float defaultTime;
 		private float dashTime;
 		private float defaultSpeed;
 
-		SpriteRenderer spriter;
+        SpriteRenderer spriter;
 		Animator anim;
 
 		void Awake()
@@ -40,6 +44,9 @@ namespace Goldmetal.UndeadSurvivor
 			scanner = GetComponent<Scanner>();
 			hands = GetComponentsInChildren<Hand>(true);
 			defaultSpeed = speed;
+			usingWeaponIdx[0] = -1;
+            usingWeaponIdx[1] = -1; 
+			curWeapon = -1;        // 사용중인 무기 인덱스를 -1로 초기화
         }
 
 		void OnEnable()
@@ -55,6 +62,12 @@ namespace Goldmetal.UndeadSurvivor
 
 			inputVec.x = Input.GetAxisRaw("Horizontal");
 			inputVec.y = Input.GetAxisRaw("Vertical");
+
+			if(Input.GetKeyDown(GameManager.instance.weaponChangeKey))
+			{
+				if (curWeapon == -1 || (usingWeaponIdx[0] == -1 || usingWeaponIdx[1] == -1)) return;
+				GameManager.instance.SwapWeapon(usingWeaponIdx[curWeapon]);
+			}
 		}
 
 		void FixedUpdate()

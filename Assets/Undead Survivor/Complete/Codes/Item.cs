@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Purchasing;
 using UnityEngine.UI;
 
 namespace Goldmetal.UndeadSurvivor
@@ -165,6 +166,30 @@ namespace Goldmetal.UndeadSurvivor
                     case ItemData.ItemType.Heal:
                         GameManager.instance.health = GameManager.instance.maxHealth;
                         break;
+                }
+
+                if (GameManager.instance.player.curWeapon == -1) // 현재 무기가 없었다.
+                {
+                    GameManager.instance.player.curWeapon = 0;
+                    GameManager.instance.player.usingWeaponIdx[0] = data.itemId;
+                }
+                else if (GameManager.instance.player.usingWeaponIdx[1] == -1) // 현재 무기가 1개
+                {
+                    GameManager.instance.player.usingWeaponIdx[1] = data.itemId;
+                    GameManager.instance.SwapWeapon(GameManager.instance.player.usingWeaponIdx[GameManager.instance.player.curWeapon]); // 현재 무기의 id
+                }
+                else // 무기가 2개 있다.
+                {
+                    // 현재 들고있는 무기들 중 하나를 구매
+                    if (GameManager.instance.player.usingWeaponIdx[0] == data.itemId || GameManager.instance.player.usingWeaponIdx[1] == data.itemId) 
+                    {
+                        GameManager.instance.SwapWeapon(GameManager.instance.player.usingWeaponIdx[GameManager.instance.player.curWeapon]);
+                    }
+                    else // 새로운 무기 구매
+                    {
+                        GameManager.instance.RemoveWeapon(GameManager.instance.player.usingWeaponIdx[GameManager.instance.player.curWeapon]);
+                        GameManager.instance.player.usingWeaponIdx[GameManager.instance.player.curWeapon] = data.itemId;
+                    }
                 }
 
                 if (level == data.damages.Length)
