@@ -23,6 +23,12 @@ namespace Goldmetal.UndeadSurvivor
         public GameObject PrePos;
         public StoreEntrance store;
 
+		private bool isdash = false;
+		public float dashSpeed;
+		public float defaultTime;
+		private float dashTime;
+		private float defaultSpeed;
+
 		SpriteRenderer spriter;
 		Animator anim;
 
@@ -33,7 +39,7 @@ namespace Goldmetal.UndeadSurvivor
 			anim = GetComponent<Animator>();
 			scanner = GetComponent<Scanner>();
 			hands = GetComponentsInChildren<Hand>(true);
-           
+			defaultSpeed = speed;
         }
 
 		void OnEnable()
@@ -58,6 +64,27 @@ namespace Goldmetal.UndeadSurvivor
 
 			Vector2 nextVec = inputVec.normalized * speed * Time.fixedDeltaTime;
 			rigid.MovePosition(rigid.position + nextVec);
+
+			if (Input.GetKey(GameManager.instance.dashKey)) {
+				isdash = true;
+			}
+			if (dashTime <= 0)
+			{
+				speed = defaultSpeed;
+				if (isdash)
+				{
+					dashTime = defaultTime;
+				}
+			}
+			else 
+			{
+				dashTime -= Time.deltaTime;
+				speed = dashSpeed;
+
+			}
+			isdash = false;
+
+
 		}
 
 		void LateUpdate()
