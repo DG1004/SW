@@ -58,6 +58,7 @@ namespace Goldmetal.UndeadSurvivor
         public TMSHOP tmShop;  // Inspector에서 반드시 할당해야 함
         public StoreEntrance store;
         public Arrow arrow;
+        public ManaManager ManaManager; 
 
         // Awake는 스크립트가 처음 로드될 때 호출되는 함수입니다.
         void Awake()

@@ -14,6 +14,7 @@ TagManager:
   - StoreStd
   - StoreSmith
   - Coin
+  - Mana
   layers:
   - Default
   - TransparentFX
