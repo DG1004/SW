@@ -97,7 +97,7 @@ namespace Goldmetal.UndeadSurvivor
         {
             if (isLive)
             {
-                master.OnAttack(damageAmount);
+                master.OnAttack(damageAmount*0.1f);
                 DestroyBullet();
             }
         }

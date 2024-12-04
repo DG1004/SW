@@ -21,7 +21,7 @@ namespace Goldmetal.UndeadSurvivor
             if (!isLive || anim.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
                 return;
             float distanceToPlayer = Vector2.Distance(target.position, rigid.position);
-            if (distanceToPlayer > 10f)
+            if (distanceToPlayer > 7f)
             {
                 Vector2 dirVec = target.position - rigid.position;
                 Vector2 nextVec = dirVec.normalized * speed * Time.fixedDeltaTime;
@@ -37,13 +37,13 @@ namespace Goldmetal.UndeadSurvivor
         void Shoot()
         {
             Debug.Log("몬스터 총알 생성");
-            GameObject bullet = GameManager.instance.pool.Get_Enemy(3);
+            GameObject bullet = GameManager.instance.pool.Get_Enemy(4);///
             bullet.transform.position = transform.position;
-            bullet.GetComponent<EnemyBullet>().Init(this, 9, 7, 0.3f);
+            bullet.GetComponent<EnemyBullet>().Init(this, 9, 7, 1f);
         }
         protected override void race_init()//오버라이딩 초기 스탯결정
         {
-            this.race_index = 2;
+            this.race_index = 3;////
             this.coe_attack = 2.5;
             this.coe_defence = 0.25;
             this.coe_health = 0.025;
