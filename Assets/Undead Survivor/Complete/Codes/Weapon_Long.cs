@@ -21,7 +21,7 @@ public class Weapon_Long : Weapon
 
         if (timer > speed)
         {
-            if (Input.GetKey(KeyCode.Z) && ManaManager.playerManas >= 10)
+            if (Input.GetKey(GameManager.instance.fireKey) && ManaManager.playerManas >= 10)
             {
                 timer = 0f;
                 Fire();
