@@ -29,7 +29,11 @@ namespace Goldmetal.UndeadSurvivor
 		private float dashTime;
 		private float defaultSpeed;
 
-		SpriteRenderer spriter;
+        private bool canDash = true; // 대쉬 가능 여부를 나타내는 변수
+        private float dashCooldown = 10f; // 대쉬 쿨타임(20초)
+        private float cooldownTimer = 0f; // 쿨타임을 추적하는 타이머
+
+        SpriteRenderer spriter;
 		Animator anim;
 
 		void Awake()
@@ -57,37 +61,52 @@ namespace Goldmetal.UndeadSurvivor
 			inputVec.y = Input.GetAxisRaw("Vertical");
 		}
 
-		void FixedUpdate()
-		{
-			if (!GameManager.instance.isLive)
-				return;
+        void FixedUpdate()
+        {
+            if (!GameManager.instance.isLive)
+                return;
 
-			Vector2 nextVec = inputVec.normalized * speed * Time.fixedDeltaTime;
-			rigid.MovePosition(rigid.position + nextVec);
+            // 플레이어 이동 처리
+            Vector2 nextVec = inputVec.normalized * speed * Time.fixedDeltaTime;
+            rigid.MovePosition(rigid.position + nextVec);
 
-			if (Input.GetKey(GameManager.instance.dashKey)) {
-				isdash = true;
-			}
-			if (dashTime <= 0)
-			{
-				speed = defaultSpeed;
-				if (isdash)
-				{
-					dashTime = defaultTime;
-				}
-			}
-			else 
-			{
-				dashTime -= Time.deltaTime;
-				speed = dashSpeed;
+            // 대쉬 처리
+            if (Input.GetKey(GameManager.instance.dashKey) && canDash)
+            {
+                isdash = true;
+                canDash = false; // 대쉬 비활성화
+                cooldownTimer = dashCooldown; // 쿨타임 초기화
+            }
 
-			}
-			isdash = false;
+            if (dashTime <= 0)
+            {
+                speed = defaultSpeed;
+                if (isdash)
+                {
+                    dashTime = defaultTime;
+                }
+            }
+            else
+            {
+                dashTime -= Time.deltaTime;
+                speed = dashSpeed;
+            }
+
+            // 쿨타임 처리
+            if (!canDash)
+            {
+                cooldownTimer -= Time.deltaTime;
+                if (cooldownTimer <= 0)
+                {
+                    canDash = true; // 대쉬 재활성화
+                }
+            }
+
+            isdash = false;
+        }
 
 
-		}
-
-		void LateUpdate()
+        void LateUpdate()
 		{
 			if (!GameManager.instance.isLive)
 				return;
