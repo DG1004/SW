@@ -32,7 +32,7 @@ namespace Goldmetal.UndeadSurvivor
         private bool canDash = true; // 대쉬 가능 여부를 나타내는 변수
         private float dashCooldown = 10f; // 대쉬 쿨타임(20초)
         private float cooldownTimer = 0f; // 쿨타임을 추적하는 타이머
-
+        public Vector2 예측샷용플레이어속도;
         SpriteRenderer spriter;
 		Animator anim;
 
@@ -68,6 +68,7 @@ namespace Goldmetal.UndeadSurvivor
 
             // 플레이어 이동 처리
             Vector2 nextVec = inputVec.normalized * speed * Time.fixedDeltaTime;
+            예측샷용플레이어속도 = inputVec.normalized * speed;
             rigid.MovePosition(rigid.position + nextVec);
 
             // 대쉬 처리

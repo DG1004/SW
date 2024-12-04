@@ -39,7 +39,7 @@ namespace Goldmetal.UndeadSurvivor
             Debug.Log("몬스터 총알 생성");
             GameObject bullet = GameManager.instance.pool.Get_Enemy(3);
             bullet.transform.position = transform.position;
-            bullet.GetComponent<EnemyBullet>().Init(this, 9, 7, 1);
+            bullet.GetComponent<EnemyBullet>().Init(this, 9, 7, 0.3f);
         }
         protected override void race_init()//오버라이딩 초기 스탯결정
         {

@@ -6,6 +6,44 @@ namespace Goldmetal.UndeadSurvivor
 {
     public class EnemyBullet : MonoBehaviour
     {
+        public static Vector2 CalculateAimDirection(Vector2 cannonPosition, Vector2 targetPosition, Vector2 targetVelocity, float bulletSpeed)
+        {
+            Vector2 p = targetPosition - cannonPosition;
+            float a = Vector2.Dot(targetVelocity, targetVelocity) - bulletSpeed * bulletSpeed;
+            float b = 2 * Vector2.Dot(p, targetVelocity);
+            float c = Vector2.Dot(p, p);
+
+            float discriminant = b * b - 4 * a * c;
+
+            if (discriminant < 0)
+            {
+                // 실수가 아닌 해, 타겟을 맞출 수 없는 경우
+                // 단순히 현재 방향으로 발사
+                return p.normalized;
+            }
+
+            float sqrtDiscriminant = Mathf.Sqrt(discriminant);
+
+            float t1 = (-b + sqrtDiscriminant) / (2 * a);
+            float t2 = (-b - sqrtDiscriminant) / (2 * a);
+
+            float t = Mathf.Min(t1, t2);
+            if (t < 0)
+            {
+                t = Mathf.Max(t1, t2);
+            }
+
+            if (t < 0)
+            {
+                // 여전히 음수인 경우, 타겟을 맞출 수 없는 상황
+                return p.normalized;
+            }
+
+            Vector2 aimPoint = targetPosition + targetVelocity * t;
+            Vector2 aimDirection = aimPoint - cannonPosition;
+
+            return aimDirection.normalized;
+        }
         [Header("Bullet Settings")]
         public float speed = 10f;          // 총알 속도
         public float damage = 10;            // 총알이 입히는 피해량
@@ -41,7 +79,8 @@ namespace Goldmetal.UndeadSurvivor
             isLive = true;
 
             // 플레이어의 현재 위치를 향해 총알의 방향 설정
-            Vector2 direction = (GameManager.instance.player.transform.position - transform.position).normalized;
+            var target = GameManager.instance.player;
+            Vector2 direction = CalculateAimDirection(transform.position, target.transform.position, target.예측샷용플레이어속도, speed); //(GameManager.instance.player.transform.position - transform.position).normalized;
             rb.velocity = direction * speed;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
