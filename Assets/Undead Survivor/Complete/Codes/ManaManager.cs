@@ -6,17 +6,23 @@ using UnityEngine;
 public class ManaManager : MonoBehaviour
 {
     // 플레이어의 현재 코인 수
-    public static int playerManas = 200000;
+    public static int playerManas = 100;
+    public static int maxManas = 100;
+
     public GameObject manaPrefab;
 
     private void Update()
     {
         // 테스트용. v키로 코인 드랍
-        if (Input.GetKey(KeyCode.V))
+        if (Input.GetKey(KeyCode.C))
         {
             Vector2 pos = GameManager.instance.player.transform.position;
             pos.y += 5.0f;
             DropManas(pos);
+        }
+        if (playerManas < maxManas)
+        {
+            playerManas = Mathf.Clamp(playerManas, 0, maxManas);
         }
     }
 

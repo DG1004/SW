@@ -15,7 +15,7 @@ namespace Goldmetal.UndeadSurvivor
 
         void FixedUpdate()
         {
-            rect.position = Camera.main.WorldToScreenPoint(GameManager.instance.player.transform.position);
+            rect.position = Camera.main.WorldToScreenPoint(GameManager.instance.player.transform.position) + new Vector3(0,10,0);
         }
     }
 }
