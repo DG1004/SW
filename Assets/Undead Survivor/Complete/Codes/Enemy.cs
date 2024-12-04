@@ -72,6 +72,7 @@ namespace Goldmetal.UndeadSurvivor
 
         void OnEnable()
         {
+ 
             target = GameManager.instance.player.GetComponent<Rigidbody2D>();
             isLive = true;
             coll.enabled = true;
