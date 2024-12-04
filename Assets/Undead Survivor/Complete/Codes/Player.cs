@@ -27,8 +27,7 @@ namespace Goldmetal.UndeadSurvivor
 
 		SpriteRenderer spriter;
 		Animator anim;
-		int a;
-
+		
 		void Awake()
 		{
 			rigid = GetComponent<Rigidbody2D>();
@@ -109,7 +108,7 @@ namespace Goldmetal.UndeadSurvivor
 				// 게임 진행 상태를 false로 설정합니다.
 				GameManager.instance.isLive = false;
 				// 플레이어의 기존 위치를 기억합니다.
-				
+				int a;
 				store.gameObject.SetActive(false);
 			}
             // 플레이어가 상점 출구에 충돌했을 때
