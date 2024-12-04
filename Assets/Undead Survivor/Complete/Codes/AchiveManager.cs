@@ -44,8 +44,8 @@ namespace Goldmetal.UndeadSurvivor
             for (int index = 0; index < lockCharacter.Length; index++) {
                 string achiveName = achives[index].ToString();
                 bool isUnlock = PlayerPrefs.GetInt(achiveName) == 1;
-                lockCharacter[index].SetActive(!isUnlock);
-                unlockCharacter[index].SetActive(isUnlock);
+                //lockCharacter[index].SetActive(!isUnlock);
+                //unlockCharacter[index].SetActive(isUnlock);
             }
         }
 

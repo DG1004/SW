@@ -33,7 +33,7 @@ namespace Goldmetal.UndeadSurvivor
                     timer += Time.deltaTime;
 
                     if (timer > speed) {
-                        if (Input.GetKey(KeyCode.Z))
+                        if (Input.GetKey(GameManager.instance.fireKey))
                         {
                             timer = 0f;
                             Fire();
@@ -135,7 +135,7 @@ namespace Goldmetal.UndeadSurvivor
             bullet.position = transform.position;
             bullet.rotation = Quaternion.FromToRotation(Vector3.up, dir);
             bullet.GetComponent<Bullet>().Init(damage, count, dir);
-
+            ManaManager.playerManas -= 10;
             AudioManager.instance.PlaySfx(AudioManager.Sfx.Range);
         }
     }

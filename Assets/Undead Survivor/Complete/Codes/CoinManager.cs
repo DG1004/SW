@@ -21,7 +21,7 @@ public class CoinManager : MonoBehaviour
     }
 
     // 코인을 드랍하는 함수
-    // 몬스터가 죽을 때, 이 함수를 호출해서 사용하시면 되요.
+    // 몬스터가 죽을 때, 이 함수를 호출해서 사용하시면 돼요.
     public void DropCoins(Vector2 dropPosition)
     {
         // 코인 인스턴스 생성

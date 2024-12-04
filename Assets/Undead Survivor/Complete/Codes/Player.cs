@@ -146,7 +146,23 @@ namespace Goldmetal.UndeadSurvivor
                 }
             }
 		}
-
+		public void OnBeat(EnemyBullet offender,float damage)
+		{
+            GameManager.instance.health -= damage;
+            if (GameManager.instance.health < 0)
+            {
+                for (int index = 2; index < transform.childCount; index++)
+                {
+                    transform.GetChild(index).gameObject.SetActive(false);
+                }
+                anim.SetTrigger("Dead");
+                GameManager.instance.GameOver();
+            }
+            else
+            {
+                offender.OnAttack(damage);
+            }
+        }
 		void OnMove(InputValue value)
 		{
 			inputVec = value.Get<Vector2>();

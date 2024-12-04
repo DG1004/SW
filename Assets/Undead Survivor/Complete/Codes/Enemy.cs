@@ -24,10 +24,10 @@ namespace Goldmetal.UndeadSurvivor
         //몬스터의 실제스탯들
         public float attack;
         float defence;
-        float speed;
+        protected float speed;
         float health;
 
-        bool isLive;
+        protected bool isLive;
 
         //public float maxHealth;
         public RuntimeAnimatorController[] animCon;
@@ -49,7 +49,7 @@ namespace Goldmetal.UndeadSurvivor
             wait = new WaitForFixedUpdate();
         }
 
-        void FixedUpdate()
+        protected virtual void FixedUpdate()
         {
             if (!GameManager.instance.isLive)
                 return;
@@ -72,6 +72,7 @@ namespace Goldmetal.UndeadSurvivor
 
         void OnEnable()
         {
+ 
             target = GameManager.instance.player.GetComponent<Rigidbody2D>();
             isLive = true;
             coll.enabled = true;
@@ -97,6 +98,7 @@ namespace Goldmetal.UndeadSurvivor
             {
                 Debug.Log($"여기는 OnTriggerEnter2D {GameManager.instance.EnemyNum--}");
                 GameManager.instance.CoinManager.DropCoins(transform.position);
+                GameManager.instance.ManaManager.DropManas(transform.position);
                 CancelInvoke("energr_updater");
                 isLive = false;
                 coll.enabled = false;
