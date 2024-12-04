@@ -55,6 +55,10 @@ namespace Goldmetal.UndeadSurvivor
         }
         public GameObject Get_Enemy(int index)
         {
+            if (index == 4)
+            {
+                Debug.Log("sdfsdfsdfsdf");
+            }
             GameObject select = null;
 
             // 리스트를 정리하여 null 객체 제거
