@@ -181,6 +181,7 @@ namespace Goldmetal.UndeadSurvivor
                     }
                     anim.SetTrigger("Dead");
                     GameManager.instance.GameOver();
+					CoinManager.playerCoins = 1500;
                 }
                 else
                 {
