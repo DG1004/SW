@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
 using static UnityEditor.Progress;
-using UnityEditor;
 
 namespace Goldmetal.UndeadSurvivor
 {
@@ -24,15 +23,16 @@ namespace Goldmetal.UndeadSurvivor
         public GameObject PrePos;
         public StoreEntrance store;
 
-		public int[] usingWeaponIdx = new int[2];// 사용하는 무기의 인덱스
-		public int curWeapon;
-
-        private bool isdash = false;
+		private bool isdash = false;
 		public float dashSpeed;
 		public float defaultTime;
 		private float dashTime;
 		private float defaultSpeed;
 
+        private bool canDash = true; // 대쉬 가능 여부를 나타내는 변수
+        private float dashCooldown = 10f; // 대쉬 쿨타임(20초)
+        private float cooldownTimer = 0f; // 쿨타임을 추적하는 타이머
+        public Vector2 예측샷용플레이어속도;
         SpriteRenderer spriter;
 		Animator anim;
 
@@ -44,9 +44,6 @@ namespace Goldmetal.UndeadSurvivor
 			scanner = GetComponent<Scanner>();
 			hands = GetComponentsInChildren<Hand>(true);
 			defaultSpeed = speed;
-			usingWeaponIdx[0] = -1;
-            usingWeaponIdx[1] = -1; 
-			curWeapon = -1;        // 사용중인 무기 인덱스를 -1로 초기화
         }
 
 		void OnEnable()
@@ -62,45 +59,55 @@ namespace Goldmetal.UndeadSurvivor
 
 			inputVec.x = Input.GetAxisRaw("Horizontal");
 			inputVec.y = Input.GetAxisRaw("Vertical");
-
-			if(Input.GetKeyDown(GameManager.instance.weaponChangeKey))
-			{
-				if (curWeapon == -1 || (usingWeaponIdx[0] == -1 || usingWeaponIdx[1] == -1)) return;
-				GameManager.instance.SwapWeapon(usingWeaponIdx[curWeapon]);
-			}
 		}
 
-		void FixedUpdate()
-		{
-			if (!GameManager.instance.isLive)
-				return;
+        void FixedUpdate()
+        {
+            if (!GameManager.instance.isLive)
+                return;
 
-			Vector2 nextVec = inputVec.normalized * speed * Time.fixedDeltaTime;
-			rigid.MovePosition(rigid.position + nextVec);
+            // 플레이어 이동 처리
+            Vector2 nextVec = inputVec.normalized * speed * Time.fixedDeltaTime;
+            예측샷용플레이어속도 = inputVec.normalized * speed;
+            rigid.MovePosition(rigid.position + nextVec);
 
-			if (Input.GetKey(GameManager.instance.dashKey)) {
-				isdash = true;
-			}
-			if (dashTime <= 0)
-			{
-				speed = defaultSpeed;
-				if (isdash)
-				{
-					dashTime = defaultTime;
-				}
-			}
-			else 
-			{
-				dashTime -= Time.deltaTime;
-				speed = dashSpeed;
+            // 대쉬 처리
+            if (Input.GetKey(GameManager.instance.dashKey) && canDash)
+            {
+                isdash = true;
+                canDash = false; // 대쉬 비활성화
+                cooldownTimer = dashCooldown; // 쿨타임 초기화
+            }
 
-			}
-			isdash = false;
+            if (dashTime <= 0)
+            {
+                speed = defaultSpeed;
+                if (isdash)
+                {
+                    dashTime = defaultTime;
+                }
+            }
+            else
+            {
+                dashTime -= Time.deltaTime;
+                speed = dashSpeed;
+            }
+
+            // 쿨타임 처리
+            if (!canDash)
+            {
+                cooldownTimer -= Time.deltaTime;
+                if (cooldownTimer <= 0)
+                {
+                    canDash = true; // 대쉬 재활성화
+                }
+            }
+
+            isdash = false;
+        }
 
 
-		}
-
-		void LateUpdate()
+        void LateUpdate()
 		{
 			if (!GameManager.instance.isLive)
 				return;

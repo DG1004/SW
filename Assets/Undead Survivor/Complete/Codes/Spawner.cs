@@ -31,13 +31,6 @@ namespace Goldmetal.UndeadSurvivor
 
             for (int i = 0; i < initialEnemyCount; i++)
             {
-                Spawn(0); // 적 스폰
-
-                // spawnInterval 만큼 대기
-                yield return new WaitForSeconds(0.1f);
-            }
-            for (int i = 0; i < initialEnemyCount; i++)
-            {
                 Spawn(1); // 적 스폰
 
                 // spawnInterval 만큼 대기
@@ -46,6 +39,13 @@ namespace Goldmetal.UndeadSurvivor
             for (int i = 0; i < initialEnemyCount; i++)
             {
                 Spawn(2); // 적 스폰
+
+                // spawnInterval 만큼 대기
+                yield return new WaitForSeconds(0.1f);
+            }
+            for (int i = 0; i < initialEnemyCount; i++)
+            {
+                Spawn(3); // 적 스폰
 
                 // spawnInterval 만큼 대기
                 yield return new WaitForSeconds(0.1f);
