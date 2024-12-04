@@ -158,6 +158,25 @@ namespace Goldmetal.UndeadSurvivor
             ManaManager.playerManas -= 1;
             AudioManager.instance.PlaySfx(AudioManager.Sfx.Range);
         }
+        public virtual void FireMeteor()
+        {
+            if (!player.scanner.nearestTarget)
+            {
+                Debug.Log("noTarget");
+                return;
+            }
+
+            Vector3 targetPos = player.scanner.nearestTarget.position;
+            Vector3 dir = targetPos - transform.position;
+            dir = dir.normalized;
+
+            Transform bullet = GameManager.instance.pool.Get_Bullet(prefabId).transform;
+            bullet.position = transform.position;
+            bullet.rotation = Quaternion.FromToRotation(Vector3.up, dir);
+            bullet.GetComponent<Bullet>().Init(damage, count, dir);
+            ManaManager.playerManas -= 100;
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.Range);
+        }
         public void SwapWeapon(int curId)
         {
             GameManager.instance.player.hands[GameManager.instance.player.usingWeaponIdx[GameManager.instance.player.curWeapon]].gameObject.SetActive(false);
