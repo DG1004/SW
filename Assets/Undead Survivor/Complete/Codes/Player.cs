@@ -23,6 +23,9 @@ namespace Goldmetal.UndeadSurvivor
         public GameObject PrePos;
         public StoreEntrance store;
 
+        public int[] usingWeaponIdx = new int[2];
+        public int curWeapon;
+
 		private bool isdash = false;
 		public float dashSpeed;
 		public float defaultTime;
@@ -44,6 +47,9 @@ namespace Goldmetal.UndeadSurvivor
 			scanner = GetComponent<Scanner>();
 			hands = GetComponentsInChildren<Hand>(true);
 			defaultSpeed = speed;
+            usingWeaponIdx[0] = -1;
+            usingWeaponIdx[1] = -1;
+            curWeapon = -1;
         }
 
 		void OnEnable()
@@ -59,6 +65,14 @@ namespace Goldmetal.UndeadSurvivor
 
 			inputVec.x = Input.GetAxisRaw("Horizontal");
 			inputVec.y = Input.GetAxisRaw("Vertical");
+
+            if(Input.GetKeyDown(GameManager.instance.weaponChangeKey))
+            {
+                if(curWeapon != -1 || usingWeaponIdx[0] != -1 || usingWeaponIdx[1]!=-1)
+                {
+                    GameManager.instance.SwapWeapon(usingWeaponIdx[curWeapon]);
+                }
+            }
 		}
 
         void FixedUpdate()
