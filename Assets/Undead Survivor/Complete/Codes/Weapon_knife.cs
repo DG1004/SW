@@ -16,7 +16,7 @@ public class Weapon_knife : Weapon
 
         if (timer > speed)
         {
-            if (Input.GetKey(KeyCode.Z) )
+            if (Input.GetKey(GameManager.instance.fireKey) )
                         {
                             timer = 0f;
                             Fire();

@@ -35,6 +35,11 @@ namespace Goldmetal.UndeadSurvivor
         public int kill;
         // 플레이어가 획득한 코인의 수를 기록합니다.
         public int Coin;
+        // 키 지정
+        public KeyCode fireKey = KeyCode.Z;
+        public KeyCode weaponChangeKey = KeyCode.X;
+        public KeyCode skillKey = KeyCode.C;
+        public KeyCode dashKey = KeyCode.Space;
         // 삭제 예정
         public int level;
         public int exp;
