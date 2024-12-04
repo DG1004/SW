@@ -57,8 +57,8 @@ public class Mana : MonoBehaviour
     {
         if (!isLive)
             return;
-
-        ManaManager.playerManas += value;
+        if (ManaManager.playerManas < 100)
+            ManaManager.playerManas += value;
         isLive = false;
         gameObject.SetActive(false); // 비활성화
         Destroy(gameObject, 0.1f);   // 딜레이 후 오브젝트 제거

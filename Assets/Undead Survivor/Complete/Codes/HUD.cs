@@ -7,7 +7,7 @@ namespace Goldmetal.UndeadSurvivor
 {
     public class HUD : MonoBehaviour
     {
-        public enum InfoType { Coin, Kill, Time, Health }
+        public enum InfoType { Coin, Kill, Time, Health , Mana}
         public InfoType type;
 
         Text myText;
@@ -38,6 +38,11 @@ namespace Goldmetal.UndeadSurvivor
                     float curHealth = GameManager.instance.health;
                     float maxHealth = GameManager.instance.maxHealth;
                     mySlider.value = curHealth / maxHealth;
+                    break;
+                case InfoType.Mana:
+                    float curMana = ManaManager.playerManas;
+                    float maxMana = ManaManager.maxManas;
+                    mySlider.value = curMana / maxMana;
                     break;
             }
         }

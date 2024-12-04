@@ -135,7 +135,7 @@ namespace Goldmetal.UndeadSurvivor
             bullet.position = transform.position;
             bullet.rotation = Quaternion.FromToRotation(Vector3.up, dir);
             bullet.GetComponent<Bullet>().Init(damage, count, dir);
-
+            ManaManager.playerManas -= 10;
             AudioManager.instance.PlaySfx(AudioManager.Sfx.Range);
         }
     }
