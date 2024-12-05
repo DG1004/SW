@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
 using static UnityEditor.Progress;
+using System;
 
 namespace Goldmetal.UndeadSurvivor
 {
@@ -179,7 +180,7 @@ namespace Goldmetal.UndeadSurvivor
 				{
 					if (enemy.activeSelf)
 					{
-                        enemy.transform.position = transform.position + (Vector3)(Random.insideUnitCircle.normalized * 20f);
+                        enemy.transform.position = transform.position + (Vector3)(UnityEngine.Random.insideUnitCircle.normalized * 20f);
                     }
                 }
                 
@@ -200,7 +201,9 @@ namespace Goldmetal.UndeadSurvivor
                 GameManager.instance.ShowShop(2);
             }
         }
-		void OnCollisionStay2D(Collision2D collision)
+
+       
+        void OnCollisionStay2D(Collision2D collision)
 		{
 			if (!GameManager.instance.isLive)
 				return;
@@ -227,7 +230,7 @@ namespace Goldmetal.UndeadSurvivor
                 }
             }
 		}
-		public void OnBeat(EnemyBullet offender,float damage)
+		public void OnBeat(Action<float> action, float damage)
 		{
             GameManager.instance.health -= damage;
             if (GameManager.instance.health < 0)
@@ -243,7 +246,7 @@ namespace Goldmetal.UndeadSurvivor
             }
             else
             {
-                offender.OnAttack(damage);
+                action.Invoke(damage);
             }
         }
 		void OnMove(InputValue value)

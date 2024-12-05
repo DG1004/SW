@@ -50,6 +50,13 @@ namespace Goldmetal.UndeadSurvivor
                 // spawnInterval 만큼 대기
                 yield return new WaitForSeconds(0.1f);
             }
+            for (int i = 0; i < initialEnemyCount; i++)
+            {
+                Spawn(5); // 적 스폰
+
+                // spawnInterval 만큼 대기
+                yield return new WaitForSeconds(0.1f);
+            }
         }
 
         void Spawn(int race_index)

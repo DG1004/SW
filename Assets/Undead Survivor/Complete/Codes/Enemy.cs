@@ -122,7 +122,7 @@ namespace Goldmetal.UndeadSurvivor
             defence = (float)(k * data.stats_defence*data.stats_health/100f);
             maxhealth = health = (float)(k * data.stats_health);
             
-            speed = (float)(data.stats_speed);
+            speed = (float)(2*data.stats_speed);
             /* attack = (float)(k * data.stats_attack * data.stats_health);
              defence = (float)(k * data.stats_defence * data.stats_health);
              health = (float)(k * data.stats_health);
