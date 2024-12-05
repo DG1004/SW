@@ -206,7 +206,7 @@ namespace Goldmetal.UndeadSurvivor
 			if (collision.gameObject.CompareTag("Enemy"))
 			{
                 var offender = collision.gameObject.GetComponent<Enemy>();
-                float damage = offender.attack * 1.0f;
+                float damage = offender.attack * 0.01f;
                 GameManager.instance.health -= damage;
 
                 if (GameManager.instance.health < 0)

@@ -112,6 +112,10 @@ namespace Goldmetal.UndeadSurvivor
             {
                 GameManager.instance.player.OnBeat(this, damage);
             }
+            if (collision.CompareTag("Bullet"))
+            {
+                DestroyBullet();
+            }
 
         }
 

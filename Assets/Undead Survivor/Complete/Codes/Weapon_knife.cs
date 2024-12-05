@@ -7,11 +7,15 @@ public class Weapon_knife : Weapon
 {
     float timer;
 
+    Vector2 dir = new Vector2(1, 0);
     public override void Update()
     {
         if (!GameManager.instance.isLive)
             return;
-
+        if (player.inputVec != Vector2.zero)
+        {
+            dir = player.inputVec.normalized;
+        }
         timer += Time.deltaTime;
 
         if (timer > speed)
@@ -63,9 +67,11 @@ public class Weapon_knife : Weapon
         Debug.Log("New Knife");
     }
 
+
     public override void Fire()
     {
-        if (!player.scanner.nearestTarget)
+       
+       /* if (!player.scanner.nearestTarget)
         {
             Debug.Log("noTarget");
             return;
@@ -73,7 +79,7 @@ public class Weapon_knife : Weapon
 
         Vector3 targetPos = player.scanner.nearestTarget.position;
         Vector3 dir = targetPos - transform.position;
-        dir = dir.normalized;
+        dir = dir.normalized;*/
 
         Transform bullet = GameManager.instance.pool.Get_Bullet(prefabId).transform;
         bullet.position = transform.position;
@@ -85,7 +91,7 @@ public class Weapon_knife : Weapon
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Range);
 
         // 코루틴 시작: 일정 시간 후 bullet 비활성화
-        StartCoroutine(DeactivateBullet(bullet.gameObject, 0.5f)); // 0.5초 후 비활성화
+        StartCoroutine(DeactivateBullet(bullet.gameObject, 0.2f)); // 0.2초 후 비활성화
     }
     private IEnumerator DeactivateBullet(GameObject bullet, float delay)
     {
