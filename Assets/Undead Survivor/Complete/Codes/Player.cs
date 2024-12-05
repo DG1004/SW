@@ -22,6 +22,7 @@ namespace Goldmetal.UndeadSurvivor
         public GameObject vcam2;
         public GameObject PrePos;
         public StoreEntrance store;
+        
 
         public int[] usingWeaponIdx = new int[2];
         public int curWeapon;
@@ -154,7 +155,7 @@ namespace Goldmetal.UndeadSurvivor
 				// 카메라를 바꿉니다.
 				vcam1.GetComponent<CinemachineVirtualCamera>().Priority = 11;
 				vcam2.GetComponent<CinemachineVirtualCamera>().Follow = PrePos.transform;
-
+                
 				store.gameObject.SetActive(false);
 			}
             // 플레이어가 상점 출구에 충돌했을 때
@@ -181,6 +182,7 @@ namespace Goldmetal.UndeadSurvivor
                         enemy.transform.position = transform.position + (Vector3)(Random.insideUnitCircle.normalized * 20f);
                     }
                 }
+                
             }
             // 플레이어가 기본상점에 충돌했을 때
             else if (collision.gameObject.CompareTag("StoreStd"))
