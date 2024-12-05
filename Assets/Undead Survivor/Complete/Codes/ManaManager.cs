@@ -41,7 +41,7 @@ public class ManaManager : MonoBehaviour
     }
 
     // 마나를 드랍하는 함수
-    // 몬스터가 죽을 때, 이 함수를 호출해서 사용하시면 돼요.
+    // 몬스터가 죽을 때, 이 함수를 호출해서 사용하시면 돼요.  
     public void DropManas(Vector2 dropPosition)
     {
         // 마나 인스턴스 생성

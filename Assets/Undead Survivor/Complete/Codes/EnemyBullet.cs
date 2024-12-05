@@ -93,15 +93,7 @@ namespace Goldmetal.UndeadSurvivor
         /// 총알이 충돌했을 때 호출됩니다. 데미지를 적용하고 총알을 파괴합니다.
         /// </summary>
         /// <param name="damageAmount">적용할 데미지량</param>
-        public void OnAttack(float damageAmount)
-        {
-            if (isLive)
-            {
-                master.OnAttack(damageAmount*0.1f);
-                DestroyBullet();
-            }
-        }
-
+        
         /// <summary>
         /// 충돌 시 호출됩니다. 플레이어 또는 벽과 충돌하면 적절한 처리를 합니다.
         /// </summary>
@@ -110,7 +102,7 @@ namespace Goldmetal.UndeadSurvivor
         {
             if (collision.CompareTag("Player"))
             {
-                GameManager.instance.player.OnBeat(this, damage);
+                GameManager.instance.player.OnBeat(master.OnAttack, damage);
             }
             if (collision.CompareTag("Bullet"))
             {
