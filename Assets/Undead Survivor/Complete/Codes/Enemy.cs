@@ -103,6 +103,7 @@ namespace Goldmetal.UndeadSurvivor
                 coll.enabled = false;
                 rigid.simulated = false;
                 spriter.sortingOrder = 1;
+                anim.speed = 1;
                 anim.SetBool("Dead", true);
                 GameManager.instance.kill++;
                 GameManager.instance.GetExp();
@@ -161,12 +162,12 @@ namespace Goldmetal.UndeadSurvivor
         }
         void TryReproduce()
         {
-            while (energy > health)
+            while (energy > maxhealth)
             {
                 Vector2 dirVec = target.position - rigid.position;
                 var newPos = (Vector3)(target.position + dirVec.normalized * 20f);
                 Reproduce(newPos);
-                energy -= health;
+                energy -= maxhealth;
             }
         }
         SpawnData MakeMutation()

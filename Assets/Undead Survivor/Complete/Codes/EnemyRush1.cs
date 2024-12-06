@@ -32,7 +32,7 @@ public class EnemyRush1 : Enemy
         }
         else if (Time.time > nextFireTime)
         {
-            coll.isTrigger = true;
+            //coll.isTrigger = true;
             /*Vector2 nextVec = *Time.fixedDeltaTime;
             rigid.MovePosition(rigid.position + nextVec);*/
             rigid.velocity = multiplyRate * dirVec.normalized * speed;
@@ -41,13 +41,13 @@ public class EnemyRush1 : Enemy
         {
             anim.speed = 0;
             rigid.velocity = Vector2.zero;
-            dirVec = EnemyBullet.CalculateAimDirection(transform.position, target.position, GameManager.instance.player.예측샷용플레이어속도, multiplyRate * speed);
+            dirVec = (target.position-(Vector2)transform.position).normalized;
         }
     }
 
     void RushEnd()
     {
-        coll.isTrigger = false;
+        //coll.isTrigger = false;
         anim.speed = 1;
     }
   

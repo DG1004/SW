@@ -103,10 +103,11 @@ namespace Goldmetal.UndeadSurvivor
             if (collision.CompareTag("Player"))
             {
                 GameManager.instance.player.OnBeat(master.OnAttack, damage);
+                OnDead();
             }
             if (collision.CompareTag("Bullet"))
             {
-                DestroyBullet();
+                OnDead();
             }
 
         }
@@ -114,7 +115,7 @@ namespace Goldmetal.UndeadSurvivor
         /// <summary>
         /// 총알을 파괴하는 메서드입니다.
         /// </summary>
-        private void DestroyBullet()
+        private void OnDead()
         {
             if (isLive)
             {
