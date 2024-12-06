@@ -75,7 +75,7 @@ public class EnemyRush1 : Enemy
 
         // 플레이어 방향으로 회전
         Vector2 dirVec = (target.position - (Vector2)transform.position).normalized;
-        float currentAngle = Mathf.Atan2(dirVec.y, dirVec.x) * Mathf.Rad2Deg;
+        float currentAngle = Mathf.Atan2(-dirVec.x, dirVec.y) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0, 0, currentAngle);
 
         // 각도 변화량 계산
