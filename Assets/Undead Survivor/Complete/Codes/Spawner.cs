@@ -50,6 +50,13 @@ namespace Goldmetal.UndeadSurvivor
                 // spawnInterval 만큼 대기
                 yield return new WaitForSeconds(0.1f);
             }
+            for (int i = 0; i < initialEnemyCount; i++)
+            {
+                Spawn(5); // 적 스폰
+
+                // spawnInterval 만큼 대기
+                yield return new WaitForSeconds(0.1f);
+            }
         }
 
         void Spawn(int race_index)
@@ -92,7 +99,7 @@ namespace Goldmetal.UndeadSurvivor
                 stats_defence = data.stats_defence * (1 + RandomVariation());
                 stats_speed = data.stats_speed * (1 + RandomVariation());
                 stats_health = (1 - coe_attack * stats_attack - coe_defence * stats_defence - coe_speed * stats_speed) / coe_health;
-            } while (stats_health <= 0 || stats_attack <= 0 || stats_defence <= 0 || stats_speed <= 0);
+            } while (stats_health <= 15 || stats_attack <= 0 || stats_defence <= 0 || stats_speed <= 0);
 
         }
         
@@ -100,7 +107,7 @@ namespace Goldmetal.UndeadSurvivor
         // 랜덤 변화를 위한 메서드 (±10%)
         private double RandomVariation()
         {
-            return (UnityEngine.Random.value * 0.6) - 0.3; // -0.1부터 0.1 사이의 값
+            return (UnityEngine.Random.value * 0.3) - 0.15; // -0.1부터 0.1 사이의 값
         }
 
         

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
 using static UnityEditor.Progress;
+using System;
 
 namespace Goldmetal.UndeadSurvivor
 {
@@ -22,6 +23,7 @@ namespace Goldmetal.UndeadSurvivor
         public GameObject vcam2;
         public GameObject PrePos;
         public StoreEntrance store;
+        
 
         public int[] usingWeaponIdx = new int[2];
         public int curWeapon;
@@ -33,7 +35,7 @@ namespace Goldmetal.UndeadSurvivor
 		private float defaultSpeed;
 
         private bool canDash = true; // 대쉬 가능 여부를 나타내는 변수
-        private float dashCooldown = 5f; // 대쉬 쿨타임(20초)
+        private float dashCooldown = 3f; // 대쉬 쿨타임(20초)
         private float cooldownTimer = 0f; // 쿨타임을 추적하는 타이머
         public Vector2 예측샷용플레이어속도;
         SpriteRenderer spriter;
@@ -154,7 +156,7 @@ namespace Goldmetal.UndeadSurvivor
 				// 카메라를 바꿉니다.
 				vcam1.GetComponent<CinemachineVirtualCamera>().Priority = 11;
 				vcam2.GetComponent<CinemachineVirtualCamera>().Follow = PrePos.transform;
-
+                
 				store.gameObject.SetActive(false);
 			}
             // 플레이어가 상점 출구에 충돌했을 때
@@ -178,9 +180,10 @@ namespace Goldmetal.UndeadSurvivor
 				{
 					if (enemy.activeSelf)
 					{
-                        enemy.transform.position = transform.position + (Vector3)(Random.insideUnitCircle.normalized * 20f);
+                        enemy.transform.position = transform.position + (Vector3)(UnityEngine.Random.insideUnitCircle.normalized * 20f);
                     }
                 }
+                
             }
             // 플레이어가 기본상점에 충돌했을 때
             else if (collision.gameObject.CompareTag("StoreStd"))
@@ -198,7 +201,9 @@ namespace Goldmetal.UndeadSurvivor
                 GameManager.instance.ShowShop(2);
             }
         }
-		void OnCollisionStay2D(Collision2D collision)
+
+       
+        void OnCollisionStay2D(Collision2D collision)
 		{
 			if (!GameManager.instance.isLive)
 				return;
@@ -225,7 +230,7 @@ namespace Goldmetal.UndeadSurvivor
                 }
             }
 		}
-		public void OnBeat(EnemyBullet offender,float damage)
+		public void OnBeat(Action<float> action, float damage)
 		{
             GameManager.instance.health -= damage;
             if (GameManager.instance.health < 0)
@@ -241,7 +246,7 @@ namespace Goldmetal.UndeadSurvivor
             }
             else
             {
-                offender.OnAttack(damage);
+                action.Invoke(damage);
             }
         }
 		void OnMove(InputValue value)
