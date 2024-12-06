@@ -99,7 +99,7 @@ namespace Goldmetal.UndeadSurvivor
                 stats_defence = data.stats_defence * (1 + RandomVariation());
                 stats_speed = data.stats_speed * (1 + RandomVariation());
                 stats_health = (1 - coe_attack * stats_attack - coe_defence * stats_defence - coe_speed * stats_speed) / coe_health;
-            } while (stats_health <= 5 || stats_attack <= 0 || stats_defence <= 0 || stats_speed <= 0);
+            } while (stats_health <= 15 || stats_attack <= 0 || stats_defence <= 0 || stats_speed <= 0);
 
         }
         

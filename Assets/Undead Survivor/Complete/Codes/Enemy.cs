@@ -119,8 +119,8 @@ namespace Goldmetal.UndeadSurvivor
             //anim.runtimeAnimatorController = animCon[data];
             energy = 0;
             spawnData = data;
-            attack = (float)(k * data.stats_attack*data.stats_health/100f);
-            defence = (float)(k * data.stats_defence*data.stats_health/100f);
+            attack = (float)(k * data.stats_attack * Mathf.Pow((float)data.stats_health / 50f,3));
+            defence = (float)(k * data.stats_defence*(float)data.stats_health/50f);
             maxhealth = health = (float)(k * data.stats_health);
             
             speed = (float)(2*data.stats_speed);
@@ -132,7 +132,7 @@ namespace Goldmetal.UndeadSurvivor
             Debug.Log($"방어는 --> {defence}");
             Debug.Log($"체력는 --> {health}");
             Debug.Log($"속도는 --> {speed}");
-            transform.localScale = new Vector3(defence, health / 50 , 1);
+            transform.localScale = new Vector3(defence/2, (maxhealth / 50) , 1);
             rigid.mass = defence * health * 0.1f;
             InvokeRepeating("energr_updater", Random.Range(1f,5f), 5f);
             Debug.Log($"여기는 init {GameManager.instance.EnemyNum++}");
