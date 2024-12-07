@@ -8,6 +8,7 @@ namespace Goldmetal.UndeadSurvivor
     {
         public float damage;
         public int per;
+        public float speed = 15f; // ±âº»°ª 15
 
         Rigidbody2D rigid;
 
@@ -23,7 +24,7 @@ namespace Goldmetal.UndeadSurvivor
             this.per = per;
 
             if (per >= 0) {
-                rigid.velocity = dir * 15f;
+                rigid.velocity = dir * speed;
             }
         }
 

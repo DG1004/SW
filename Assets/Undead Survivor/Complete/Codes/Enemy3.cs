@@ -12,10 +12,10 @@ namespace Goldmetal.UndeadSurvivor
     {
         protected override void race_init()//오버라이딩 초기 스탯결정
         {
-            this.race_index = 1;
-            this.coe_attack = 2.5;
-            this.coe_defence = 0.125;
-            this.coe_health = 0.0125;
+            this.race_index = 2;////
+            this.coe_attack = 0.025;
+            this.coe_defence = 0.05;
+            this.coe_health = 0.0025;
             this.coe_speed = 0.25;
             //SpawnData data = new SpawnData(0, 20, 0.01, 3, 2.2);
             //general_Init(data);

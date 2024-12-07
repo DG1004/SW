@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Net;
 using UnityEngine;
 
-
-
 namespace Goldmetal.UndeadSurvivor
 {
 
@@ -26,7 +24,7 @@ namespace Goldmetal.UndeadSurvivor
         float defence;
         protected float speed;
         float health;
-
+        float maxhealth;
         protected bool isLive;
 
         //public float maxHealth;
@@ -86,8 +84,9 @@ namespace Goldmetal.UndeadSurvivor
             if (!collision.CompareTag("Bullet") || !isLive)
                 return;
 
-            health -= collision.GetComponent<Bullet>().damage - defence;
-            StartCoroutine(KnockBack());
+            float 피해량= collision.GetComponent<Bullet>().damage - defence;
+            StartCoroutine(KnockBack(피해량/maxhealth));
+            health -= 피해량;
 
             if (health > 0)
             {
@@ -104,6 +103,7 @@ namespace Goldmetal.UndeadSurvivor
                 coll.enabled = false;
                 rigid.simulated = false;
                 spriter.sortingOrder = 1;
+                anim.speed = 1;
                 anim.SetBool("Dead", true);
                 GameManager.instance.kill++;
                 GameManager.instance.GetExp();
@@ -119,19 +119,20 @@ namespace Goldmetal.UndeadSurvivor
             //anim.runtimeAnimatorController = animCon[data];
             energy = 0;
             spawnData = data;
-            attack = (float)(k * data.stats_attack);
-            defence = (float)(k * data.stats_defence);
-            health = (float)(k * data.stats_health);
-            speed = (float)(data.stats_speed);
+            attack = (float)(k * data.stats_attack * Mathf.Pow((float)data.stats_health / 50f,2));
+            defence = (float)(k * data.stats_defence*(float)data.stats_health/50f);
+            maxhealth = health = (float)(k * data.stats_health);
+            speed = (float)(2*data.stats_speed);
             /* attack = (float)(k * data.stats_attack * data.stats_health);
              defence = (float)(k * data.stats_defence * data.stats_health);
              health = (float)(k * data.stats_health);
              speed = (float)(data.stats_speed / data.stats_health);*/
-            /*Debug.Log($"공격는 --> {attack}");
+            Debug.Log(gameObject.name);
+            Debug.Log($"공격는 --> {attack}");
             Debug.Log($"방어는 --> {defence}");
             Debug.Log($"체력는 --> {health}");
-            Debug.Log($"속도는 --> {speed}");*/
-            transform.localScale = new Vector3(defence, health / 10 , 1);
+            Debug.Log($"속도는 --> {speed}");
+            transform.localScale = new Vector3(defence/2, (maxhealth / 50) , 1);
             rigid.mass = defence * health * 0.1f;
             InvokeRepeating("energr_updater", Random.Range(1f,5f), 5f);
             Debug.Log($"여기는 init {GameManager.instance.EnemyNum++}");
@@ -161,12 +162,12 @@ namespace Goldmetal.UndeadSurvivor
         }
         void TryReproduce()
         {
-            while (energy > health)
+            while (energy > maxhealth)
             {
                 Vector2 dirVec = target.position - rigid.position;
                 var newPos = (Vector3)(target.position + dirVec.normalized * 20f);
                 Reproduce(newPos);
-                energy -= health;
+                energy -= maxhealth;
             }
         }
         SpawnData MakeMutation()
@@ -185,12 +186,12 @@ namespace Goldmetal.UndeadSurvivor
             enemy.Init(MakeMutation());
         }
 
-        IEnumerator KnockBack()
+        IEnumerator KnockBack(float damageRate)
         {
             yield return wait; // 다음 하나의 물리 프레임 딜레이
             Vector3 playerPos = GameManager.instance.player.transform.position;
             Vector3 dirVec = transform.position - playerPos;
-            rigid.AddForce(dirVec.normalized * 3, ForceMode2D.Impulse);
+            rigid.AddForce(dirVec.normalized * damageRate*6, ForceMode2D.Impulse);
         }
 
         void Dead()

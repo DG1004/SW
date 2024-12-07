@@ -15,11 +15,30 @@ namespace Goldmetal.UndeadSurvivor
         public Transform[] spawnPoint;
         public SpawnData[] spawnData;
         public int initialEnemyCount = 1; // Set the number of initial enemies
+       // public float spawnInterval = 60f; // 기존 일정 시간 간격에 따른 스폰 간격
+        float timer = 0f;
+
 
         void Awake()
         {
             spawnPoint = GetComponentsInChildren<Transform>();
 
+        }
+
+        public int minEnemyCount = 30;
+
+        void Update()
+        {
+            if (!GameManager.instance.isLive)
+                return;
+
+            timer += Time.deltaTime;
+
+            // 살아있는 적의 수가 minEnemyCount 이하로 내려가면 추가 스폰 수행
+            if (GameManager.instance.isLive && timer > 10 && GameManager.instance.EnemyNum < minEnemyCount)
+            {
+                StartCoroutine(SpawnInitialEnemies());
+            }
         }
         void Start()
         {
@@ -29,23 +48,30 @@ namespace Goldmetal.UndeadSurvivor
         IEnumerator SpawnInitialEnemies()
         {
 
-            for (int i = 0; i < initialEnemyCount; i++)
-            {
-                Spawn(0); // 적 스폰
-
-                // spawnInterval 만큼 대기
-                yield return new WaitForSeconds(0.1f);
-            }
-            for (int i = 0; i < initialEnemyCount; i++)
+            for (int i = 0; i < initialEnemyCount + 3; i++)
             {
                 Spawn(1); // 적 스폰
 
                 // spawnInterval 만큼 대기
                 yield return new WaitForSeconds(0.1f);
             }
-            for (int i = 0; i < initialEnemyCount; i++)
+            for (int i = 0; i < 5; i++)
             {
                 Spawn(2); // 적 스폰
+
+                // spawnInterval 만큼 대기
+                yield return new WaitForSeconds(0.1f);
+            }
+            for (int i = 0; i < initialEnemyCount; i++)
+            {
+                Spawn(3); // 적 스폰
+
+                // spawnInterval 만큼 대기
+                yield return new WaitForSeconds(0.1f);
+            }
+            for (int i = 0; i < initialEnemyCount; i++)
+            {
+                Spawn(5); // 적 스폰
 
                 // spawnInterval 만큼 대기
                 yield return new WaitForSeconds(0.1f);
@@ -72,6 +98,8 @@ namespace Goldmetal.UndeadSurvivor
             }*/
         }
     }
+
+
     public class SpawnData
     {
         public SpawnData(double coe_attack,double coe_defence, double coe_speed, double coe_health)
@@ -92,7 +120,7 @@ namespace Goldmetal.UndeadSurvivor
                 stats_defence = data.stats_defence * (1 + RandomVariation());
                 stats_speed = data.stats_speed * (1 + RandomVariation());
                 stats_health = (1 - coe_attack * stats_attack - coe_defence * stats_defence - coe_speed * stats_speed) / coe_health;
-            } while (stats_health <= 0 || stats_attack <= 0 || stats_defence <= 0 || stats_speed <= 0);
+            } while (stats_health <= 15 || stats_attack <= 0 || stats_defence <= 0 || stats_speed <= 0);
 
         }
         
@@ -100,7 +128,7 @@ namespace Goldmetal.UndeadSurvivor
         // 랜덤 변화를 위한 메서드 (±10%)
         private double RandomVariation()
         {
-            return (UnityEngine.Random.value * 0.6) - 0.3; // -0.1부터 0.1 사이의 값
+            return (UnityEngine.Random.value * 0.3) - 0.15; // -0.1부터 0.1 사이의 값
         }
 
         

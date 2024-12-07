@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
 using static UnityEditor.Progress;
+using System;
 
 namespace Goldmetal.UndeadSurvivor
 {
@@ -22,15 +23,22 @@ namespace Goldmetal.UndeadSurvivor
         public GameObject vcam2;
         public GameObject PrePos;
         public StoreEntrance store;
+        
 
-		private bool isDash = false;
-		float dashCool;
+        public int[] usingWeaponIdx = new int[2];
+        public int curWeapon;
+
+		private bool isdash = false;
 		public float dashSpeed;
 		public float defaultTime;
 		private float dashTime;
 		private float defaultSpeed;
 
-		SpriteRenderer spriter;
+        private bool canDash = true; // 대쉬 가능 여부를 나타내는 변수
+        private float dashCooldown = 3f; // 대쉬 쿨타임(20초)
+        private float cooldownTimer = 0f; // 쿨타임을 추적하는 타이머
+        public Vector2 예측샷용플레이어속도;
+        SpriteRenderer spriter;
 		Animator anim;
 
 		void Awake()
@@ -41,6 +49,9 @@ namespace Goldmetal.UndeadSurvivor
 			scanner = GetComponent<Scanner>();
 			hands = GetComponentsInChildren<Hand>(true);
 			defaultSpeed = speed;
+            usingWeaponIdx[0] = -1;
+            usingWeaponIdx[1] = -1;
+            curWeapon = -1;
         }
 
 		void OnEnable()
@@ -56,48 +67,63 @@ namespace Goldmetal.UndeadSurvivor
 
 			inputVec.x = Input.GetAxisRaw("Horizontal");
 			inputVec.y = Input.GetAxisRaw("Vertical");
+
+            if(Input.GetKeyDown(GameManager.instance.weaponChangeKey))
+            {
+                if(curWeapon != -1 || usingWeaponIdx[0] != -1 || usingWeaponIdx[1]!=-1)
+                {
+                    GameManager.instance.SwapWeapon(usingWeaponIdx[curWeapon]);
+                }
+            }
 		}
 
-		void FixedUpdate()
-		{
-			if (!GameManager.instance.isLive || isDash)
-				return;
+        void FixedUpdate()
+        {
+            if (!GameManager.instance.isLive)
+                return;
 
-			Vector2 nextVec = inputVec.normalized * speed * Time.fixedDeltaTime;
-			rigid.MovePosition(rigid.position + nextVec);
-			/*
-			if (Input.GetKey(GameManager.instance.dashKey)) {
-				isDash = true;
-			}
-			if (dashTime <= 0)
-			{
-				speed = defaultSpeed;
-				if (isDash)
-				{
-					dashTime = defaultTime;
-				}
-			}
-			else 
-			{
-				dashTime -= Time.deltaTime;
-				speed = dashSpeed;
+            // 플레이어 이동 처리
+            Vector2 nextVec = inputVec.normalized * speed * Time.fixedDeltaTime;
+            예측샷용플레이어속도 = inputVec.normalized * speed;
+            rigid.MovePosition(rigid.position + nextVec);
 
-			}
-			isDash = false;
-			*/
-			dashCool -= Time.fixedDeltaTime;
-			if (Input.GetKeyDown(GameManager.instance.dashKey))
-			{
-				if (dashCool <= 0)
-				{
-					dashCool = 5;
-					Dash(nextVec);
-				}
-			}
+            // 대쉬 처리
+            if (Input.GetKey(GameManager.instance.dashKey) && canDash)
+            {
+                isdash = true;
+                canDash = false; // 대쉬 비활성화
+                cooldownTimer = dashCooldown; // 쿨타임 초기화
+            }
 
-		}
+            if (dashTime <= 0)
+            {
+                speed = defaultSpeed;
+                if (isdash)
+                {
+                    dashTime = defaultTime;
+                }
+            }
+            else
+            {
+                dashTime -= Time.deltaTime;
+                speed = dashSpeed;
+            }
 
-		void LateUpdate()
+            // 쿨타임 처리
+            if (!canDash)
+            {
+                cooldownTimer -= Time.deltaTime;
+                if (cooldownTimer <= 0)
+                {
+                    canDash = true; // 대쉬 재활성화
+                }
+            }
+
+            isdash = false;
+        }
+
+
+        void LateUpdate()
 		{
 			if (!GameManager.instance.isLive)
 				return;
@@ -116,7 +142,9 @@ namespace Goldmetal.UndeadSurvivor
 			// 플레이어가 상점 입구에 충돌했을 때
 			if (collision.gameObject.CompareTag("StoreEntrance"))
 			{
-				Debug.Log("상점진입");
+                GameManager.instance.health = GameManager.instance.maxHealth;
+                Debug.Log("체력이 모두 회복되었습니다!");
+                Debug.Log("상점진입");
 				// 플레이어가 상점에 있다는 것을 표시합니다.
 				isStore = 1;
 				// 게임 진행 상태를 false로 설정합니다.
@@ -128,7 +156,7 @@ namespace Goldmetal.UndeadSurvivor
 				// 카메라를 바꿉니다.
 				vcam1.GetComponent<CinemachineVirtualCamera>().Priority = 11;
 				vcam2.GetComponent<CinemachineVirtualCamera>().Follow = PrePos.transform;
-
+                
 				store.gameObject.SetActive(false);
 			}
             // 플레이어가 상점 출구에 충돌했을 때
@@ -152,9 +180,10 @@ namespace Goldmetal.UndeadSurvivor
 				{
 					if (enemy.activeSelf)
 					{
-                        enemy.transform.position = transform.position + (Vector3)(Random.insideUnitCircle.normalized * 20f);
+                        enemy.transform.position = transform.position + (Vector3)(UnityEngine.Random.insideUnitCircle.normalized * 20f);
                     }
                 }
+                
             }
             // 플레이어가 기본상점에 충돌했을 때
             else if (collision.gameObject.CompareTag("StoreStd"))
@@ -172,7 +201,9 @@ namespace Goldmetal.UndeadSurvivor
                 GameManager.instance.ShowShop(2);
             }
         }
-		void OnCollisionStay2D(Collision2D collision)
+
+       
+        void OnCollisionStay2D(Collision2D collision)
 		{
 			if (!GameManager.instance.isLive)
 				return;
@@ -180,7 +211,7 @@ namespace Goldmetal.UndeadSurvivor
 			if (collision.gameObject.CompareTag("Enemy"))
 			{
                 var offender = collision.gameObject.GetComponent<Enemy>();
-                float damage = offender.attack * 1.0f;
+                float damage = offender.attack * 0.01f;
                 GameManager.instance.health -= damage;
 
                 if (GameManager.instance.health < 0)
@@ -191,6 +222,7 @@ namespace Goldmetal.UndeadSurvivor
                     }
                     anim.SetTrigger("Dead");
                     GameManager.instance.GameOver();
+					CoinManager.playerCoins = 1500;
                 }
                 else
                 {
@@ -198,7 +230,7 @@ namespace Goldmetal.UndeadSurvivor
                 }
             }
 		}
-		public void OnBeat(EnemyBullet offender,float damage)
+		public void OnBeat(Action<float> action, float damage)
 		{
             GameManager.instance.health -= damage;
             if (GameManager.instance.health < 0)
@@ -208,11 +240,13 @@ namespace Goldmetal.UndeadSurvivor
                     transform.GetChild(index).gameObject.SetActive(false);
                 }
                 anim.SetTrigger("Dead");
+                CoinManager.playerCoins = 1500;
                 GameManager.instance.GameOver();
+                
             }
             else
             {
-                offender.OnAttack(damage);
+                action.Invoke(damage);
             }
         }
 		void OnMove(InputValue value)
@@ -220,13 +254,7 @@ namespace Goldmetal.UndeadSurvivor
 			inputVec = value.Get<Vector2>();
 		}
 
-		void Dash(Vector2 nextVec)
-		{
-			nextVec = inputVec.normalized * speed * 20 * Time.fixedDeltaTime;
-            rigid.MovePosition(rigid.position + nextVec);
-        }
-
-        IEnumerator wait()
+		IEnumerator wait()
 		{
 			yield return new WaitForSecondsRealtime(10);
 		}

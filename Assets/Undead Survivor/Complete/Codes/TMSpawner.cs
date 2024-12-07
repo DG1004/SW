@@ -21,7 +21,7 @@ public class TMSpawner : MonoBehaviour
 
         timer1 += Time.deltaTime;
 
-        if (timer1 > 10f) {
+        if (timer1 > 180f) {
             timer1 = 0;
             Spawn();
            
@@ -31,7 +31,7 @@ public class TMSpawner : MonoBehaviour
     }
     void Spawn()
     {
-        GameObject travellingMerchant = GameManager.instance.pool.Get_Enemy(4);
+        GameObject travellingMerchant = GameManager.instance.pool.Get_Enemy(0);
         travellingMerchant.transform.position = spawnPoint1[Random.Range(1,spawnPoint1.Length)].position;
         // TMSHOP에 생성된 인스턴스 연결
         TMSHOP shop = FindObjectOfType<TMSHOP>();
