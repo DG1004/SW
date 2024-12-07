@@ -123,15 +123,15 @@ namespace Goldmetal.UndeadSurvivor
             defence = (float)(k * data.stats_defence*(float)data.stats_health/50f);
             maxhealth = health = (float)(k * data.stats_health);
             speed = (float)(2*data.stats_speed);
-            /* attack = (float)(k * data.stats_attack * data.stats_health);
+            /* attack = (float)(k * data.stats_attack    * data.stats_health);
              defence = (float)(k * data.stats_defence * data.stats_health);
              health = (float)(k * data.stats_health);
              speed = (float)(data.stats_speed / data.stats_health);*/
-            Debug.Log(gameObject.name);
+           /* Debug.Log(gameObject.name);
             Debug.Log($"공격는 --> {attack}");
             Debug.Log($"방어는 --> {defence}");
             Debug.Log($"체력는 --> {health}");
-            Debug.Log($"속도는 --> {speed}");
+            Debug.Log($"속도는 --> {speed}");*/
             transform.localScale = new Vector3(defence/2, (maxhealth / 50) , 1);
             rigid.mass = defence * health * 0.1f;
             InvokeRepeating("energr_updater", Random.Range(1f,5f), 5f);
