@@ -46,7 +46,7 @@ namespace Goldmetal.UndeadSurvivor
             this.race_index = 3;////
             this.coe_attack = 0.025;
             this.coe_defence = 0.125;
-            this.coe_health = 0.01;
+            this.coe_health = 0.0075;
             this.coe_speed = 0.25;
             
 
