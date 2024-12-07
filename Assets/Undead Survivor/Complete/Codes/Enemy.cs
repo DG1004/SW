@@ -126,7 +126,8 @@ namespace Goldmetal.UndeadSurvivor
             /* attack = (float)(k * data.stats_attack * data.stats_health);
              defence = (float)(k * data.stats_defence * data.stats_health);
              health = (float)(k * data.stats_health);
-             speed = (float)(data.stats_speed / data.stats_health);*/   
+             speed = (float)(data.stats_speed / data.stats_health);*/
+            Debug.Log(gameObject.name);
             Debug.Log($"공격는 --> {attack}");
             Debug.Log($"방어는 --> {defence}");
             Debug.Log($"체력는 --> {health}");

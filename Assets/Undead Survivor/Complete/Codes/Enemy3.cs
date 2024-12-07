@@ -16,7 +16,7 @@ namespace Goldmetal.UndeadSurvivor
             this.coe_attack = 0.025;
             this.coe_defence = 0.05;
             this.coe_health = 0.0025;
-            this.coe_speed = 0.2;
+            this.coe_speed = 0.25;
             //SpawnData data = new SpawnData(0, 20, 0.01, 3, 2.2);
             //general_Init(data);
         }
