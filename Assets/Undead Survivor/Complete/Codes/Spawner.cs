@@ -15,8 +15,10 @@ namespace Goldmetal.UndeadSurvivor
         public Transform[] spawnPoint;
         public SpawnData[] spawnData;
         public int initialEnemyCount = 1; // Set the number of initial enemies
-       // public float spawnInterval = 60f; // 기존 일정 시간 간격에 따른 스폰 간격
-        float timer = 0f;
+        public int minEnemyCount = 30;
+        private float timer = 0f;
+        private float lastSpawnTime = 0f; // 마지막 추가 스폰 시간
+        private const float spawnCooldown = 10f; // 추가 스폰 쿨다운 시간 (초)
 
 
         void Awake()
@@ -25,7 +27,7 @@ namespace Goldmetal.UndeadSurvivor
 
         }
 
-        public int minEnemyCount = 30;
+
 
         void Update()
         {
@@ -34,10 +36,14 @@ namespace Goldmetal.UndeadSurvivor
 
             timer += Time.deltaTime;
 
-            // 살아있는 적의 수가 minEnemyCount 이하로 내려가면 추가 스폰 수행
-            if (GameManager.instance.isLive && timer > 10 && GameManager.instance.EnemyNum < minEnemyCount)
+            // minEnemyCount 이하로 내려가면 추가 스폰 수행, 쿨다운 체크
+            if (GameManager.instance.isLive && GameManager.instance.EnemyNum < minEnemyCount && timer > 10f)
             {
-                StartCoroutine(SpawnInitialEnemies());
+                if (Time.time - lastSpawnTime >= spawnCooldown) // 마지막 스폰 이후 시간이 지났는지 확인
+                {
+                    lastSpawnTime = Time.time; // 마지막 스폰 시간 갱신
+                    StartCoroutine(SpawnInitialEnemies());
+                }
             }
         }
         void Start()

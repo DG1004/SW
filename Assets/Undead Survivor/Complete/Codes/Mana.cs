@@ -23,7 +23,7 @@ using UnityEngine;
 public class Mana : MonoBehaviour
 {
     // 마나 1개의 값어치
-    public int value;
+    public double value;
     private bool isLive;
     private bool isFollow;
     private Transform target;

@@ -40,9 +40,9 @@ namespace Goldmetal.UndeadSurvivor
                     mySlider.value = curHealth / maxHealth;
                     break;
                 case InfoType.Mana:
-                    float curMana = ManaManager.playerManas;
-                    float maxMana = ManaManager.maxManas;
-                    mySlider.value = curMana / maxMana;
+                    double curMana = ManaManager.playerManas;
+                    double maxMana = ManaManager.maxManas;
+                    mySlider.value = (float)(curMana / maxMana);
                     break;
             }
         }
