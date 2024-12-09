@@ -82,6 +82,11 @@ namespace Goldmetal.UndeadSurvivor
                 // spawnInterval 만큼 대기
                 yield return new WaitForSeconds(0.1f);
             }
+            GameObject enemy = GameManager.instance.pool.Get_Enemy(6);
+            enemy.transform.position = spawnPoint[Random.Range(1, spawnPoint.Length)].position;
+            yield return new WaitForSeconds(0.1f);
+            // Use random spawnData for initial enemies
+            // int randomIndex = Random.Range(0, spawnData.Length);
         }
 
         void Spawn(int race_index)

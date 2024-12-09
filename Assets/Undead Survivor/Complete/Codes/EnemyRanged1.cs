@@ -26,13 +26,13 @@ namespace Goldmetal.UndeadSurvivor
                 Vector2 dirVec = target.position - rigid.position;
                 Vector2 nextVec = dirVec.normalized * speed * Time.fixedDeltaTime;
                 rigid.MovePosition(rigid.position + nextVec);
-                rigid.velocity = Vector2.zero;
             }
             else if (Time.time >= nextFireTime)
             {
                 Shoot();
                 nextFireTime = Time.time + fireRate; // 다음 발사 시간 업데이트
             }
+            rigid.velocity = Vector2.zero;
         }
         void Shoot()
         {
@@ -48,7 +48,7 @@ namespace Goldmetal.UndeadSurvivor
             this.coe_defence = 0.125;
             this.coe_race = 0.0075;
             this.coe_speed = 0.25;
-            this.maxhealth = 35;
+            this.maxhealth = 35; 
 
             //SpawnData data = new SpawnData(0, 20, 0.01, 3, 2.2);
             //general_Init(data);
