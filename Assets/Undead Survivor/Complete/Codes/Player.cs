@@ -70,10 +70,8 @@ namespace Goldmetal.UndeadSurvivor
 
             if(Input.GetKeyDown(GameManager.instance.weaponChangeKey))
             {
-                if(curWeapon != -1 || usingWeaponIdx[0] != -1 || usingWeaponIdx[1]!=-1)
-                {
-                    GameManager.instance.SwapWeapon(usingWeaponIdx[curWeapon]);
-                }
+                if (curWeapon == -1 || usingWeaponIdx[0] == -1 || usingWeaponIdx[1] == -1) return;
+                else GameManager.instance.SwapWeapon(usingWeaponIdx[curWeapon]);
             }
 		}
 
