@@ -34,7 +34,7 @@ public class ManaManager : MonoBehaviour
         }
 
         // 마나가 사용되지 않은 시간이 3초 이상일 때 마나 회복 시작
-        if (Time.time - lastManaUseTime >= 3.0f && playerManas < maxManas && !isRegenerating)
+        if ((Time.time - lastManaUseTime >= 3.0f) && (playerManas < maxManas) && (!isRegenerating))
         {
             StartCoroutine(RegenerateMana());
         }

@@ -141,6 +141,7 @@ namespace Goldmetal.UndeadSurvivor
 			if (collision.gameObject.CompareTag("StoreEntrance"))
 			{
                 GameManager.instance.health = GameManager.instance.maxHealth;
+                ManaManager.playerManas = ManaManager.maxManas;
                 Debug.Log("체력이 모두 회복되었습니다!");
                 Debug.Log("상점진입");
 				// 플레이어가 상점에 있다는 것을 표시합니다.

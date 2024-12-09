@@ -17,7 +17,7 @@ MonoBehaviour:
   itemName: "\uD3ED\uB82C \uC9C0\uD321\uC774"
   itemPrice: 100000
   itemDesc: "\uBA54\uD14C\uC624\uB97C \uC18C\uD658\uD55C\uB2E4.\n100\uBA85\uC758
-    \uC801\uC744 100\uC758 \uB300\uBBF8\uC9C0\uB85C \uACF5\uACA9\uD55C\uB2E4.\n\uB9C8\uB098
+    \uC801\uC744 100\uC758 \uB300\uBBF8\uC9C0\uB85C \uACF5\uACA9\uD55C\uB2E4.\n\n\uB9C8\uB098
     \uCF54\uC2A4\uD2B8 : 100"
   itemIcon: {fileID: 21300000, guid: ad82444adcf82a34f8c96b0ae969cca4, type: 3}
   baseDamage: 100
