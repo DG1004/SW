@@ -108,25 +108,28 @@ namespace Goldmetal.UndeadSurvivor
 
     public class SpawnData
     {
-        public SpawnData(double coe_attack,double coe_defence, double coe_speed, double coe_health)
+        public SpawnData(double coe_attack,double coe_defence, double coe_speed, double coe_race,double stats_health)
         {
             // 계수를 가지고 적절한 스탯을 만들어내는 함수 spawner에서 처음 몬스터 만들때 필요함
             this.stats_attack = 0.25/coe_attack;
             this.stats_defence = 0.25 / coe_defence;
             this.stats_speed = 0.25 / coe_speed;
-            this.stats_health = 0.25 / coe_health;
+            this.stats_race = 0.25 / coe_race;
+            this.stats_health = stats_health;
 
         }
  
-        public SpawnData(SpawnData data, double coe_attack, double coe_defence, double coe_speed, double coe_health)
+        public SpawnData(SpawnData data, double coe_attack, double coe_defence, double coe_speed, double coe_race,double stats_health)
         {
+            //sdfkjsdlfkjas
             do
             {
                 stats_attack = data.stats_attack * (1 + RandomVariation());
                 stats_defence = data.stats_defence * (1 + RandomVariation());
                 stats_speed = data.stats_speed * (1 + RandomVariation());
-                stats_health = (1 - coe_attack * stats_attack - coe_defence * stats_defence - coe_speed * stats_speed) / coe_health;
-            } while (stats_health <= 15 || stats_attack <= 0 || stats_defence <= 0 || stats_speed <= 0);
+                stats_race = (1 - coe_attack * stats_attack - coe_defence * stats_defence - coe_speed * stats_speed) / coe_race;
+                this.stats_health = stats_health * (1 + RandomVariation());
+            } while (stats_race <= 0 || stats_attack <= 0 || stats_defence <= 0 || stats_speed <= 0||stats_health<=15);
 
         }
         
@@ -143,6 +146,7 @@ namespace Goldmetal.UndeadSurvivor
         public double stats_defence;
         public double stats_speed;
         public double stats_health;
+        public double stats_race;
 
         
     }

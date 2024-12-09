@@ -16,15 +16,17 @@ namespace Goldmetal.UndeadSurvivor
         protected double coe_attack;
         protected double coe_defence;
         protected double coe_speed;
-        protected double coe_health;
+        protected double coe_race;
+        //protected double coe_health;
         protected int race_index;
 
         //몬스터의 실제스탯들
         public float attack;
         float defence;
         protected float speed;
+        float 종족변수;
         float health;
-        float maxhealth;
+        protected float maxhealth;
         protected bool isLive;
 
         //public float maxHealth;
@@ -114,24 +116,26 @@ namespace Goldmetal.UndeadSurvivor
         }
         protected void Init(SpawnData data)
         {
+            //여기 공격력 수정하고 방어력 돌연변이 밸런스 등등
             race_init();
             float k = 1;//Mathf.Log(Mathf.Log(GameManager.instance.gameTime+2.71f)+1.71f);
             //anim.runtimeAnimatorController = animCon[data];
             energy = 0;
             spawnData = data;
-            attack = (float)(k * data.stats_attack * Mathf.Pow((float)data.stats_health / 50f,2));
-            defence = (float)(k * data.stats_defence*(float)data.stats_health/50f);
-            maxhealth = health = (float)(k * data.stats_health);
+            attack = (float)(k * data.stats_attack * maxhealth/50f);
+            defence = (float)(k * data.stats_defence* maxhealth / 50f);
+            종족변수 = (float)(k * data.stats_race);
             speed = (float)(2*data.stats_speed);
+            health = maxhealth;
             /* attack = (float)(k * data.stats_attack    * data.stats_health);
              defence = (float)(k * data.stats_defence * data.stats_health);
              health = (float)(k * data.stats_health);
              speed = (float)(data.stats_speed / data.stats_health);*/
-           /* Debug.Log(gameObject.name);
+            Debug.Log(gameObject.name);
             Debug.Log($"공격는 --> {attack}");
             Debug.Log($"방어는 --> {defence}");
             Debug.Log($"체력는 --> {health}");
-            Debug.Log($"속도는 --> {speed}");*/
+            Debug.Log($"속도는 --> {speed}");
             transform.localScale = new Vector3(defence/2, (maxhealth / 50) , 1);
             rigid.mass = defence * health * 0.1f;
             InvokeRepeating("energr_updater", Random.Range(1f,5f), 5f);
@@ -140,7 +144,7 @@ namespace Goldmetal.UndeadSurvivor
         public void Init()
         {
             race_init();
-            Init(new SpawnData(coe_attack, coe_defence, coe_speed, coe_health));
+            Init(new SpawnData(coe_attack, coe_defence, coe_speed, coe_race, maxhealth));
         }
         protected virtual void race_init() { }
 
@@ -172,7 +176,7 @@ namespace Goldmetal.UndeadSurvivor
         }
         SpawnData MakeMutation()
         {
-            return new SpawnData(spawnData, coe_attack, coe_defence, coe_speed, coe_health);
+            return new SpawnData(spawnData, coe_attack, coe_defence, coe_speed, coe_race,maxhealth);
         }
         void Reproduce(Vector3 newPos)
         {
