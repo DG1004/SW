@@ -272,6 +272,8 @@ namespace Goldmetal.UndeadSurvivor
                 {
                     GetComponent<Button>().interactable = false;
                 }
+
+                GameManager.instance.storeStd.ResetLevel();
             }
         }
     }

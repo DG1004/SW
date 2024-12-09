@@ -248,6 +248,7 @@ namespace Goldmetal.UndeadSurvivor
             {
                 // 상점에 들어가 있는 동안은 isLive = false 이기 때문에 Stop함수를 호출할 필요가 없음
                 storeStd.Show();
+                storeStd.ResetLevel(); // 사용중이 아닌 무기 레벨 초기화
             }
             else if (id == 2) // 보따리상점 UI
             {
