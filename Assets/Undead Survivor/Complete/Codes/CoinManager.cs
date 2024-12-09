@@ -6,7 +6,7 @@ using UnityEngine;
 public class CoinManager : MonoBehaviour
 {
     // 플레이어의 현재 코인 수
-    public static int playerCoins = 200000;
+    public static int playerCoins = 1000;
     public GameObject coinPrefab;
 
     private void Update()
