@@ -85,8 +85,8 @@ namespace Goldmetal.UndeadSurvivor
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
             // 일정 시간이 지난 후 총알을 파괴
-            CancelInvoke("DestroyBullet");
-            Invoke("DestroyBullet", lifetime);
+            CancelInvoke("OnDead");
+            Invoke("OnDead", lifetime);
         }
 
         /// <summary>
