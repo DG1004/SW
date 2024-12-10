@@ -60,7 +60,7 @@ namespace Goldmetal.UndeadSurvivor
             attack = 10;
             defence = 10;
             speed = 5;
-            maxhealth = 1000;
+            maxhealth = 512;
             health = maxhealth;
 
             if (patternCoroutine != null)
@@ -80,14 +80,16 @@ namespace Goldmetal.UndeadSurvivor
 
             Vector2 dirVec = target.position - rigid.position;
             float distance = dirVec.magnitude;
-            if (currentPatternIndex % 3 == 2)
+            if (currentPatternIndex % 3 == 2&&Time.time>StopTime)
             {
                 Shoot();
+                StopTime = Time.time + 0.1f;
             }
             else if (distance > 0.1f && !IsInHitAnimation())
             {
                 if (Time.time > StopTime)
                 {
+                    speed = distance + 3f;
                     Vector2 nextVec = dirVec.normalized * speed * Time.fixedDeltaTime;
                     rigid.MovePosition(rigid.position + nextVec);
                     anim.SetFloat("Speed", speed);
@@ -98,7 +100,7 @@ namespace Goldmetal.UndeadSurvivor
             {
                 anim.SetFloat("Speed", 0);
                 rigid.velocity = Vector2.zero;
-                StopTime = Time.time+1;
+                StopTime = Time.time+1.5f;
 
             }
         }
@@ -169,12 +171,41 @@ namespace Goldmetal.UndeadSurvivor
             }
 
         }
+        float fixedDistance = 10f;
         void Shoot()
         {
+            // 로그 출력
             Debug.Log("몬스터 총알 생성");
-            GameObject bullet = GameManager.instance.pool.Get_Enemy(4);///
-            bullet.transform.position = transform.position;
-            bullet.GetComponent<EnemyBullet>().Init(OnAttack, 9, 7, attack);
+
+            // 풀에서 총알 객체 가져오기 (풀 관리 방식에 따라 다를 수 있음)
+            GameObject bullet = GameManager.instance.pool.Get_Enemy(4);
+
+            // 기본 위치 설정 (몬스터의 현재 위치)
+            Vector3 basePosition = target.position;
+
+            // 고정된 거리 설정 (총알이 생성될 반경)
+            float fixedDistance = 10f;
+
+            // 무작위 각도 생성 (0도 ~ 360도)
+            float randomAngle = Random.Range(0f, 360f);
+
+            // 각도를 라디안으로 변환
+            float angleRad = randomAngle * Mathf.Deg2Rad;
+
+            // X와 Y 오프셋 계산
+            float offsetX = Mathf.Cos(angleRad) * fixedDistance;
+            float offsetY = Mathf.Sin(angleRad) * fixedDistance;
+
+            // 새로운 위치 계산 (2D이므로 Z는 0으로 설정)
+            Vector3 spawnPosition = basePosition + new Vector3(offsetX, offsetY, 0);
+
+            // 총알의 위치 설정
+            bullet.transform.position = spawnPosition;
+
+            // 총알 초기화 (필요한 파라미터로 초기화)
+            bullet.GetComponent<EnemyBullet>().Init(OnAttack, 6, 7, 3);
+
+
         }
         protected void HandleDeath()
         {
@@ -288,7 +319,6 @@ namespace Goldmetal.UndeadSurvivor
             anim.ResetTrigger("Hit1");
             anim.ResetTrigger("Hit2");
             anim.SetTrigger("FinishPattern");
-            Shoot();
         }
 
         public void DealDamage()
