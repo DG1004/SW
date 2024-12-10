@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Goldmetal.UndeadSurvivor
@@ -56,7 +57,7 @@ namespace Goldmetal.UndeadSurvivor
 
         protected void Init()
         {
-            attack = 0;
+            attack = 10;
             defence = 10;
             speed = 5;
             maxhealth = 1000;
@@ -69,6 +70,7 @@ namespace Goldmetal.UndeadSurvivor
             Debug.Log($"여기는 init {GameManager.instance.EnemyNum++}");
         }
 
+        float StopTime=0;
         protected void FixedUpdate()
         {
             if (!GameManager.instance.isLive)
@@ -78,23 +80,26 @@ namespace Goldmetal.UndeadSurvivor
 
             Vector2 dirVec = target.position - rigid.position;
             float distance = dirVec.magnitude;
-
-            if (distance > 0.1f && !IsInHitAnimation())
+            if (currentPatternIndex % 3 == 2)
             {
-                Debug.Log("asdasdsadasd");
-                Vector2 nextVec = dirVec.normalized * speed * Time.fixedDeltaTime;
-                rigid.MovePosition(rigid.position + nextVec);
-                anim.SetFloat("Speed", speed);
+                Shoot();
+            }
+            else if (distance > 0.1f && !IsInHitAnimation())
+            {
+                if (Time.time > StopTime)
+                {
+                    Vector2 nextVec = dirVec.normalized * speed * Time.fixedDeltaTime;
+                    rigid.MovePosition(rigid.position + nextVec);
+                    anim.SetFloat("Speed", speed);
+                }
+
             }
             else
             {
                 anim.SetFloat("Speed", 0);
                 rigid.velocity = Vector2.zero;
+                StopTime = Time.time+1;
 
-                if (IsInHitAnimation() && distance > attackDistance)
-                {
-                    CancelHitAnimation();
-                }
             }
         }
 
@@ -106,30 +111,20 @@ namespace Goldmetal.UndeadSurvivor
                 return;
             spriter.flipX = target.position.x < rigid.position.x;
         }
-
-        void OnTriggerEnter2D(Collider2D collision)
+        private void OnTriggerExit2D(Collider2D collision)
         {
             if (!isLive)
                 return;
-            Debug.Log(collision.tag);
-
-            if (collision.CompareTag("Bullet"))
+            if (IsInHitAnimation())
             {
-                float 피해량 = collision.GetComponent<Bullet>().damage - defence;
-                StartCoroutine(KnockBack(피해량 / maxhealth));
-                health -= 피해량;
-
-                if (health > 0)
-                {
-                    anim.SetTrigger("Hit");
-                    AudioManager.instance.PlaySfx(AudioManager.Sfx.Hit);
-                }
-                else
-                {
-                    HandleDeath();
-                }
+                CancelHitAnimation();
             }
-            if (collision.CompareTag("Player"))
+        }
+        private void OnTriggerStay2D(Collider2D collision)
+        {
+            if (!isLive)
+                return;
+            if (collision.CompareTag("Player") && !IsInHitAnimation())
             {
 
                 Pattern currentPattern = (Pattern)(currentPatternIndex % 3);
@@ -147,10 +142,40 @@ namespace Goldmetal.UndeadSurvivor
                 }
 
                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Hit);
-                DealDamage();
+                //  DealDamage();
             }
         }
+        void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (!isLive)
+                return;
+            Debug.Log(collision.tag);
 
+            if (collision.CompareTag("Bullet"))
+            {
+                float 피해량 = collision.GetComponent<Bullet>().damage - defence;
+                StartCoroutine(KnockBack(피해량 / maxhealth));
+                health -= 피해량;
+
+                if (health > 0)
+                {
+                    anim.SetTrigger("OnHit");
+                    AudioManager.instance.PlaySfx(AudioManager.Sfx.Hit);
+                }
+                else
+                {
+                    HandleDeath();
+                }
+            }
+
+        }
+        void Shoot()
+        {
+            Debug.Log("몬스터 총알 생성");
+            GameObject bullet = GameManager.instance.pool.Get_Enemy(4);///
+            bullet.transform.position = transform.position;
+            bullet.GetComponent<EnemyBullet>().Init(OnAttack, 9, 7, attack);
+        }
         protected void HandleDeath()
         {
             Debug.Log($"여기는 OnTriggerEnter2D {GameManager.instance.EnemyNum--}");
@@ -251,7 +276,7 @@ namespace Goldmetal.UndeadSurvivor
             anim.SetFloat("Speed", 0);
             yield return new WaitForSeconds(10f);
         }
-                    
+
         private bool IsInHitAnimation()
         {
             return anim.GetCurrentAnimatorStateInfo(0).IsName("HitEnemy Orc1") || anim.GetCurrentAnimatorStateInfo(0).IsName("HitEnemy Orc2");
@@ -262,12 +287,14 @@ namespace Goldmetal.UndeadSurvivor
             anim.SetFloat("Speed", 0);
             anim.ResetTrigger("Hit1");
             anim.ResetTrigger("Hit2");
+            anim.SetTrigger("FinishPattern");
+            Shoot();
         }
 
         public void DealDamage()
         {
             if (!isLive) return;
-            GameManager.instance.player.OnBeat(OnAttack,attack);
+            GameManager.instance.player.OnBeat(OnAttack, attack);
         }
     }
 }

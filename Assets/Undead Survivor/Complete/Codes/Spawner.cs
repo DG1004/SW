@@ -50,11 +50,13 @@ namespace Goldmetal.UndeadSurvivor
         {
             // 코루틴 시작
             StartCoroutine(SpawnInitialEnemies());
+            GameObject enemy = GameManager.instance.pool.Get_Enemy(6);
+            enemy.transform.position = spawnPoint[Random.Range(1, spawnPoint.Length)].position;
         }
         IEnumerator SpawnInitialEnemies()
         {
 
-            for (int i = 0; i < initialEnemyCount + 5; i++)
+            /*for (int i = 0; i < initialEnemyCount + 5; i++)
             {
                 Spawn(1); // 적 스폰
 
@@ -81,9 +83,8 @@ namespace Goldmetal.UndeadSurvivor
 
                 // spawnInterval 만큼 대기
                 yield return new WaitForSeconds(0.1f);
-            }
-            GameObject enemy = GameManager.instance.pool.Get_Enemy(6);
-            enemy.transform.position = spawnPoint[Random.Range(1, spawnPoint.Length)].position;
+            }*/
+           
             yield return new WaitForSeconds(0.1f);
             // Use random spawnData for initial enemies
             // int randomIndex = Random.Range(0, spawnData.Length);

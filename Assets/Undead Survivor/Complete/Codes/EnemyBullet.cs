@@ -1,4 +1,5 @@
 using Goldmetal.UndeadSurvivor;
+using System;
 using UnityEngine;
 
 
@@ -49,7 +50,7 @@ namespace Goldmetal.UndeadSurvivor
         public float damage = 10;            // 총알이 입히는 피해량
         public float lifetime = 5f;        // 총알 생존 시간
         public bool isLive = false;        // 총알의 활성 상태;
-        Enemy master;
+        Action<float> action;
 
         private Rigidbody2D rb;
 
@@ -68,11 +69,11 @@ namespace Goldmetal.UndeadSurvivor
         /// <param name="speed">총알의 속도</param>
         /// <param name="lifetime">총알의 생존 시간</param>
         /// <param name="damage">총알이 입히는 피해량</param>
-        public void Init(Enemy master, float speed, float lifetime, float damage)
+        public void Init(Action<float> action, float speed, float lifetime, float damage)
         {
 
             rb = GetComponent<Rigidbody2D>();
-            this.master = master;
+            this.action = action;
             this.speed = speed;
             this.lifetime = lifetime;
             this.damage = damage;
@@ -102,7 +103,7 @@ namespace Goldmetal.UndeadSurvivor
         {
             if (collision.CompareTag("Player"))
             {
-                GameManager.instance.player.OnBeat(master.OnAttack, damage);
+                GameManager.instance.player.OnBeat(action, damage);
                 OnDead();
             }
             if (collision.CompareTag("Bullet"))
