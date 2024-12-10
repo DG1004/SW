@@ -162,6 +162,7 @@ namespace Goldmetal.UndeadSurvivor
                 if (health > 0)
                 {
                     anim.SetTrigger("OnHit");
+                    GameManager.instance.ManaManager.DropManas(transform.position);
                     AudioManager.instance.PlaySfx(AudioManager.Sfx.Hit);
                 }
                 else
@@ -203,7 +204,7 @@ namespace Goldmetal.UndeadSurvivor
             bullet.transform.position = spawnPosition;
 
             // 총알 초기화 (필요한 파라미터로 초기화)
-            bullet.GetComponent<EnemyBullet>().Init(OnAttack, 6, 7, 3);
+            bullet.GetComponent<EnemyBullet>().Init(OnAttack, 6, 7, 3,false);
 
 
         }
