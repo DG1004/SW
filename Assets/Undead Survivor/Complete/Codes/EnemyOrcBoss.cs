@@ -83,7 +83,7 @@ namespace Goldmetal.UndeadSurvivor
             if (currentPatternIndex % 3 == 2&&Time.time>StopTime)
             {
                 Shoot();
-                StopTime = Time.time + 0.1f;
+                StopTime = Time.time + 0.05f;
             }
             else if (distance > 0.1f && !IsInHitAnimation())
             {
