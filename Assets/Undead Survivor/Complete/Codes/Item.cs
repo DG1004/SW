@@ -261,9 +261,9 @@ namespace Goldmetal.UndeadSurvivor
                     {
                         GameManager.instance.SwapWeapon(GameManager.instance.player.usingWeaponIdx[GameManager.instance.player.curWeapon]);
                     }
-                    else // 새로운 무기 구매
+                    else // 새로운 무기 구매, 현재 무기 중 하나를 버린다.
                     {
-                        GameManager.instance.RemoveWeapon(GameManager.instance.player.usingWeaponIdx[GameManager.instance.player.curWeapon]);
+                        GameManager.instance.weaponPopup.ShowPopup(); // 버릴 무기 선택창을 띄운다. 창을 내리는 건 버튼 클릭 이벤트에서 
                         GameManager.instance.player.usingWeaponIdx[GameManager.instance.player.curWeapon] = data.itemId;
                     }
                 }
