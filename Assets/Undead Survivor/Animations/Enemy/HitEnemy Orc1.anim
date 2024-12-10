@@ -78,4 +78,11 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 0.16666667
+    functionName: DealDamage
+    data: 
+    objectReferenceParameter: {fileID: 11500000, guid: 0cdf98b8299e7fe42971d9c18fd06008, type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0

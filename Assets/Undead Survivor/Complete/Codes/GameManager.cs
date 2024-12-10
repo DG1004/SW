@@ -30,7 +30,7 @@ namespace Goldmetal.UndeadSurvivor
         // 플레이어의 현재 체력을 나타냅니다.
         public float health;
         // 플레이어의 최대 체력을 설정합니다.
-        public float maxHealth = 100;
+        public float maxHealth = 200;
         // 플레이어가 처치한 적의 수를 기록합니다.
         public int kill;
         // 플레이어가 획득한 코인의 수를 기록합니다.
@@ -83,7 +83,7 @@ namespace Goldmetal.UndeadSurvivor
             playerId = id;
             // 플레이어의 체력을 최대 체력으로 초기화합니다.
             health = maxHealth;
-
+            ManaManager.playerManas = ManaManager.maxManas;
             // 플레이어 오브젝트를 활성화하여 게임에 등장시킵니다.
             player.gameObject.SetActive(true);
             // 상점 오브젝트를 활성화하여 게임에 등장시키고, 위치를 지정합니다.

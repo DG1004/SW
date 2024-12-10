@@ -22,7 +22,7 @@ public class Weapon_Long_fast : Weapon
 
         if (timer > speed)
         {
-            if (Input.GetKey(GameManager.instance.fireKey) && ManaManager.playerManas >= 1)
+            if (Input.GetKey(GameManager.instance.fireKey) && ManaManager.playerManas >= 3)
             {
                 timer = 0f;
                 FireRifle();

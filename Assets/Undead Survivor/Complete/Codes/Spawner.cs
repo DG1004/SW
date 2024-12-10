@@ -18,7 +18,7 @@ namespace Goldmetal.UndeadSurvivor
         public int minEnemyCount = 30;
         private float timer = 0f;
         private float lastSpawnTime = 0f; // 마지막 추가 스폰 시간
-        private const float spawnCooldown = 10f; // 추가 스폰 쿨다운 시간 (초)
+        private const float spawnCooldown = 5f; // 추가 스폰 쿨다운 시간 (초)
 
 
         void Awake()
@@ -37,7 +37,7 @@ namespace Goldmetal.UndeadSurvivor
             timer += Time.deltaTime;
 
             // minEnemyCount 이하로 내려가면 추가 스폰 수행, 쿨다운 체크
-            if (GameManager.instance.isLive && GameManager.instance.EnemyNum < minEnemyCount && timer > 10f)
+            if (GameManager.instance.isLive && GameManager.instance.EnemyNum < minEnemyCount && timer > 5f)
             {
                 if (Time.time - lastSpawnTime >= spawnCooldown) // 마지막 스폰 이후 시간이 지났는지 확인
                 {
@@ -50,18 +50,20 @@ namespace Goldmetal.UndeadSurvivor
         {
             // 코루틴 시작
             StartCoroutine(SpawnInitialEnemies());
+            GameObject enemy = GameManager.instance.pool.Get_Enemy(6);
+            enemy.transform.position = spawnPoint[Random.Range(1, spawnPoint.Length)].position;
         }
         IEnumerator SpawnInitialEnemies()
         {
 
-            for (int i = 0; i < initialEnemyCount + 3; i++)
+            /*for (int i = 0; i < initialEnemyCount + 5; i++)
             {
                 Spawn(1); // 적 스폰
 
                 // spawnInterval 만큼 대기
                 yield return new WaitForSeconds(0.1f);
             }
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < initialEnemyCount; i++)
             {
                 Spawn(2); // 적 스폰
 
@@ -81,9 +83,8 @@ namespace Goldmetal.UndeadSurvivor
 
                 // spawnInterval 만큼 대기
                 yield return new WaitForSeconds(0.1f);
-            }
-            GameObject enemy = GameManager.instance.pool.Get_Enemy(6);
-            enemy.transform.position = spawnPoint[Random.Range(1, spawnPoint.Length)].position;
+            }*/
+           
             yield return new WaitForSeconds(0.1f);
             // Use random spawnData for initial enemies
             // int randomIndex = Random.Range(0, spawnData.Length);

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ManaManager : MonoBehaviour
 {
-    // 플레이어의 현재 코인 수
+    // 플레이어의 현재 마나 수
     public static double playerManas = 100.0;
     public static double maxManas = 100.0;
 
@@ -19,7 +19,7 @@ public class ManaManager : MonoBehaviour
     private void Update()
     {
         // 테스트용. C키로 마나 드랍
-        if (Input.GetKey(KeyCode.C))
+         if (Input.GetKey(KeyCode.C))
         {
             Vector2 pos = GameManager.instance.player.transform.position;
             pos.y += 5.0f;
@@ -34,7 +34,7 @@ public class ManaManager : MonoBehaviour
         }
 
         // 마나가 사용되지 않은 시간이 3초 이상일 때 마나 회복 시작
-        if (Time.time - lastManaUseTime >= 3.0f && playerManas < maxManas && !isRegenerating)
+        if ((Time.time - lastManaUseTime >= 3.0f) && (playerManas < maxManas) && (!isRegenerating))
         {
             StartCoroutine(RegenerateMana());
         }
