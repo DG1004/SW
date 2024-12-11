@@ -196,6 +196,44 @@ namespace Goldmetal.UndeadSurvivor
             ManaManager.playerManas -= 30;
             AudioManager.instance.PlaySfx(AudioManager.Sfx.Range);
         }
+        public virtual void FireCircle()
+        {
+            if (!player.scanner.nearestTarget)
+            {
+                Debug.Log("noTarget");
+                return;
+            }
+
+            // 플레이어 위치를 중심으로 목표와의 방향을 계산
+            Vector3 targetPos = player.scanner.nearestTarget.position;
+            Vector3 dir = targetPos - player.transform.position;
+            dir = dir.normalized;
+
+            // bullet을 플레이어 위치에 생성
+            Transform bullet = GameManager.instance.pool.Get_Bullet(prefabId).transform;
+            bullet.position = player.transform.position;
+            bullet.rotation = Quaternion.FromToRotation(Vector3.up, dir);
+
+            // bullet을 플레이어의 자식으로 설정 -> 플레이어를 따라다니며 고정
+            bullet.SetParent(player.transform);
+
+            // bullet 초기화 (이동 관련 로직이 있다면 제거하거나 이동속도를 0으로 설정)
+            bullet.GetComponent<Bullet>().InitCircle(damage, count, dir);
+            ManaManager.playerManas -= 15;
+
+            // 사운드 재생
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.Range);
+
+            // 0.2초 뒤에 bullet을 풀로 반환하거나 파괴
+            StartCoroutine(DeactivateBullet(bullet.gameObject, 0.2f));
+        }
+
+        private IEnumerator DeactivateBullet(GameObject bullet, float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            bullet.SetActive(false); // Bullet을 비활성화
+        }
+
 
         public virtual void FireMeteor()
         {

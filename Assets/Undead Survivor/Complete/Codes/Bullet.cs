@@ -28,6 +28,13 @@ namespace Goldmetal.UndeadSurvivor
             }
         }
 
+        public void InitCircle(float damage, int per, Vector3 dir)
+        {
+            this.damage = damage;
+            this.per = per;
+
+        }
+
         void OnTriggerEnter2D(Collider2D collision)
         {
             if (!collision.CompareTag("Enemy") || per == -100)

@@ -249,6 +249,25 @@ namespace Goldmetal.UndeadSurvivor
 
                     level++;
                     break;
+                case ItemData.ItemType.circle:
+                    if (level == 0)
+                    {
+                        GameObject newWeapon = new GameObject();
+                        weapon = newWeapon.AddComponent<Weapon_Circle>();
+                        weapon.Init(data);
+                    }
+                    else
+                    {
+                        float nextDamage = data.baseDamage;
+                        int nextCount = 0;
+
+                        nextDamage += data.baseDamage * data.damages[level];
+
+                        weapon.LevelUp(nextDamage, nextCount);
+                    }
+
+                    level++;
+                    break;
                 case ItemData.ItemType.Glove:
                 case ItemData.ItemType.Shoe:
                     if (level == 0)
