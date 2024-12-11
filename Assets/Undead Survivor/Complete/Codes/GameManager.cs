@@ -65,6 +65,7 @@ namespace Goldmetal.UndeadSurvivor
         public Arrow arrow;
         public ManaManager ManaManager;
         public weaponThrow weaponPopup; // 버릴 무기를 선택하는 팝업창
+        public Setting settingPopup; // 설정창
 
         // Awake는 스크립트가 처음 로드될 때 호출되는 함수입니다.
         void Awake()
@@ -96,6 +97,8 @@ namespace Goldmetal.UndeadSurvivor
             Resume();
 
             // 배경음악을 재생하고, 선택 효과음을 재생합니다.
+            AudioManager.instance.SetBgmVolume(AudioManager.instance.bgmSlider.value);
+            AudioManager.instance.SetSfxVolume(AudioManager.instance.sfxSlider.value);
             AudioManager.instance.PlayBgm(true);
             AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
         }
@@ -179,11 +182,13 @@ namespace Goldmetal.UndeadSurvivor
             // isLive가 true일 때 몬스터가 계속해서 생성되는 것 고치기
             if (Input.GetKeyDown(KeyCode.Escape) && isLive) {
                 Stop();
+                settingPopup.ShowSetting();
                 return;
                 }
             if (Input.GetKeyDown(KeyCode.Escape) && !isLive)
             {
                 Resume();
+                settingPopup.HideSetting();
             }
             // 게임이 진행 중일 때 아래 로직을 실행합니다.
             if (isLive)

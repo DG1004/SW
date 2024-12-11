@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Goldmetal.UndeadSurvivor
 {
@@ -10,16 +11,20 @@ namespace Goldmetal.UndeadSurvivor
 
         [Header("#BGM")]
         public AudioClip bgmClip;
-        public float bgmVolume;
+        public float bgmVolume = 0.1f;
         AudioSource bgmPlayer;
         AudioHighPassFilter bgmEffect;
 
         [Header("#SFX")]
         public AudioClip[] sfxClips;
-        public float sfxVolume;
+        public float sfxVolume = 0.1f;
         public int channels;
         AudioSource[] sfxPlayers;
         int channelIndex;
+
+        [Header("#UI Sliders")]
+        public Slider bgmSlider; // BGM 슬라이더
+        public Slider sfxSlider; // SFX 슬라이더
 
         public enum Sfx { Dead, Hit, LevelUp = 3, Lose, Melee, Range = 7, Select, Win, Coin }
 
@@ -57,6 +62,18 @@ namespace Goldmetal.UndeadSurvivor
                     sfxPlayers[index].volume = sfxVolume / 8;
                 }
             }
+
+            // 슬라이더 초기화
+            if (bgmSlider != null)
+            {
+                bgmSlider.value = bgmVolume; // 슬라이더 값 동기화
+                bgmSlider.onValueChanged.AddListener(SetBgmVolume); // 값 변경 시 메서드 연결
+            }
+            if (sfxSlider != null)
+            {
+                sfxSlider.value = sfxVolume; // 슬라이더 값 동기화
+                sfxSlider.onValueChanged.AddListener(SetSfxVolume); // 값 변경 시 메서드 연결
+            }
         }
 
         public void PlayBgm(bool isPlay)
@@ -91,6 +108,21 @@ namespace Goldmetal.UndeadSurvivor
                 sfxPlayers[loopIndex].clip = sfxClips[(int)sfx + ranIndex];
                 sfxPlayers[loopIndex].Play();
                 break;
+            }
+        }
+
+        public void SetBgmVolume(float volume)
+        {
+            bgmVolume = volume;
+            bgmPlayer.volume = bgmVolume; // BGM 플레이어 볼륨 업데이트
+        }
+
+        public void SetSfxVolume(float volume)
+        {
+            sfxVolume = volume;
+            foreach (var player in sfxPlayers)
+            {
+                player.volume = sfxVolume; // 모든 SFX 플레이어 볼륨 업데이트
             }
         }
     }
