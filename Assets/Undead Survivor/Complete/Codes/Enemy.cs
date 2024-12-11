@@ -122,7 +122,7 @@ namespace Goldmetal.UndeadSurvivor
             //anim.runtimeAnimatorController = animCon[data];
             energy = 0;
             spawnData = data;
-            attack = (float)(k * data.stats_attack * maxhealth/50f);
+            attack = (float)(k * data.stats_attack * maxhealth/100f);
             defence = (float)(k * data.stats_defence* maxhealth / 50f);
             종족변수 = (float)(k * data.stats_race);
             speed = (float)(2*data.stats_speed);
