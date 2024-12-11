@@ -219,8 +219,7 @@ namespace Goldmetal.UndeadSurvivor
             spriter.sortingOrder = 1;
             anim.speed = 1;
             anim.SetBool("Dead", true);
-            GameManager.instance.kill++;
-            GameManager.instance.GetExp();
+            GameManager.instance.GameVictroy();
 
             if (GameManager.instance.isLive)
                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Dead);

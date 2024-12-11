@@ -170,6 +170,7 @@ namespace Goldmetal.UndeadSurvivor
         }
 
         // 매 프레임마다 호출되는 업데이트 함수입니다.
+        bool isBossSpawn=false;
         void Update()
         {
             // esc 키를 눌러 게임을 멈추거나 재개한다.
@@ -196,7 +197,11 @@ namespace Goldmetal.UndeadSurvivor
                     // 게임 시간을 최대 시간으로 고정합니다.
                     gameTime = maxGameTime;
                     // 게임 승리 함수를 호출합니다.
-                    GameVictroy();
+                    if (!isBossSpawn)
+                    {
+                        player.GetComponentInChildren<Spawner>().SpawnBoss();
+                        isBossSpawn=true;
+                    }
                 }
             }
             // 플레이어가 상점에 있을 때 아래 로직을 실행합니다.

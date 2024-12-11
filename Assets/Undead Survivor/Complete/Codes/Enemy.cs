@@ -153,13 +153,13 @@ namespace Goldmetal.UndeadSurvivor
         void energy_updater() 
         {
             if (!isLive||!GameManager.instance.isLive) return;
-            energy += speed *100/ (GameManager.instance.EnemyNum);//몬스터 수에 따라 유동적으로 조정하기 위해서
+            energy += speed *200/ (GameManager.instance.EnemyNum);//몬스터 수에 따라 유동적으로 조정하기 위해서
             if(!_lock) TryReproduce();
         }
         public void OnAttack(float damage)
         {
             if (!isLive) return;
-            energy += 5 * damage;
+            energy += 10 * damage;
             _lock = true;
             TryReproduce();
             _lock = false;
