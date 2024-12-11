@@ -16,6 +16,7 @@ public class weaponThrow : MonoBehaviour
     public Sprite defaultIcon;     // 기본 아이콘 (무기 정보가 없을 때 표시)
     public string defaultName = "Empty"; // 기본 이름
 
+    public bool isPopup = false;
     public void ShowPopup()
     {
         PopupWindow.SetActive(true);
@@ -37,6 +38,7 @@ public class weaponThrow : MonoBehaviour
     public void HidePopup()
     {
         PopupWindow.SetActive(false);
+        isPopup = false;
     }
 
     private void UpdateButtonInfo(Button button, int weaponId)
@@ -63,13 +65,16 @@ public class weaponThrow : MonoBehaviour
 
     public void ChooseWeapon(int weaponIdx)
     {
+        Debug.Log(weaponIdx);
         if (weaponIdx == GameManager.instance.player.usingWeaponIdx[0])
         {
             GameManager.instance.RemoveWeapon(GameManager.instance.player.usingWeaponIdx[0]);
+            GameManager.instance.player.curWeapon = 0;
         }
         else
         {
             GameManager.instance.RemoveWeapon(GameManager.instance.player.usingWeaponIdx[1]);
+            GameManager.instance.player.curWeapon = 1;
         }
 
         HidePopup();

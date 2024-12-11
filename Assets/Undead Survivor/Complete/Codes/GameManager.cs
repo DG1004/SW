@@ -293,8 +293,20 @@ namespace Goldmetal.UndeadSurvivor
         }
         public void RemoveWeapon(int id)
         {
-            GameManager.instance.player.hands[id].gameObject.SetActive(false);
-            Transform weaponTrs = GameManager.instance.player.transform.Find("Weapon " + id);
+            instance.player.hands[instance.player.usingWeaponIdx[instance.player.curWeapon]].gameObject.SetActive(false);
+            // 현재 사용중인 Hand를 비활성화
+            Transform weaponTrs = instance.player.transform.Find("Weapon " + instance.player.usingWeaponIdx[instance.player.curWeapon]);
+            if (weaponTrs != null)
+            {
+                weaponTrs.gameObject.SetActive(false); // 현재 사용중인 무기를 비활성화
+            }
+            else
+            {
+                Debug.LogWarning("Weapon 오브젝트를 찾을 수 없습니다.");
+            }
+
+            instance.player.hands[id].gameObject.SetActive(false);
+            weaponTrs = instance.player.transform.Find("Weapon " + id);
             if (weaponTrs != null)
             {
                 Weapon weaponScript = weaponTrs.GetComponent<Weapon>();
