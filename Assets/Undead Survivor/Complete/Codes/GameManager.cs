@@ -210,7 +210,9 @@ namespace Goldmetal.UndeadSurvivor
                     }
                 }
             }
+            /*
             // 플레이어가 상점에 있을 때 아래 로직을 실행합니다.
+            // 이제 플레이어 코드에서 실행
             if (player.isStore == 1)
             {
                 player.inputVec.x = Input.GetAxisRaw("Horizontal");
@@ -218,6 +220,7 @@ namespace Goldmetal.UndeadSurvivor
                 Vector2 nextVec = player.inputVec.normalized * player.speed * Time.fixedDeltaTime;
                 player.rigid.MovePosition(player.rigid.position + nextVec);
             }
+            */
         }
 
         // 삭제 예정

@@ -62,7 +62,13 @@ namespace Goldmetal.UndeadSurvivor
 
 		void Update()
 		{
-			if (!GameManager.instance.isLive)
+            if (isStore == 1)
+            {
+                inputVec.x = Input.GetAxisRaw("Horizontal");
+                inputVec.y = Input.GetAxisRaw("Vertical");
+            }
+
+            if (!GameManager.instance.isLive)
 				return;
 
 			inputVec.x = Input.GetAxisRaw("Horizontal");
@@ -77,6 +83,12 @@ namespace Goldmetal.UndeadSurvivor
 
         void FixedUpdate()
         {
+            if (isStore == 1)
+            {
+                Vector2 nextVec_s = inputVec.normalized * speed * Time.fixedDeltaTime;
+                rigid.MovePosition(rigid.position + nextVec_s);
+            }
+
             if (!GameManager.instance.isLive)
                 return;
 
@@ -123,7 +135,7 @@ namespace Goldmetal.UndeadSurvivor
 
         void LateUpdate()
 		{
-			if (!GameManager.instance.isLive)
+			if (!GameManager.instance.isLive && isStore == 0)
 				return;
 
 			anim.SetFloat("Speed", inputVec.magnitude);
