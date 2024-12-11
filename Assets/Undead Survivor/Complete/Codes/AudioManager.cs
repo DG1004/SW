@@ -21,7 +21,7 @@ namespace Goldmetal.UndeadSurvivor
         AudioSource[] sfxPlayers;
         int channelIndex;
 
-        public enum Sfx { Dead, Hit, LevelUp = 3, Lose, Melee, Range = 7, Select, Win }
+        public enum Sfx { Dead, Hit, LevelUp = 3, Lose, Melee, Range = 7, Select, Win, Coin }
 
         void Awake()
         {
@@ -51,6 +51,11 @@ namespace Goldmetal.UndeadSurvivor
                 sfxPlayers[index].playOnAwake = false;
                 sfxPlayers[index].bypassListenerEffects = true;
                 sfxPlayers[index].volume = sfxVolume;
+
+                if (index == sfxPlayers.Length - 1)
+                {
+                    sfxPlayers[index].volume = sfxVolume / 8;
+                }
             }
         }
 

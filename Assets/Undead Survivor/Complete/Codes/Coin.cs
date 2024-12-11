@@ -76,6 +76,7 @@ public class Coin : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Collect();
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.Coin);
         }
     }
 }
