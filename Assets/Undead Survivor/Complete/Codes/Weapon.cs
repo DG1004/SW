@@ -219,7 +219,7 @@ namespace Goldmetal.UndeadSurvivor
 
             // bullet 초기화 (이동 관련 로직이 있다면 제거하거나 이동속도를 0으로 설정)
             bullet.GetComponent<Bullet>().InitCircle(damage, count, dir);
-            ManaManager.playerManas -= 15;
+            ManaManager.playerManas -= 25;
 
             // 사운드 재생
             AudioManager.instance.PlaySfx(AudioManager.Sfx.Range);
