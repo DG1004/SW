@@ -179,10 +179,12 @@ namespace Goldmetal.UndeadSurvivor
 				{
 					if (enemy.activeSelf)
 					{
-                        enemy.transform.position = transform.position + (Vector3)(UnityEngine.Random.insideUnitCircle.normalized * 20f);
+                        enemy.transform.position = transform.position + (Vector3)(UnityEngine.Random.insideUnitCircle.normalized * 15f);
                     }
                 }
-                
+                StartCoroutine(GetComponentInChildren<Spawner>().SpawnInitialEnemies());
+
+
             }
             // 플레이어가 기본상점에 충돌했을 때
             else if (collision.gameObject.CompareTag("StoreStd"))

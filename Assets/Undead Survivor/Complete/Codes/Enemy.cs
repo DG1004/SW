@@ -122,7 +122,7 @@ namespace Goldmetal.UndeadSurvivor
             //anim.runtimeAnimatorController = animCon[data];
             energy = 0;
             spawnData = data;
-            attack = (float)(k * data.stats_attack * maxhealth/100f);
+            attack = (float)(k * data.stats_attack * maxhealth/300f);
             defence = (float)(k * data.stats_defence* maxhealth / 50f);
             종족변수 = (float)(k * data.stats_race);
             speed = (float)(2*data.stats_speed);
@@ -159,7 +159,7 @@ namespace Goldmetal.UndeadSurvivor
         public void OnAttack(float damage)
         {
             if (!isLive) return;
-            energy += 10 * damage;
+            energy += 40 * damage;
             _lock = true;
             TryReproduce();
             _lock = false;
