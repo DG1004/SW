@@ -57,10 +57,10 @@ namespace Goldmetal.UndeadSurvivor
 
         protected void Init()
         {
-            attack = 10;
+            attack = 15;
             defence = 10;
             speed = 5;
-            maxhealth = 512;
+            maxhealth = 3500;
             health = maxhealth;
 
             if (patternCoroutine != null)
