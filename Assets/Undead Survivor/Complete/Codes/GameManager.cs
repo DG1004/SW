@@ -63,7 +63,8 @@ namespace Goldmetal.UndeadSurvivor
         public TMSHOP tmShop;  // Inspector에서 반드시 할당해야 함
         public StoreEntrance store;
         public Arrow arrow;
-        public ManaManager ManaManager; 
+        public ManaManager ManaManager;
+        public weaponThrow weaponPopup; // 버릴 무기를 선택하는 팝업창
 
         // Awake는 스크립트가 처음 로드될 때 호출되는 함수입니다.
         void Awake()
@@ -253,6 +254,7 @@ namespace Goldmetal.UndeadSurvivor
             {
                 // 상점에 들어가 있는 동안은 isLive = false 이기 때문에 Stop함수를 호출할 필요가 없음
                 storeStd.Show();
+                storeStd.ResetLevel(); // 사용중이 아닌 무기 레벨 초기화
             }
             else if (id == 2) // 보따리상점 UI
             {
@@ -296,8 +298,20 @@ namespace Goldmetal.UndeadSurvivor
         }
         public void RemoveWeapon(int id)
         {
-            GameManager.instance.player.hands[id].gameObject.SetActive(false);
-            Transform weaponTrs = GameManager.instance.player.transform.Find("Weapon " + id);
+            instance.player.hands[instance.player.usingWeaponIdx[instance.player.curWeapon]].gameObject.SetActive(false);
+            // 현재 사용중인 Hand를 비활성화
+            Transform weaponTrs = instance.player.transform.Find("Weapon " + instance.player.usingWeaponIdx[instance.player.curWeapon]);
+            if (weaponTrs != null)
+            {
+                weaponTrs.gameObject.SetActive(false); // 현재 사용중인 무기를 비활성화
+            }
+            else
+            {
+                Debug.LogWarning("Weapon 오브젝트를 찾을 수 없습니다.");
+            }
+
+            instance.player.hands[id].gameObject.SetActive(false);
+            weaponTrs = instance.player.transform.Find("Weapon " + id);
             if (weaponTrs != null)
             {
                 Weapon weaponScript = weaponTrs.GetComponent<Weapon>();

@@ -2,12 +2,14 @@ using Goldmetal.UndeadSurvivor;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StoreStd : MonoBehaviour
 {
 	RectTransform rect;
     Item[] items;
 
+    public Item[] ItemGroup;
 
     void Awake()
 	{
@@ -75,5 +77,16 @@ public class StoreStd : MonoBehaviour
             }
         }
     }
-
+    public void ResetLevel()
+    {
+        for (int i = 0; i < ItemGroup.Length; i++) 
+        {
+            if (GameManager.instance.player.usingWeaponIdx[0] != ItemGroup[i].data.itemId &&
+                GameManager.instance.player.usingWeaponIdx[1] != ItemGroup[i].data.itemId) 
+            {
+                ItemGroup[i].level = 0;
+                ItemGroup[i].GetComponent<Button>().interactable = true;
+            }
+        }
+    }
 }
