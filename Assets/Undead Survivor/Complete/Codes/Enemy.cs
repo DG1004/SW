@@ -125,7 +125,7 @@ namespace Goldmetal.UndeadSurvivor
             attack = (float)(k * data.stats_attack * maxhealth/300f);
             defence = (float)(k * data.stats_defence* maxhealth / 50f);
             종족변수 = (float)(k * data.stats_race);
-            speed = (float)(2*data.stats_speed);
+            speed = (float)(2.5*data.stats_speed);
             health = maxhealth;
             /* attack = (float)(k * data.stats_attack    * data.stats_health);
              defence = (float)(k * data.stats_defence * data.stats_health);
@@ -153,7 +153,7 @@ namespace Goldmetal.UndeadSurvivor
         void energy_updater() 
         {
             if (!isLive||!GameManager.instance.isLive) return;
-            energy += speed *200/ (GameManager.instance.EnemyNum);//몬스터 수에 따라 유동적으로 조정하기 위해서
+            energy += speed *300/ (GameManager.instance.EnemyNum);//몬스터 수에 따라 유동적으로 조정하기 위해서
             if(!_lock) TryReproduce();
         }
         public void OnAttack(float damage)
