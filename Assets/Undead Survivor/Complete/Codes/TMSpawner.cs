@@ -21,7 +21,7 @@ public class TMSpawner : MonoBehaviour
 
         timer1 += Time.deltaTime;
 
-        if (timer1 > 120f) {
+        if (timer1 > 4f) {
             timer1 = 0;
             Spawn();
            

@@ -322,6 +322,10 @@ namespace Goldmetal.UndeadSurvivor
             {
                 GameManager.instance.ShowShop(2);
             }
+            else if (collision.gameObject.CompareTag("wizard"))
+            {
+                GameManager.instance.ShowShop(3);
+            }
         }
 
         void OnCollisionStay2D(Collision2D collision)

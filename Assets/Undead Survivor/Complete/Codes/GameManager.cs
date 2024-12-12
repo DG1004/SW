@@ -64,6 +64,8 @@ namespace Goldmetal.UndeadSurvivor
         public GameObject enemyCleaner;
         public StoreStd storeStd;
         public TMSHOP tmShop;  // Inspector에서 반드시 할당해야 함
+        public WIZARDSHOP wizardshop;  // Inspector에서 반드시 할당해야 함
+
         public StoreEntrance store;
         public Arrow arrow;
         public ManaManager ManaManager;
@@ -271,6 +273,11 @@ namespace Goldmetal.UndeadSurvivor
             {
                 Stop();  // Stop the game
                 tmShop.Show();  // Show the travelling merchant shop
+            }
+            else if (id == 3) // 보따리상점 UI
+            {
+                Stop();  // Stop the game
+                wizardshop.Show();
             }
         }
         public void SwapWeapon(int curId)
