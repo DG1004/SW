@@ -40,6 +40,9 @@ namespace Goldmetal.UndeadSurvivor
         public KeyCode weaponChangeKey = KeyCode.X;
         public KeyCode skillKey = KeyCode.C;
         public KeyCode dashKey = KeyCode.Space;
+        public KeyCode ghostKey = KeyCode.Q;
+        public KeyCode enhenceKey = KeyCode.W;
+        public KeyCode healKey = KeyCode.E;
         // 삭제 예정
         public int level;
         public int exp;
