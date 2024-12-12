@@ -200,7 +200,11 @@ MonoBehaviour:
   attack: 0
   animCon: []
   target: {fileID: 0}
-  fireRate: 10
+  approachDistance: 7
+  angleChangeThreshold: 2
+  requiredStableTime: 1
+  rushDuration: 1
+  rushSpeedMultiplier: 10
 --- !u!1 &8995485532374544537
 GameObject:
   m_ObjectHideFlags: 0

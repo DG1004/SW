@@ -138,17 +138,11 @@ namespace Goldmetal.UndeadSurvivor
             Debug.Log($"¹æ¾î´Â --> {defence}");
             Debug.Log($"Ã¼·Â´Â --> {health}");
             Debug.Log($"¼Óµµ´Â --> {speed}");
-            float proportion = Mathf.Clamp01((float)(data.stats_attack / (0.25 / coe_attack)));
 
-            // »ö»ó º¸°£: Èò»ö(0 ºñ·Ê)¿¡¼­ »¡°£»ö(1 ºñ·Ê)À¸·Î
-            // Èò»ö: (1,1,1), »¡°£»ö: (1,0,0)
-            Color newColor = Color.Lerp(Color.white, Color.red, proportion-1);
-
-            renderer.color = newColor;
-            /*if (data.stats_attack > (0.25/coe_attack)*1.2)
+            if (data.stats_attack > (0.25 / coe_attack) * 1.4)
             {
                 renderer.color = new Color(1f, 0f, 0f, 1f);
-            }*/
+            }
             transform.localScale = new Vector3(defence/2, (maxhealth / 50) , 1);
             rigid.mass = defence * health * 0.1f;
             InvokeRepeating("energy_updater", Random.Range(1f,5f), 5f);
