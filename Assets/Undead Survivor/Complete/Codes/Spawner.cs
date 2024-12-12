@@ -125,7 +125,7 @@ namespace Goldmetal.UndeadSurvivor
         // 랜덤 변화를 위한 메서드 (±10%)
         private double RandomVariation()
         {
-            return (UnityEngine.Random.value ) - 0.5; // -0.1부터 0.1 사이의 값
+            return (UnityEngine.Random.value * 0.6) - 0.3; // -0.1부터 0.1 사이의 값
         }
 
         

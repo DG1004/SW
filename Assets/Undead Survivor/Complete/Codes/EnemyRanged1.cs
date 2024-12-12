@@ -12,7 +12,7 @@ namespace Goldmetal.UndeadSurvivor
     public class EnemyRanged1 : Enemy
     {
         //float time = 0; 안쓰인다는 오류 있음
-        public float fireRate = 15f;        // 발사 간격 (초 단위)
+        public float fireRate = 20f;        // 발사 간격 (초 단위)
         private float nextFireTime = 0f;   // 다음 발사 시간
         protected override void FixedUpdate()
         {
@@ -45,10 +45,10 @@ namespace Goldmetal.UndeadSurvivor
         {
             this.race_index = 3;////
             this.coe_attack = 0.025;
-            this.coe_defence = 0.3;
+            this.coe_defence = 0.5;
             this.coe_race = 0.0075;
             this.coe_speed = 0.6;
-            this.maxhealth = 100 ; 
+            this.maxhealth = 20 ; 
 
             //SpawnData data = new SpawnData(0, 20, 0.01, 3, 2.2);
             //general_Init(data);

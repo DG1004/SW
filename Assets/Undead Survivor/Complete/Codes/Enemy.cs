@@ -118,16 +118,30 @@ namespace Goldmetal.UndeadSurvivor
         }
         protected void Init(SpawnData data)
         {
+
             //여기 공격력 수정하고 방어력 돌연변이 밸런스 등등
             race_init();
             float k = 1;//Mathf.Log(Mathf.Log(GameManager.instance.gameTime+2.71f)+1.71f);
             //anim.runtimeAnimatorController = animCon[data];
+            if (data.stats_attack > (0.25 / coe_attack) * 1.5)
+            {
+                renderer.color = new Color(1f, 0f, 0f, 1f);
+            }
+            if (data.stats_defence > (0.25 / coe_defence) * 1.5)
+            {
+                renderer.color = new Color(0f, 0f, 1f, 1f);
+            }
+            if (data.stats_health > (maxhealth) * 1.5)
+            {
+                renderer.color = new Color(0f, 1f, 0f, 1f);
+            }
+            maxhealth = (float)(data.stats_health);
             energy = 0;
             spawnData = data;
-            attack = (float)(k * data.stats_attack * maxhealth/300f);
-            defence = (float)(k * data.stats_defence* maxhealth / 50f);
+            attack = (float)(k * data.stats_attack * maxhealth/200f);
+            defence = (float)(k * data.stats_defence* maxhealth / 25f);
             종족변수 = (float)(k * data.stats_race);
-            speed = (float)(2.5*data.stats_speed);
+            speed = (float)(3*data.stats_speed);
             health = maxhealth;
             /* attack = (float)(k * data.stats_attack    * data.stats_health);
              defence = (float)(k * data.stats_defence * data.stats_health);
@@ -139,11 +153,8 @@ namespace Goldmetal.UndeadSurvivor
             Debug.Log($"체력는 --> {health}");
             Debug.Log($"속도는 --> {speed}");
 
-            if (data.stats_attack > (0.25 / coe_attack) * 1.4)
-            {
-                renderer.color = new Color(1f, 0f, 0f, 1f);
-            }
-            transform.localScale = new Vector3(defence/2, (maxhealth / 50) , 1);
+            
+            transform.localScale = new Vector3(Mathf.Sqrt(defence/2), Mathf.Sqrt(maxhealth / 25) , 1);
             rigid.mass = defence * health * 0.1f;
             InvokeRepeating("energy_updater", Random.Range(1f,5f), 5f);
             Debug.Log($"여기는 init {GameManager.instance.EnemyNum++}");
