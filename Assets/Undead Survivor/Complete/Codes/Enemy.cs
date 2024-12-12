@@ -38,6 +38,7 @@ namespace Goldmetal.UndeadSurvivor
         protected Animator anim;
         protected SpriteRenderer spriter;
         protected WaitForFixedUpdate wait;
+        protected SpriteRenderer renderer;
 
 
         void Awake()
@@ -47,6 +48,7 @@ namespace Goldmetal.UndeadSurvivor
             anim = GetComponent<Animator>();
             spriter = GetComponent<SpriteRenderer>();
             wait = new WaitForFixedUpdate();
+            renderer = GetComponent<SpriteRenderer>();
         }
 
         protected virtual void FixedUpdate()
@@ -136,6 +138,10 @@ namespace Goldmetal.UndeadSurvivor
             Debug.Log($"방어는 --> {defence}");
             Debug.Log($"체력는 --> {health}");
             Debug.Log($"속도는 --> {speed}");
+            if (data.stats_attack > (0.25/coe_attack)*1.2)
+            {
+                renderer.color = new Color(1f, 0f, 0f, 1f);
+            }
             transform.localScale = new Vector3(defence/2, (maxhealth / 50) , 1);
             rigid.mass = defence * health * 0.1f;
             InvokeRepeating("energy_updater", Random.Range(1f,5f), 5f);
