@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
@@ -17,18 +19,21 @@ namespace Goldmetal.UndeadSurvivor
         public Image ghostCooldownImage;
         public float ghostCooldownTime = 30f;
         private bool isGhostCooldown = false;
+        private bool isGhostSkillPurchased = false;
 
         [Header("Enhence Skill UI")]
         public Text enhenceCooldownText;
         public Image enhenceCooldownImage;
         public float enhenceCooldownTime = 30f;
         private bool isEnhenceCooldown = false;
+        private bool isEnhenceSkillPurchased = false;
 
         [Header("Heal Skill UI")]
         public Text healCooldownText;
         public Image healCooldownImage;
         public float healCooldownTime = 60f;
         private bool isHealCooldown = false;
+        private bool isHealSkillPurchased = false;
 
         private void Start()
         {
@@ -53,21 +58,21 @@ namespace Goldmetal.UndeadSurvivor
             }
 
             // Ghost 스킬 (Q)
-            if (Input.GetKeyDown(GameManager.instance.ghostKey) && !isGhostCooldown)
+            if (Input.GetKeyDown(GameManager.instance.ghostKey) && !isGhostCooldown && isGhostSkillPurchased)
             {
                 StartCoroutine(StartCooldown(ghostCooldownTime, ghostCooldownText, ghostCooldownImage,
                     (val) => isGhostCooldown = val));
             }
 
             // Enhence 스킬 (W)
-            if (Input.GetKeyDown(GameManager.instance.enhenceKey) && !isEnhenceCooldown)
+            if (Input.GetKeyDown(GameManager.instance.enhenceKey) && !isEnhenceCooldown && isEnhenceSkillPurchased)
             {
                 StartCoroutine(StartCooldown(enhenceCooldownTime, enhenceCooldownText, enhenceCooldownImage,
                     (val) => isEnhenceCooldown = val));
             }
 
             // Heal 스킬 (E)
-            if (Input.GetKeyDown(GameManager.instance.healKey) && !isHealCooldown)
+            if (Input.GetKeyDown(GameManager.instance.healKey) && !isHealCooldown && isHealSkillPurchased)
             {
                 StartCoroutine(StartCooldown(healCooldownTime, healCooldownText, healCooldownImage,
                     (val) => isHealCooldown = val));
@@ -94,14 +99,31 @@ namespace Goldmetal.UndeadSurvivor
                 currentTime--;
             }
 
+            uiText.text = ""; // 텍스트 초기화
+            SetUIVisible(uiText, uiImage, false); // UI 숨김
             setIsCooldown(false);
-            SetUIVisible(uiText, uiImage, false);
         }
 
         private void SetUIVisible(Text text, Image image, bool visible)
         {
             if (text != null) text.gameObject.SetActive(visible);
             if (image != null) image.gameObject.SetActive(visible);
+        }
+
+        // 스킬 구매 상태 업데이트 메서드
+        public void PurchaseGhostSkill()
+        {
+            isGhostSkillPurchased = true;
+        }
+
+        public void PurchaseEnhenceSkill()
+        {
+            isEnhenceSkillPurchased = true;
+        }
+
+        public void PurchaseHealSkill()
+        {
+            isHealSkillPurchased = true;
         }
     }
 }

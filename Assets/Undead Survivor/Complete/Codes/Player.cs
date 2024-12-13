@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
-using static UnityEditor.Progress;
 using System;
 
 namespace Goldmetal.UndeadSurvivor
@@ -41,7 +40,7 @@ namespace Goldmetal.UndeadSurvivor
         private bool isGhosting = false;
         public float ghostDuration = 5f;
         private float ghostTime = 0f;
-        private bool canGhost = true;
+        public bool canGhost = true;
         private float ghostCooldown = 30f;
         private float ghostCooldownTimer = 0f;
         private float ghostSpeedMultiplier = 1.5f;
@@ -50,18 +49,24 @@ namespace Goldmetal.UndeadSurvivor
         private bool isEnhencing = false;
         public float enhenceDuration = 5f;
         private float enhenceTime = 0f;
-        private bool canEnhence = true;
+        public bool canEnhence = true;
         private float enhenceCooldown = 30f;
         private float enhenceCooldownTimer = 0f;
         public float attackMultiplier = 1f; // 기본 공격력 배율: 1f, enhence일 때 1.5f
 
         // heal 스킬
-        private bool canHeal = true;
+        public bool canHeal = true;
         private float healCooldown = 60f;
         private float healCooldownTimer = 0f;
 
         SpriteRenderer spriter;
         Animator anim;
+
+        private bool isGhostSkillPurchased = false;
+        private bool isEnhenceSkillPurchased = false;
+        private bool isHealSkillPurchased = false;
+
+        private CooldownTimer cooldownTimerScript;
 
         void Awake()
         {
@@ -74,6 +79,8 @@ namespace Goldmetal.UndeadSurvivor
             usingWeaponIdx[0] = -1;
             usingWeaponIdx[1] = -1;
             curWeapon = -1;
+
+            cooldownTimerScript = GetComponent<CooldownTimer>();
         }
 
         void OnEnable()
@@ -111,8 +118,8 @@ namespace Goldmetal.UndeadSurvivor
                 cooldownTimer = dashCooldown;
             }
 
-            // ghost 스킬 사용 (Q키)
-            if (Input.GetKeyDown(GameManager.instance.ghostKey) && canGhost)
+            // 고스트 스킬 사용 (Q키)
+            if (Input.GetKeyDown(GameManager.instance.ghostKey) && canGhost && isGhostSkillPurchased)
             {
                 isGhosting = true;
                 canGhost = false;
@@ -120,8 +127,8 @@ namespace Goldmetal.UndeadSurvivor
                 ghostTime = ghostDuration; // ghost 지속시간 초기화
             }
 
-            // enhence 스킬 사용 (W키)
-            if (Input.GetKeyDown(GameManager.instance.enhenceKey) && canEnhence)
+            // 엔헨스 스킬 사용 (W키)
+            if (Input.GetKeyDown(GameManager.instance.enhenceKey) && canEnhence && isEnhenceSkillPurchased)
             {
                 isEnhencing = true;
                 canEnhence = false;
@@ -130,13 +137,42 @@ namespace Goldmetal.UndeadSurvivor
                 attackMultiplier = 1.5f; // 공격력 1.5배 증가
             }
 
-            // heal 스킬 사용 (E키)
-            if (Input.GetKeyDown(GameManager.instance.healKey) && canHeal)
+            // 힐 스킬 사용 (E키)
+            if (Input.GetKeyDown(GameManager.instance.healKey) && canHeal && isHealSkillPurchased)
             {
                 // 체력을 최대치로 회복
                 GameManager.instance.health = GameManager.instance.maxHealth;
                 canHeal = false;
                 healCooldownTimer = healCooldown;
+            }
+        }
+
+        public void PurchaseGhostSkill()
+        {
+            isGhostSkillPurchased = true;
+            Debug.Log("!");
+
+            if (cooldownTimerScript != null)
+            {
+                cooldownTimerScript.PurchaseGhostSkill();
+            }
+        }
+
+        public void PurchaseEnhenceSkill()
+        {
+            isEnhenceSkillPurchased = true;
+            if (cooldownTimerScript != null)
+            {
+                cooldownTimerScript.PurchaseEnhenceSkill();
+            }
+        }
+
+        public void PurchaseHealSkill()
+        {
+            isHealSkillPurchased = true;
+            if (cooldownTimerScript != null)
+            {
+                cooldownTimerScript.PurchaseHealSkill();
             }
         }
 
@@ -151,10 +187,8 @@ namespace Goldmetal.UndeadSurvivor
             if (!GameManager.instance.isLive)
                 return;
 
-            // 플레이어 이동 처리
-            // 대쉬/고스트 스킬 반영: 기본속도 * 대쉬속도 or 고스트속도 적용
             float currentSpeed = speed;
-            // 대쉬 적용
+
             if (dashTime > 0)
             {
                 currentSpeed = dashSpeed;
@@ -163,7 +197,7 @@ namespace Goldmetal.UndeadSurvivor
             {
                 currentSpeed = defaultSpeed;
             }
-            // 고스트 적용
+
             if (isGhosting && ghostTime > 0)
             {
                 currentSpeed *= ghostSpeedMultiplier;
@@ -173,8 +207,6 @@ namespace Goldmetal.UndeadSurvivor
             예측샷용플레이어속도 = inputVec.normalized * currentSpeed;
             rigid.MovePosition(rigid.position + nextVec);
 
-
-            // 대쉬 시간/쿨타임 처리
             if (dashTime <= 0)
             {
                 if (isdash)
@@ -191,26 +223,22 @@ namespace Goldmetal.UndeadSurvivor
                 dashTime -= Time.deltaTime;
             }
 
-            // 대쉬 쿨타임 처리
             if (!canDash)
             {
                 cooldownTimer -= Time.deltaTime;
                 if (cooldownTimer <= 0)
                 {
-                    canDash = true; // 대쉬 재활성화
+                    canDash = true;
                 }
             }
 
             isdash = false;
 
-
-            // ghost 지속시간/쿨타임 처리
             if (isGhosting)
             {
                 ghostTime -= Time.deltaTime;
                 if (ghostTime <= 0)
                 {
-                    // 고스트 효과 종료
                     isGhosting = false;
                 }
             }
@@ -220,19 +248,17 @@ namespace Goldmetal.UndeadSurvivor
                 ghostCooldownTimer -= Time.deltaTime;
                 if (ghostCooldownTimer <= 0)
                 {
-                    canGhost = true; // 고스트 재활성화
+                    canGhost = true;
                 }
             }
 
-            // enhence 지속시간/쿨타임 처리
             if (isEnhencing)
             {
                 enhenceTime -= Time.deltaTime;
                 if (enhenceTime <= 0)
                 {
-                    // 엔헨스 효과 종료
                     isEnhencing = false;
-                    attackMultiplier = 1f; // 원래 공격력으로 복귀
+                    attackMultiplier = 1f;
                 }
             }
 
@@ -241,21 +267,19 @@ namespace Goldmetal.UndeadSurvivor
                 enhenceCooldownTimer -= Time.deltaTime;
                 if (enhenceCooldownTimer <= 0)
                 {
-                    canEnhence = true; // 엔헨스 재활성화
+                    canEnhence = true;
                 }
             }
 
-            // heal 쿨타임 처리
             if (!canHeal)
             {
                 healCooldownTimer -= Time.deltaTime;
                 if (healCooldownTimer <= 0)
                 {
-                    canHeal = true; // 힐 재활성화
+                    canHeal = true;
                 }
             }
         }
-
 
         void LateUpdate()
         {
@@ -272,7 +296,6 @@ namespace Goldmetal.UndeadSurvivor
 
         void OnCollisionEnter2D(Collision2D collision)
         {
-            // 상점 진입 로직
             if (collision.gameObject.CompareTag("StoreEntrance"))
             {
                 GameManager.instance.health = GameManager.instance.maxHealth;
@@ -299,7 +322,6 @@ namespace Goldmetal.UndeadSurvivor
                 store.changePosition();
                 store.gameObject.SetActive(true);
 
-                // 상점탈출시 몬스터 위치 재조정
                 GameObject[] enemys = GameObject.FindGameObjectsWithTag("Enemy");
                 foreach (GameObject enemy in enemys)
                 {

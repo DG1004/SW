@@ -1,73 +1,103 @@
+using Goldmetal.UndeadSurvivor;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class Skills : MonoBehaviour
-{   
-    public GameObject[] hideSkillButtons;
-    public GameObject[] textPros;
-    public TextMeshProUGUI[] hideSkillTimeTexts;
-    public Image[] hideSkillmages;
-    private bool[] isHideSkills = { false }; //스킬 개수에 따라 추가
-    private float[] skillTimes = { 15 };
-    private float[] getSkillTimes = { 0 };
+{
+    public GameObject player;
+    public Button ghostSkillButton;
+    public Button healSkillButton;
+    public Button enhanceSkillButton;
+    public Image ghostSkillLockImage;
+    public Image healSkillLockImage;
+    public Image enhanceSkillLockImage;
+    public int skillCost = 50000; // Cost for each skill
 
-    void Start()
+    private Player playerScript;
+
+    void Awake()
     {
-        for (int i = 0; i < textPros.Length; i++)
+        playerScript = player.GetComponent<Player>();
+
+        // Add button listeners
+        ghostSkillButton.onClick.AddListener(() => PurchaseSkill(SkillType.Ghost));
+        healSkillButton.onClick.AddListener(() => PurchaseSkill(SkillType.Heal));
+        enhanceSkillButton.onClick.AddListener(() => PurchaseSkill(SkillType.Enhance));
+
+        // Ensure buttons are disabled if skills are already unlocked
+        if (playerScript.canGhost)
         {
-            hideSkillTimeTexts[i] = textPros[i].GetComponent<TextMeshProUGUI>();
-            hideSkillButtons[i].SetActive(false);
+            ghostSkillButton.interactable = false;
+            ghostSkillLockImage.gameObject.SetActive(false);
+        }
+        if (playerScript.canHeal)
+        {
+            healSkillButton.interactable = false;
+            healSkillLockImage.gameObject.SetActive(false);
+        }
+        if (playerScript.canEnhence)
+        {
+            enhanceSkillButton.interactable = false;
+            enhanceSkillLockImage.gameObject.SetActive(false);
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    public enum SkillType
     {
-        HideSkillChk();
+        Ghost,
+        Heal,
+        Enhance
     }
 
-    public void HideSkillSetting(int skillNum)
+    public void PurchaseSkill(SkillType skillType)
     {
-        hideSkillButtons[skillNum].SetActive(true);
-        getSkillTimes[skillNum] = skillTimes[skillNum];
-        isHideSkills[skillNum] = true;
-    }
-
-
-    private void HideSkillChk() {
-
-        if (isHideSkills[0])
+        if (CoinManager.playerCoins >= skillCost)
         {
-            StartCoroutine(SkillTimeChk(0)); // 스킬 개수에 따라 추가
-        }
+            CoinManager.playerCoins -= skillCost; // Deduct skill cost
 
-
-    }
-
-
-    IEnumerator SkillTimeChk(int skillNum)
-    {
-        yield return null;
-
-        if (getSkillTimes[skillNum] > 0)
-        {
-            getSkillTimes[skillNum] -= Time.deltaTime;
-
-            if (getSkillTimes[skillNum] < 0)
+            switch (skillType)
             {
-                getSkillTimes[skillNum] = 0;
-                isHideSkills[skillNum] = false;
-                hideSkillButtons[skillNum].SetActive(false);
+                case SkillType.Ghost:
+                    UnlockGhostSkill();
+                    break;
 
+                case SkillType.Heal:
+                    UnlockHealSkill();
+                    break;
+
+                case SkillType.Enhance:
+                    UnlockEnhanceSkill();
+                    break;
             }
-            hideSkillTimeTexts[skillNum].text = getSkillTimes[skillNum].ToString("00");
-
-            float time = getSkillTimes[skillNum] / skillTimes[skillNum];
-            hideSkillmages[skillNum].fillAmount = time;
         }
+        else
+        {
+            Debug.Log("Not enough coins to purchase skill!");
+        }
+    }
 
+    private void UnlockGhostSkill()
+    {
+        playerScript.canGhost = true; // Enable ghost skill on the player
+        ghostSkillLockImage.gameObject.SetActive(false); // Remove lock image
+        ghostSkillButton.interactable = false; // Disable button to prevent re-purchase
+        Debug.Log("Ghost skill unlocked!");
+    }
+
+    private void UnlockHealSkill()
+    {
+        playerScript.canHeal = true; // Enable heal skill on the player
+        healSkillLockImage.gameObject.SetActive(false); // Remove lock image
+        healSkillButton.interactable = false; // Disable button to prevent re-purchase
+        Debug.Log("Heal skill unlocked!");
+    }
+
+    private void UnlockEnhanceSkill()
+    {
+        playerScript.canEnhence = true; // Enable enhance skill on the player
+        enhanceSkillLockImage.gameObject.SetActive(false); // Remove lock image
+        enhanceSkillButton.interactable = false; // Disable button to prevent re-purchase
+        Debug.Log("Enhance skill unlocked!");
     }
 }

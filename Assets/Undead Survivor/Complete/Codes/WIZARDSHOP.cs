@@ -1,39 +1,39 @@
-using Goldmetal.UndeadSurvivor;
-using Newtonsoft.Json.Bson;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Progress;
+using UnityEngine.UI;
 
 namespace Goldmetal.UndeadSurvivor
 {
     public class WIZARDSHOP : MonoBehaviour
     {
         RectTransform rect;
-        Item[] items;
-
         public GameObject player;
         public GameObject wizard;
+
+        public Button ghostSkillButton;
+        public Button healSkillButton;
+        public Button enhenceSkillButton;
+
+        public Image ghostSkillCover;
+        public Image healSkillCover;
+        public Image enhenceSkillCover;
+
+        private bool ghostSkillPurchased = false;
+        private bool healSkillPurchased = false;
+        private bool enhenceSkillPurchased = false;
 
         void Awake()
         {
             rect = GetComponent<RectTransform>();
-            // 시작할 때 숨기기
         }
 
         public void Show()
         {
-
             rect.localScale = Vector3.one;
             GameManager.instance.Stop();
             AudioManager.instance.PlaySfx(AudioManager.Sfx.LevelUp);
             AudioManager.instance.EffectBgm(true);
-
-            if (wizard != null)
-            {
-                Destroy(wizard); // 객체 삭제
-                wizard = null;  // 참조 초기화
-            }
         }
 
         public void Hide()
@@ -44,54 +44,64 @@ namespace Goldmetal.UndeadSurvivor
             AudioManager.instance.EffectBgm(false);
         }
 
-        // 상점을 닫는 버튼에 연결할 함수
         public void CloseShop()
         {
-            if (wizard != null)
-            {
-                Destroy(wizard);
-            }
             Hide();
-            GameManager.instance.Resume(); // 게임 재개
         }
 
-        public void Select(int index)
+        public void PurchaseGhostSkill()
         {
-            items[index].OnClick();
-        }
-
-        void Next()
-        {
-            // 1. 모든 아이템 비활성화
-            foreach (Item item in items)
+            if (!ghostSkillPurchased && CoinManager.playerCoins >= 50000)
             {
-                item.gameObject.SetActive(false);
-            }
+                CoinManager.playerCoins -= 50000;
+                ghostSkillPurchased = true;
+                ghostSkillCover.gameObject.SetActive(false);
+                ghostSkillButton.interactable = false;
 
-            // 2. 그 중에서 랜덤 3개 아이템 활성화
-            int[] ran = new int[3];
-            while (true)
-            {
-                ran[0] = Random.Range(0, items.Length);
-                ran[1] = Random.Range(0, items.Length);
-                ran[2] = Random.Range(0, items.Length);
-
-                if (ran[0] != ran[1] && ran[1] != ran[2] && ran[0] != ran[2])
-                    break;
-            }
-
-            for (int index = 0; index < ran.Length; index++)
-            {
-                Item ranItem = items[ran[index]];
-
-                // 3. 만렙 아이템의 경우는 소비아이템으로 대체
-                if (ranItem.level == ranItem.data.damages.Length)
+                // Ghost 스킬 활성화 처리
+                var playerScript = player.GetComponent<Player>();
+                if (playerScript != null)
                 {
-                    items[4].gameObject.SetActive(true);
+                    playerScript.PurchaseGhostSkill(); // 구매 상태 업데이트
+                    playerScript.canGhost = true;
                 }
-                else
+            }
+        }
+
+        public void PurchaseHealSkill()
+        {
+            if (!healSkillPurchased && CoinManager.playerCoins >= 50000)
+            {
+                CoinManager.playerCoins -= 50000;
+                healSkillPurchased = true;
+                healSkillCover.gameObject.SetActive(false);
+                healSkillButton.interactable = false;
+
+                // Heal 스킬 활성화 처리
+                var playerScript = player.GetComponent<Player>();
+                if (playerScript != null)
                 {
-                    ranItem.gameObject.SetActive(true);
+                    playerScript.PurchaseHealSkill(); // 구매 상태 업데이트
+                    playerScript.canHeal = true;
+                }
+            }
+        }
+
+        public void PurchaseEnhenceSkill()
+        {
+            if (!enhenceSkillPurchased && CoinManager.playerCoins >= 50000)
+            {
+                CoinManager.playerCoins -= 50000;
+                enhenceSkillPurchased = true;
+                enhenceSkillCover.gameObject.SetActive(false);
+                enhenceSkillButton.interactable = false;
+
+                // Enhence 스킬 활성화 처리
+                var playerScript = player.GetComponent<Player>();
+                if (playerScript != null)
+                {
+                    playerScript.PurchaseEnhenceSkill(); // 구매 상태 업데이트
+                    playerScript.canEnhence = true;
                 }
             }
         }
