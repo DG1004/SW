@@ -14,7 +14,7 @@ namespace Goldmetal.UndeadSurvivor
     {
         public Transform[] spawnPoint;
         public SpawnData[] spawnData;
-        int initialEnemyCount = 7; // Set the number of initial enemies
+        int initialEnemyCount = 3; // Set the number of initial enemies
         public int minEnemyCount = 30;
         private float timer = 0f;
         private float lastSpawnTime = 0f; // 마지막 추가 스폰 시간
@@ -60,6 +60,7 @@ namespace Goldmetal.UndeadSurvivor
         public IEnumerator SpawnInitialEnemies()
         {
 
+            
             for (int i = 0; i < initialEnemyCount; i++)
             {
                 Spawn(1); // 적 스폰

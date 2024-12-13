@@ -12,7 +12,7 @@ namespace Goldmetal.UndeadSurvivor
     public class EnemyRanged1 : Enemy
     {
         //float time = 0; 안쓰인다는 오류 있음
-        public float fireRate = 20f;        // 발사 간격 (초 단위)
+        float fireRate = 10f;        // 발사 간격 (초 단위)
         private float nextFireTime = 0f;   // 다음 발사 시간
         protected override void FixedUpdate()
         {
@@ -39,7 +39,7 @@ namespace Goldmetal.UndeadSurvivor
             Debug.Log("몬스터 총알 생성");
             GameObject bullet = GameManager.instance.pool.Get_Enemy(4);///
             bullet.transform.position = transform.position;
-            bullet.GetComponent<EnemyBullet>().Init(OnAttack, speed*8, 7, attack,true);
+            bullet.GetComponent<EnemyBullet>().Init(OnAttack, 7, 7, attack,true);
         }
         protected override void race_init()//오버라이딩 초기 스탯결정
         {
@@ -47,8 +47,8 @@ namespace Goldmetal.UndeadSurvivor
             this.coe_attack = 0.025;
             this.coe_defence = 0.5;
             this.coe_race = 0.0075;
-            this.coe_speed = 0.6;
-            this.maxhealth = 20 ; 
+            this.coe_speed = 1000;
+            this.maxhealth = 30 ; 
 
             //SpawnData data = new SpawnData(0, 20, 0.01, 3, 2.2);
             //general_Init(data);
