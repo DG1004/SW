@@ -29,7 +29,7 @@ public class Mana : MonoBehaviour
     private Transform target;
 
     private float speed = 5f; // 마나 이동 속도
-
+    float lifetime = 15f;
     void OnEnable()
     {
         if (GameManager.instance?.player == null)
@@ -40,6 +40,8 @@ public class Mana : MonoBehaviour
         target = GameManager.instance.player.transform;
         isLive = true;
         isFollow = false;
+        CancelInvoke("OnDead");
+        Invoke("OnDead", lifetime);
     }
 
     void Update()
@@ -59,11 +61,14 @@ public class Mana : MonoBehaviour
             return;
         if (ManaManager.playerManas < 100)
             ManaManager.playerManas += value;
+        OnDead();
+    }
+    void OnDead()
+    {
         isLive = false;
         gameObject.SetActive(false); // 비활성화
         Destroy(gameObject, 0.1f);   // 딜레이 후 오브젝트 제거
     }
-
     // 코인 따라가기 시작 메서드 (자식 오브젝트의 스크립트에서 호출)
     public void StartFollowing()
     {
