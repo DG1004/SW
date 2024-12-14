@@ -26,7 +26,9 @@ namespace Goldmetal.UndeadSurvivor
         {
             Pattern1,
             Pattern2,
-            Pattern3
+            Pattern3,
+            Pattern4,
+
         }
 
         private int currentPatternIndex = 0;
@@ -52,6 +54,7 @@ namespace Goldmetal.UndeadSurvivor
             rigid.simulated = true;
             spriter.sortingOrder = 2;
             anim.SetBool("Dead", false);
+
             Init();
         }
 
@@ -80,10 +83,16 @@ namespace Goldmetal.UndeadSurvivor
 
             Vector2 dirVec = target.position - rigid.position;
             float distance = dirVec.magnitude;
-            if (currentPatternIndex % 3 == 2&&Time.time>StopTime)
+            if (currentPatternIndex % 4 == 2&&Time.time>StopTime)
             {
                 Shoot();
                 StopTime = Time.time + 0.05f;
+            }
+            else if (currentPatternIndex % 4 == 1 && Time.time > StopTime)
+            {
+                GameManager.instance.EnemyNum = 10000;
+                GameManager.instance.player.GetComponentInChildren<Spawner>().SpawnInitialEnemies();
+                StopTime = Time.time + 3f;
             }
             else if (distance > 0.1f && !IsInHitAnimation())
             {
@@ -129,16 +138,20 @@ namespace Goldmetal.UndeadSurvivor
             if (collision.CompareTag("Player") && !IsInHitAnimation())
             {
 
-                Pattern currentPattern = (Pattern)(currentPatternIndex % 3);
+                Pattern currentPattern = (Pattern)(currentPatternIndex % 4);
                 if (currentPattern == Pattern.Pattern1)
                 {
                     anim.SetTrigger("Hit1");
                 }
-                else if (currentPattern == Pattern.Pattern2)
+                else if (currentPattern == Pattern.Pattern4)
                 {
                     anim.SetTrigger("Hit2");
                 }
                 else if (currentPattern == Pattern.Pattern3)
+                {
+                    anim.SetFloat("Speed", 0); // Stand 상태
+                }
+                else if (currentPattern == Pattern.Pattern2)
                 {
                     anim.SetFloat("Speed", 0); // Stand 상태
                 }
@@ -254,11 +267,14 @@ namespace Goldmetal.UndeadSurvivor
                     case Pattern.Pattern1:
                         yield return StartCoroutine(ExecutePattern1());
                         break;
-                    case Pattern.Pattern2:
+                    case Pattern.Pattern4:
                         yield return StartCoroutine(ExecutePattern2());
                         break;
                     case Pattern.Pattern3:
                         yield return StartCoroutine(ExecutePattern3());
+                        break;
+                    case Pattern.Pattern2:
+                        yield return StartCoroutine(ExecutePattern4());
                         break;
                 }
                 currentPatternIndex++;
@@ -295,6 +311,19 @@ namespace Goldmetal.UndeadSurvivor
         }
 
         private IEnumerator ExecutePattern3()
+        {
+            anim.SetFloat("Speed", 0);
+            yield return new WaitForSeconds(1f);
+
+            anim.SetFloat("Speed", speed);
+            yield return new WaitForSeconds(1f);
+
+            yield return new WaitUntil(() => Vector2.Distance(target.position, rigid.position) > attackDistance);
+
+            anim.SetFloat("Speed", 0);
+            yield return new WaitForSeconds(10f);
+        }
+        private IEnumerator ExecutePattern4()
         {
             anim.SetFloat("Speed", 0);
             yield return new WaitForSeconds(1f);

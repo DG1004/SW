@@ -50,27 +50,23 @@ namespace Goldmetal.UndeadSurvivor
         {
             // 코루틴 시작
             //StartCoroutine(SpawnInitialEnemies());
-            
+
         }
         public void SpawnBoss()
         {
             GameObject enemy = GameManager.instance.pool.Get_Enemy(6);
             enemy.transform.position = spawnPoint[Random.Range(1, spawnPoint.Length)].position;
         }
-        public IEnumerator SpawnInitialEnemies()
+        public void SpawnInitialEnemies()
         {
 
-            
-            for (int i = 0; i < initialEnemyCount; i++)
-            {
-                Spawn(1); // 적 스폰
-                Spawn(2);
-                Spawn(3);
-                Spawn(5);
-                // spawnInterval 만큼 대기
-                yield return new WaitForSeconds(0.5f);
-            }
 
+
+            Spawn(1); // 적 스폰
+            Spawn(2);
+            Spawn(3);
+            Spawn(5);
+            
         }
 
         void Spawn(int race_index)
@@ -81,34 +77,34 @@ namespace Goldmetal.UndeadSurvivor
             // Use random spawnData for initial enemies
             // int randomIndex = Random.Range(0, spawnData.Length);
             enemy.GetComponent<Enemy>().Init();
-           /* switch (race_index)
-            {
-                case 0:
-                    enemy.GetComponent<Enemy>().Init();//////!!!!!!!!!!!!!
-                    이거  Enemy_parent로 해도된는지 볼것
-                    break;
-                case 1:
-                    enemy.GetComponent<Enemy3>().Init();
-                    break;
-            }*/
+            /* switch (race_index)
+             {
+                 case 0:
+                     enemy.GetComponent<Enemy>().Init();//////!!!!!!!!!!!!!
+                     이거  Enemy_parent로 해도된는지 볼것
+                     break;
+                 case 1:
+                     enemy.GetComponent<Enemy3>().Init();
+                     break;
+             }*/
         }
     }
 
 
     public class SpawnData
     {
-        public SpawnData(double coe_attack,double coe_defence, double coe_speed, double coe_race,double stats_health)
+        public SpawnData(double coe_attack, double coe_defence, double coe_speed, double coe_race, double stats_health)
         {
             // 계수를 가지고 적절한 스탯을 만들어내는 함수 spawner에서 처음 몬스터 만들때 필요함
-            this.stats_attack = 0.25/coe_attack;
+            this.stats_attack = 0.25 / coe_attack;
             this.stats_defence = 0.25 / coe_defence;
             this.stats_speed = 0.25 / coe_speed;
             this.stats_race = 0.25 / coe_race;
             this.stats_health = stats_health;
 
         }
- 
-        public SpawnData(SpawnData data, double coe_attack, double coe_defence, double coe_speed, double coe_race,double stats_health)
+
+        public SpawnData(SpawnData data, double coe_attack, double coe_defence, double coe_speed, double coe_race, double stats_health)
         {
             //sdfkjsdlfkjas
             do
@@ -118,10 +114,10 @@ namespace Goldmetal.UndeadSurvivor
                 stats_speed = data.stats_speed * (1 + RandomVariation());
                 stats_race = (1 - coe_attack * stats_attack - coe_defence * stats_defence - coe_speed * stats_speed) / coe_race;
                 this.stats_health = stats_health * (1 + RandomVariation());
-            } while (stats_race <= 0 || stats_attack <= 0 || stats_defence <= 0 || stats_speed <= 0||stats_health<=10);
+            } while (stats_race <= 0 || stats_attack <= 0 || stats_defence <= 0 || stats_speed <= 0 || stats_health <= 10);
 
         }
-        
+
 
         // 랜덤 변화를 위한 메서드 (±10%)
         private double RandomVariation()
@@ -129,7 +125,7 @@ namespace Goldmetal.UndeadSurvivor
             return (UnityEngine.Random.value * 0.6) - 0.3; // -0.1부터 0.1 사이의 값
         }
 
-        
+
 
         public double stats_attack;
         public double stats_defence;
@@ -137,7 +133,7 @@ namespace Goldmetal.UndeadSurvivor
         public double stats_health;
         public double stats_race;
 
-        
+
     }
     /*public SpawnData()//무시할것
     {

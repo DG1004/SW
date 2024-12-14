@@ -330,7 +330,10 @@ namespace Goldmetal.UndeadSurvivor
                         enemy.transform.position = transform.position + (Vector3)(UnityEngine.Random.insideUnitCircle.normalized * 15f);
                     }
                 }
-                StartCoroutine(GetComponentInChildren<Spawner>().SpawnInitialEnemies());
+                for(int i = 0; i < 7; i++)
+                {
+                    GetComponentInChildren<Spawner>().SpawnInitialEnemies();
+                }
             }
             else if (collision.gameObject.CompareTag("StoreStd"))
             {
