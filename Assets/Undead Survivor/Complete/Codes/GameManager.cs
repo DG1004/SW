@@ -99,7 +99,7 @@ namespace Goldmetal.UndeadSurvivor
             // 상점 UI에서 플레이어 ID에 따른 선택을 설정합니다.
             //uiStore.Select(playerId % 2);
             // 게임을 재개합니다 (일시정지 상태에서 풀기 등).
-            Resume();
+            GameSetStart();
 
             // 배경음악을 재생하고, 선택 효과음을 재생합니다.
             AudioManager.instance.SetBgmVolume(AudioManager.instance.bgmSlider.value);
@@ -259,6 +259,14 @@ namespace Goldmetal.UndeadSurvivor
             // 게임 진행 상태를 true로 설정합니다.
             isLive = true;
             // 게임의 시간 흐름을 정상으로 돌립니다.
+            Time.timeScale = 1;
+        }
+
+        // 게임을 시작할 때 한번 호출된다
+        public void GameSetStart()
+        {
+            isLive = false;
+            player.isStore = 1;
             Time.timeScale = 1;
         }
         public void ShowShop(int id)
