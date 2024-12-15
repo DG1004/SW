@@ -45,7 +45,7 @@ public class ManaManager : MonoBehaviour
     public void DropManas(Vector2 dropPosition)
     {
         // 마나 인스턴스 생성
-        GameObject mana = Instantiate(manaPrefab, dropPosition + new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)), Quaternion.identity);
+        GameObject mana = Instantiate(manaPrefab, dropPosition /*+ new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f))*/, Quaternion.identity);
     }
 
     // 마나 회복 코루틴

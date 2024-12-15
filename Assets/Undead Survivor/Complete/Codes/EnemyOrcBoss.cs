@@ -70,7 +70,6 @@ namespace Goldmetal.UndeadSurvivor
                 StopCoroutine(patternCoroutine);
             patternCoroutine = StartCoroutine(PatternCycle());
 
-            Debug.Log($"여기는 init {GameManager.instance.EnemyNum++}");
         }
 
         float StopTime=0;
@@ -90,7 +89,7 @@ namespace Goldmetal.UndeadSurvivor
             }
             else if (currentPatternIndex % 4 == 1 && Time.time > StopTime)
             {
-                GameManager.instance.EnemyNum = 10000;
+                GameManager.instance.SetEnemyNum(10000);
                 GameManager.instance.player.GetComponentInChildren<Spawner>().SpawnInitialEnemies();
                 StopTime = Time.time + 3f;
             }
@@ -223,7 +222,6 @@ namespace Goldmetal.UndeadSurvivor
         }
         protected void HandleDeath()
         {
-            Debug.Log($"여기는 OnTriggerEnter2D {GameManager.instance.EnemyNum--}");
             GameManager.instance.CoinManager.DropCoins(transform.position);
             GameManager.instance.ManaManager.DropManas(transform.position);
             isLive = false;

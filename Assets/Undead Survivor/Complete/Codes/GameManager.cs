@@ -13,8 +13,25 @@ namespace Goldmetal.UndeadSurvivor
     {
         // 싱글톤 패턴을 사용하여 어디서든 GameManager.instance로 접근할 수 있게 합니다.
         public static GameManager instance;
-        public int EnemyNum;
-
+        int EnemyNum;
+        public int AddEnemyNum()
+        {
+            EnemyNum++;
+            return EnemyNum;
+        }
+        public int MinusEnemyNum()
+        {
+            EnemyNum--;
+            return EnemyNum;
+        }
+        public int GetEnemyNum()
+        {
+            return EnemyNum;
+        }
+        public int SetEnemyNum(int n)
+        {
+            EnemyNum = n; return EnemyNum;
+        }
         // [Header]는 인스펙터에서 변수들을 그룹화하여 보기 좋게 만듭니다.
         [Header("# Game Control")]
         // 게임이 진행 중인지 여부를 나타내는 변수입니다.

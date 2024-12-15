@@ -99,7 +99,7 @@ namespace Goldmetal.UndeadSurvivor
             }
             else
             {
-                Debug.Log($"여기는 OnTriggerEnter2D {GameManager.instance.EnemyNum--}");
+                Debug.Log($"여기는 OnTriggerEnter2D {GameManager.instance.AddEnemyNum()}");
                 GameManager.instance.CoinManager.DropCoins(transform.position);
                 GameManager.instance.ManaManager.DropManas(transform.position);
                 CancelInvoke("energy_updater");
@@ -119,6 +119,7 @@ namespace Goldmetal.UndeadSurvivor
         protected void Init(SpawnData data)
         {
 
+            spawnData = data;
             //여기 공격력 수정하고 방어력 돌연변이 밸런스 등등
             race_init();
             float k = 1;//Mathf.Log(Mathf.Log(GameManager.instance.gameTime+2.71f)+1.71f);
@@ -128,7 +129,7 @@ namespace Goldmetal.UndeadSurvivor
                 renderer.color = new Color(1f, 0f, 0f, 1f);
             }
             if (data.stats_defence > (0.25 / coe_defence) * 1.5)
-            {
+            { 
                 renderer.color = new Color(0f, 0f, 1f, 1f);
             }
             if (data.stats_health > (maxhealth) * 1.5)
@@ -137,7 +138,6 @@ namespace Goldmetal.UndeadSurvivor
             }
             maxhealth = (float)(data.stats_health);
             energy = 0;
-            spawnData = data;
             attack = (float)(k * data.stats_attack * maxhealth/200f);
             defence = (float)(k * data.stats_defence* maxhealth / 25f);
             종족변수 = (float)(k * data.stats_race);
@@ -148,16 +148,16 @@ namespace Goldmetal.UndeadSurvivor
              health = (float)(k * data.stats_health);
              speed = (float)(data.stats_speed / data.stats_health);*/
             Debug.Log(gameObject.name);
-            Debug.Log($"공격는 --> {attack}");
+           /* Debug.Log($"공격는 --> {attack}");
             Debug.Log($"방어는 --> {defence}");
             Debug.Log($"체력는 --> {health}");
-            Debug.Log($"속도는 --> {speed}");
+            Debug.Log($"속도는 --> {speed}");*/
 
             
             transform.localScale = new Vector3(Mathf.Sqrt(defence/2), Mathf.Sqrt(maxhealth / 25) , 1);
             rigid.mass = defence * health * 0.1f;
             InvokeRepeating("energy_updater", Random.Range(1f,5f), 5f);
-            Debug.Log($"여기는 init {GameManager.instance.EnemyNum++}");
+            Debug.Log($"여기는 init {GameManager.instance.AddEnemyNum()}");
         }
         public void Init()
         {
@@ -171,30 +171,31 @@ namespace Goldmetal.UndeadSurvivor
         void energy_updater() 
         {
             if (!isLive||!GameManager.instance.isLive) return;
-            energy += speed *400/ (GameManager.instance.EnemyNum);//몬스터 수에 따라 유동적으로 조정하기 위해서
-            if(!_lock) TryReproduce();
+            energy += speed *300/ (GameManager.instance.GetEnemyNum());//몬스터 수에 따라 유동적으로 조정하기 위해서
+            if(!_lock) StartCoroutine(TryReproduce());
         }
         public void OnAttack(float damage)
         {
             if (!isLive) return;
-            energy += 40 * damage;
-            _lock = true;
-            TryReproduce();
-            _lock = false;
+            energy += 80 * damage;
+            /*_lock = true;
+            StartCoroutine(TryReproduce());
+            _lock = false;*/
         }
-        void TryReproduce()
+        IEnumerator TryReproduce()
         {
             while (energy > maxhealth)
             {
                 Vector2 dirVec = target.position - rigid.position;
-                var newPos = (Vector3)(target.position + dirVec.normalized * 20f);
+                var newPos = (Vector3)(target.position + dirVec.normalized * Random.Range(15f,25f));
                 Reproduce(newPos);
                 energy -= maxhealth;
+                yield return 0.1f;
             }
         }
         SpawnData MakeMutation()
         {
-            return new SpawnData(spawnData, coe_attack, coe_defence, coe_speed, coe_race,maxhealth);
+            return new SpawnData(spawnData, coe_attack, coe_defence, coe_speed, coe_race);
         }
         void Reproduce(Vector3 newPos)
         {

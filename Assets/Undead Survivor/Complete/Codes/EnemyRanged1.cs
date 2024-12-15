@@ -36,7 +36,6 @@ namespace Goldmetal.UndeadSurvivor
         }
         void Shoot()
         {
-            Debug.Log("몬스터 총알 생성");
             GameObject bullet = GameManager.instance.pool.Get_Enemy(4);///
             bullet.transform.position = transform.position;
             bullet.GetComponent<EnemyBullet>().Init(OnAttack, 7, 7, attack,true);
@@ -47,7 +46,7 @@ namespace Goldmetal.UndeadSurvivor
             this.coe_attack = 0.025;
             this.coe_defence = 0.5;
             this.coe_race = 0.0075;
-            this.coe_speed = 1000;
+            this.coe_speed = 0.25;
             this.maxhealth = 30 ; 
 
             //SpawnData data = new SpawnData(0, 20, 0.01, 3, 2.2);

@@ -104,17 +104,18 @@ namespace Goldmetal.UndeadSurvivor
 
         }
 
-        public SpawnData(SpawnData data, double coe_attack, double coe_defence, double coe_speed, double coe_race, double stats_health)
+        public SpawnData(SpawnData data, double coe_attack, double coe_defence, double coe_speed, double coe_race)
         {
-            //sdfkjsdlfkjas
+            
             do
             {
                 stats_attack = data.stats_attack * (1 + RandomVariation());
                 stats_defence = data.stats_defence * (1 + RandomVariation());
                 stats_speed = data.stats_speed * (1 + RandomVariation());
                 stats_race = (1 - coe_attack * stats_attack - coe_defence * stats_defence - coe_speed * stats_speed) / coe_race;
-                this.stats_health = stats_health * (1 + RandomVariation());
-            } while (stats_race <= 0 || stats_attack <= 0 || stats_defence <= 0 || stats_speed <= 0 || stats_health <= 10);
+                this.stats_health = data.stats_health * (1 + RandomVariation());
+                Debug.Log("무한루프");
+            } while (stats_race <= 0|| stats_health <= 20);
 
         }
 
