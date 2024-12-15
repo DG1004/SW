@@ -99,7 +99,7 @@ namespace Goldmetal.UndeadSurvivor
             }
             else
             {
-                Debug.Log($"여기는 OnTriggerEnter2D {GameManager.instance.AddEnemyNum()}");
+                Debug.Log($"여기는 OnTriggerEnter2D {GameManager.instance.MinusEnemyNum()}");
                 GameManager.instance.CoinManager.DropCoins(transform.position);
                 GameManager.instance.ManaManager.DropManas(transform.position);
                 CancelInvoke("energy_updater");
