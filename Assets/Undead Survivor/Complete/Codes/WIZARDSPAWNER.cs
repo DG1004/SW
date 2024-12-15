@@ -21,7 +21,7 @@ public class WIZARDSPAWNER : MonoBehaviour
 
         timer1 += Time.deltaTime;
 
-        if (timer1 > 4f)
+        if (timer1 > 60f)
         {
             timer1 = 0;
             Spawn();

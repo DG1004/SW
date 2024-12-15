@@ -152,9 +152,9 @@ public class EnemyRush1 : Enemy
     {
         this.race_index = 5;
         this.coe_attack = 0.02;
-        this.coe_defence = 0.125;
+        this.coe_defence = 0.25;
         this.coe_race = 0.005;
         this.coe_speed = 0.25;
-        this.maxhealth = 75;
+        this.maxhealth = 50;
     }
 }
