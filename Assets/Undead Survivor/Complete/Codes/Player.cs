@@ -31,6 +31,7 @@ namespace Goldmetal.UndeadSurvivor
         private float dashTime;
         private float defaultSpeed;
 
+        private int cnt = 0;
         private bool canDash = true;
         private float dashCooldown = 3f;
         private float cooldownTimer = 0f;
@@ -144,6 +145,12 @@ namespace Goldmetal.UndeadSurvivor
                 GameManager.instance.health = GameManager.instance.maxHealth;
                 canHeal = false;
                 healCooldownTimer = healCooldown;
+            }
+            if (Input.GetKeyDown(GameManager.instance.bug))
+            {
+                
+                GameManager.instance.health = GameManager.instance.maxHealth;
+                
             }
         }
 
@@ -330,9 +337,19 @@ namespace Goldmetal.UndeadSurvivor
                         enemy.transform.position = transform.position + (Vector3)(UnityEngine.Random.insideUnitCircle.normalized * 15f);
                     }
                 }
-                for(int i = 0; i < 7; i++)
+                if (cnt == 0)
                 {
-                    GetComponentInChildren<Spawner>().SpawnInitialEnemies();
+                    Debug.Log("상점스폰");
+
+
+                    for (int i = 0; i < 5; i++)
+                    {
+
+                        GetComponentInChildren<Spawner>().SpawnInitialEnemies();
+                        if (i % 2 == 0)
+                            GetComponentInChildren<Spawner>().Spawn(5);
+                        cnt++;
+                    }
                 }
             }
             else if (collision.gameObject.CompareTag("StoreStd"))

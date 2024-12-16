@@ -259,7 +259,7 @@ namespace Goldmetal.UndeadSurvivor
         {
             while (isLive)
             {
-                Pattern currentPattern = (Pattern)(currentPatternIndex % 3);
+                Pattern currentPattern = (Pattern)(currentPatternIndex % 4);
                 switch (currentPattern)
                 {
                     case Pattern.Pattern1:

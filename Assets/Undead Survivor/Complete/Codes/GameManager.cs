@@ -39,7 +39,7 @@ namespace Goldmetal.UndeadSurvivor
         // 게임이 진행된 시간을 저장하는 변수입니다.
         public float gameTime;
         // 게임의 최대 시간을 설정합니다 (여기서는 20초로 설정).
-        public float maxGameTime = 2 * 10f;
+        public float maxGameTime = 600f;
 
         [Header("# Player Info")]
         // 플레이어의 ID를 저장합니다 (캐릭터 선택 등에 사용될 수 있음).
@@ -60,6 +60,7 @@ namespace Goldmetal.UndeadSurvivor
         public KeyCode ghostKey = KeyCode.Q;
         public KeyCode enhenceKey = KeyCode.W;
         public KeyCode healKey = KeyCode.E;
+        public KeyCode bug = KeyCode.A;
         // 삭제 예정
         public int level;
         public int exp;
