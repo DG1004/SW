@@ -38,13 +38,13 @@ namespace Goldmetal.UndeadSurvivor
 
             if (timer >= 10f)
             {
-              //  Spawn(1);
-               // Spawn(1);
-               // Spawn(1);
-               // Spawn(2);
-                //Spawn(3);
-                //Spawn(5);
-                //timer = 0f; // 타이머 초기화
+                Spawn(1);
+                Spawn(1);
+                Spawn(1);
+                Spawn(2);
+                Spawn(3);
+                Spawn(5);
+                timer = 0f; // 타이머 초기화
             }
             // minEnemyCount 이하로 내려가면 추가 스폰 수행, 쿨다운 체크
             /*if (GameManager.instance.isLive *//*&& GameManager.instance.EnemyNum < minEnemyCount*//* && timer > 5f)
