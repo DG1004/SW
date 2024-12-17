@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 namespace Goldmetal.UndeadSurvivor
 {
@@ -42,6 +43,8 @@ namespace Goldmetal.UndeadSurvivor
             GameManager.instance.Resume();
             AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
             AudioManager.instance.EffectBgm(false);
+            EventSystem.current.SetSelectedGameObject(null);
+
         }
 
         public void CloseShop()

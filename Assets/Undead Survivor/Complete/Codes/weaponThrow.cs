@@ -50,7 +50,7 @@ public class weaponThrow : MonoBehaviour
         if (weaponId >= 0) // 유효한 무기 ID인 경우
         {
             Transform weaponTrs = GameManager.instance.player.transform.Find("Weapon " + weaponId); // 현재 장착한 무기를 가져오는 함수
-            ItemData itemData = GameManager.instance.storeStd.ItemGroup[weaponId - 9].data; // 무기 정보를 가져오는 함수
+            ItemData itemData = GameManager.instance.ItemGroup[weaponId - 9].data; // 무기 정보를 가져오는 함수
 
             weaponText.text = itemData.itemName;          // 무기 이름 업데이트
             weaponImage.sprite = itemData.itemIcon; 

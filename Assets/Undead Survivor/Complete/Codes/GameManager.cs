@@ -89,6 +89,7 @@ namespace Goldmetal.UndeadSurvivor
         public ManaManager ManaManager;
         public weaponThrow weaponPopup; // 버릴 무기를 선택하는 팝업창
         public Setting settingPopup; // 설정창
+        public Item[] ItemGroup;
 
         // Awake는 스크립트가 처음 로드될 때 호출되는 함수입니다.
         void Awake()
@@ -299,6 +300,7 @@ namespace Goldmetal.UndeadSurvivor
             {
                 Stop();  // Stop the game
                 tmShop.Show();  // Show the travelling merchant shop
+                tmShop.ResetLevel();
             }
             else if (id == 3) // 보따리상점 UI
             {
