@@ -124,17 +124,19 @@ namespace Goldmetal.UndeadSurvivor
             race_init();
             float k = 1;//Mathf.Log(Mathf.Log(GameManager.instance.gameTime+2.71f)+1.71f);
             //anim.runtimeAnimatorController = animCon[data];
-            if (data.stats_attack > (0.25 / coe_attack) * 1.5)
-            {
-                renderer.color = new Color(1f, 0f, 0f, 1f);
-            }
-            if (data.stats_defence > (0.25 / coe_defence) * 1.5)
-            { 
-                renderer.color = new Color(0f, 0f, 1f, 1f);
-            }
+            
+            
             if (data.stats_health > (maxhealth) * 1.5)
             {
                 renderer.color = new Color(0f, 1f, 0f, 1f);
+            }
+            if (data.stats_defence > (0.25 / coe_defence) * 1.5)
+            {
+                renderer.color = new Color(0f, 0f, 1f, 1f);
+            }
+            if (data.stats_attack > (0.25 / coe_attack) * 1.5)
+            {
+                renderer.color = new Color(1f, 0f, 0f, 1f);
             }
             maxhealth = (float)(data.stats_health);
             energy = 0;
