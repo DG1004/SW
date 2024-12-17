@@ -314,10 +314,15 @@ namespace Goldmetal.UndeadSurvivor
 
                     while(GameManager.instance.weaponPopup.isPopup == true) // 버튼을 클릭하고 팝업창이 내려갈 때까지 대기
                     {
+                        if (GameManager.instance.isLive == true) 
+                        {
+                            GameManager.instance.Stop();
+                        }
                         yield return null;
                     }
 
                     Debug.Log("버릴 무기 선택");
+                    GameManager.instance.Resume();
 
                     GameManager.instance.player.usingWeaponIdx[GameManager.instance.player.curWeapon] = data.itemId;
                 }
