@@ -275,8 +275,12 @@ namespace Goldmetal.UndeadSurvivor
         // 게임을 재개할 때 호출되는 함수입니다.
         public void Resume()
         {
+            if (player.isStore == 1)
+                isLive = false;
+            else
+                isLive = true;
             // 게임 진행 상태를 true로 설정합니다.
-            isLive = true;
+            //isLive = true;
             // 게임의 시간 흐름을 정상으로 돌립니다.
             Time.timeScale = 1;
         }
