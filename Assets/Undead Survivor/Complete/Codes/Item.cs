@@ -312,9 +312,9 @@ namespace Goldmetal.UndeadSurvivor
                     GameManager.instance.weaponPopup.isPopup = true;
                     GameManager.instance.weaponPopup.ShowPopup(); // 버릴 무기 선택창을 띄운다. 창을 내리는 건 버튼 클릭 이벤트에서
 
-                    while(GameManager.instance.weaponPopup.isPopup == true) // 버튼을 클릭하고 팝업창이 내려갈 때까지 대기
+                    while (GameManager.instance.weaponPopup.isPopup == true) // 버튼을 클릭하고 팝업창이 내려갈 때까지 대기
                     {
-                        if (GameManager.instance.isLive == true) 
+                        if (GameManager.instance.isLive == true)
                         {
                             GameManager.instance.Stop();
                         }
@@ -322,8 +322,11 @@ namespace Goldmetal.UndeadSurvivor
                     }
 
                     Debug.Log("버릴 무기 선택");
-                    GameManager.instance.Resume();
 
+                    if (GameManager.instance.player.isStore != 1)
+                    {
+                        GameManager.instance.Resume();
+                    }
                     GameManager.instance.player.usingWeaponIdx[GameManager.instance.player.curWeapon] = data.itemId;
                 }
             }
