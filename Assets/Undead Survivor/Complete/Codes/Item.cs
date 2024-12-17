@@ -294,7 +294,7 @@ namespace Goldmetal.UndeadSurvivor
                 GameManager.instance.player.curWeapon = 0;
                 GameManager.instance.player.usingWeaponIdx[0] = data.itemId;
             }
-            else if (GameManager.instance.player.usingWeaponIdx[1] == -1) // 현재 무기가 1개
+            else if ((GameManager.instance.player.usingWeaponIdx[1] == -1) && (GameManager.instance.player.usingWeaponIdx[0] != data.itemId)) // 현재 무기가 1개이고 같은 무기 아닐 때
             {
                 GameManager.instance.player.usingWeaponIdx[1] = data.itemId;
                 GameManager.instance.SwapWeapon(GameManager.instance.player.usingWeaponIdx[GameManager.instance.player.curWeapon]); // 현재 무기의 id
