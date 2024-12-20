@@ -14,9 +14,11 @@ namespace Goldmetal.UndeadSurvivor
     {
         public Transform[] spawnPoint;
         public SpawnData[] spawnData;
-        public int initialEnemyCount = 1; // Set the number of initial enemies
-       // public float spawnInterval = 60f; // 기존 일정 시간 간격에 따른 스폰 간격
-        float timer = 0f;
+        int initialEnemyCount = 3; // Set the number of initial enemies
+        public int minEnemyCount = 30;
+        private float timer = 0f;
+        private float lastSpawnTime = 0f; // 마지막 추가 스폰 시간
+        private const float spawnCooldown = 30f; // 추가 스폰 쿨다운 시간 (초)
 
 
         void Awake()
@@ -25,7 +27,7 @@ namespace Goldmetal.UndeadSurvivor
 
         }
 
-        public int minEnemyCount = 30;
+
 
         void Update()
         {
@@ -34,51 +36,49 @@ namespace Goldmetal.UndeadSurvivor
 
             timer += Time.deltaTime;
 
-            // 살아있는 적의 수가 minEnemyCount 이하로 내려가면 추가 스폰 수행
-            if (GameManager.instance.isLive && timer > 10 && GameManager.instance.EnemyNum < minEnemyCount)
+            if (timer >= 10f)
             {
-                StartCoroutine(SpawnInitialEnemies());
+                Spawn(1);
+                Spawn(1);
+                Spawn(1);
+                Spawn(2);
+                Spawn(3);
+                Spawn(5);
+                timer = 0f; // 타이머 초기화
             }
+            // minEnemyCount 이하로 내려가면 추가 스폰 수행, 쿨다운 체크
+            /*if (GameManager.instance.isLive *//*&& GameManager.instance.EnemyNum < minEnemyCount*//* && timer > 5f)
+            {
+                if (Time.time - lastSpawnTime >= spawnCooldown) // 마지막 스폰 이후 시간이 지났는지 확인
+                {
+                    lastSpawnTime = Time.time; // 마지막 스폰 시간 갱신
+                    StartCoroutine(SpawnInitialEnemies());
+                }
+            }*/
         }
         void Start()
         {
             // 코루틴 시작
-            StartCoroutine(SpawnInitialEnemies());
+            //StartCoroutine(SpawnInitialEnemies());
+
         }
-        IEnumerator SpawnInitialEnemies()
+        public void SpawnBoss()
+        {
+            GameObject enemy = GameManager.instance.pool.Get_Enemy(6);
+            enemy.transform.position = spawnPoint[Random.Range(1, spawnPoint.Length)].position;
+        }
+        public void SpawnInitialEnemies()
         {
 
-            for (int i = 0; i < initialEnemyCount + 3; i++)
-            {
-                Spawn(1); // 적 스폰
 
-                // spawnInterval 만큼 대기
-                yield return new WaitForSeconds(0.1f);
-            }
-            for (int i = 0; i < 5; i++)
-            {
-                Spawn(2); // 적 스폰
 
-                // spawnInterval 만큼 대기
-                yield return new WaitForSeconds(0.1f);
-            }
-            for (int i = 0; i < initialEnemyCount; i++)
-            {
-                Spawn(3); // 적 스폰
-
-                // spawnInterval 만큼 대기
-                yield return new WaitForSeconds(0.1f);
-            }
-            for (int i = 0; i < initialEnemyCount; i++)
-            {
-                Spawn(5); // 적 스폰
-
-                // spawnInterval 만큼 대기
-                yield return new WaitForSeconds(0.1f);
-            }
+            Spawn(1); // 적 스폰
+            Spawn(2);
+            Spawn(3);
+            
         }
 
-        void Spawn(int race_index)
+        public void Spawn(int race_index)
         {
             Debug.Log(race_index);
             GameObject enemy = GameManager.instance.pool.Get_Enemy(race_index);
@@ -86,59 +86,64 @@ namespace Goldmetal.UndeadSurvivor
             // Use random spawnData for initial enemies
             // int randomIndex = Random.Range(0, spawnData.Length);
             enemy.GetComponent<Enemy>().Init();
-           /* switch (race_index)
-            {
-                case 0:
-                    enemy.GetComponent<Enemy>().Init();//////!!!!!!!!!!!!!
-                    이거  Enemy_parent로 해도된는지 볼것
-                    break;
-                case 1:
-                    enemy.GetComponent<Enemy3>().Init();
-                    break;
-            }*/
+            /* switch (race_index)
+             {
+                 case 0:
+                     enemy.GetComponent<Enemy>().Init();//////!!!!!!!!!!!!!
+                     이거  Enemy_parent로 해도된는지 볼것
+                     break;
+                 case 1:
+                     enemy.GetComponent<Enemy3>().Init();
+                     break;
+             }*/
         }
     }
 
 
     public class SpawnData
     {
-        public SpawnData(double coe_attack,double coe_defence, double coe_speed, double coe_health)
+        public SpawnData(double coe_attack, double coe_defence, double coe_speed, double coe_race, double stats_health)
         {
             // 계수를 가지고 적절한 스탯을 만들어내는 함수 spawner에서 처음 몬스터 만들때 필요함
-            this.stats_attack = 0.25/coe_attack;
+            this.stats_attack = 0.25 / coe_attack;
             this.stats_defence = 0.25 / coe_defence;
             this.stats_speed = 0.25 / coe_speed;
-            this.stats_health = 0.25 / coe_health;
+            this.stats_race = 0.25 / coe_race;
+            this.stats_health = stats_health;
 
         }
- 
-        public SpawnData(SpawnData data, double coe_attack, double coe_defence, double coe_speed, double coe_health)
+
+        public SpawnData(SpawnData data, double coe_attack, double coe_defence, double coe_speed, double coe_race)
         {
+            
             do
             {
                 stats_attack = data.stats_attack * (1 + RandomVariation());
                 stats_defence = data.stats_defence * (1 + RandomVariation());
                 stats_speed = data.stats_speed * (1 + RandomVariation());
-                stats_health = (1 - coe_attack * stats_attack - coe_defence * stats_defence - coe_speed * stats_speed) / coe_health;
-            } while (stats_health <= 15 || stats_attack <= 0 || stats_defence <= 0 || stats_speed <= 0);
+                stats_race = (1 - coe_attack * stats_attack - coe_defence * stats_defence - coe_speed * stats_speed) / coe_race;
+                this.stats_health = data.stats_health * (1 + RandomVariation());
+                Debug.Log("무한루프");
+            } while (stats_race <= 0|| stats_health <= 20);
 
         }
-        
+
 
         // 랜덤 변화를 위한 메서드 (±10%)
         private double RandomVariation()
         {
-            return (UnityEngine.Random.value * 0.3) - 0.15; // -0.1부터 0.1 사이의 값
+            return (UnityEngine.Random.value * 0.6) - 0.3; // -0.1부터 0.1 사이의 값
         }
 
-        
+
 
         public double stats_attack;
         public double stats_defence;
         public double stats_speed;
         public double stats_health;
+        public double stats_race;
 
-        
+
     }
     /*public SpawnData()//무시할것
     {

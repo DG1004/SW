@@ -5,21 +5,21 @@ using UnityEngine;
 
 public class ManaManager : MonoBehaviour
 {
-    // 플레이어의 현재 코인 수
-    public static int playerManas = 100;
-    public static int maxManas = 100;
+    // 플레이어의 현재 마나 수
+    public static double playerManas = 100.0;
+    public static double maxManas = 100.0;
 
     public GameObject manaPrefab;
 
     private float lastManaUseTime;
     private bool isRegenerating = false;
     private float regenInterval = 1.0f;
-    private int regenAmount = 5;
+    private double regenAmount = 5.0;
 
     private void Update()
     {
         // 테스트용. C키로 마나 드랍
-        if (Input.GetKey(KeyCode.C))
+         if (Input.GetKey(KeyCode.C))
         {
             Vector2 pos = GameManager.instance.player.transform.position;
             pos.y += 5.0f;
@@ -30,11 +30,11 @@ public class ManaManager : MonoBehaviour
 
         if (playerManas < maxManas)
         {
-            playerManas = Mathf.Clamp(playerManas, 0, maxManas);
+            playerManas = System.Math.Clamp(playerManas, 0.0, maxManas); // Mathf 대신 System.Math 사용
         }
 
         // 마나가 사용되지 않은 시간이 3초 이상일 때 마나 회복 시작
-        if (Time.time - lastManaUseTime >= 3.0f && playerManas < maxManas && !isRegenerating)
+        if ((Time.time - lastManaUseTime >= 3.0f) && (playerManas < maxManas) && (!isRegenerating))
         {
             StartCoroutine(RegenerateMana());
         }
@@ -45,7 +45,7 @@ public class ManaManager : MonoBehaviour
     public void DropManas(Vector2 dropPosition)
     {
         // 마나 인스턴스 생성
-        GameObject mana = Instantiate(manaPrefab, dropPosition+new Vector2(Random.Range(-1f,1f),Random.Range(-1f,1f)), Quaternion.identity);
+        GameObject mana = Instantiate(manaPrefab, dropPosition /*+ new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f))*/, Quaternion.identity);
     }
 
     // 마나 회복 코루틴
@@ -55,7 +55,7 @@ public class ManaManager : MonoBehaviour
         while (playerManas < maxManas)
         {
             playerManas += regenAmount;
-            playerManas = Mathf.Clamp(playerManas, 0, maxManas);
+            playerManas = System.Math.Clamp(playerManas, 0.0, maxManas); // System.Math.Clamp 사용
             yield return new WaitForSeconds(regenInterval);
 
             // 만약 마나가 사용되었으면 회복 중단

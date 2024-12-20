@@ -3,7 +3,9 @@ using Newtonsoft.Json.Bson;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using static UnityEditor.Progress;
+using UnityEngine.EventSystems;
 
 namespace Goldmetal.UndeadSurvivor
 {
@@ -45,6 +47,8 @@ namespace Goldmetal.UndeadSurvivor
             GameManager.instance.Resume();
             AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
             AudioManager.instance.EffectBgm(false);
+            EventSystem.current.SetSelectedGameObject(null);
+
         }
 
         // 상점을 닫는 버튼에 연결할 함수
@@ -94,6 +98,21 @@ namespace Goldmetal.UndeadSurvivor
                 else
                 {
                     ranItem.gameObject.SetActive(true);
+                }
+            }
+        }
+        public void ResetLevel()
+        {
+            for (int i = 0; i < GameManager.instance.ItemGroup.Length; i++)
+            {
+                if (i >= 4 && i <= 7) // 현재 보따리 상인 무기들
+                {
+                    if (GameManager.instance.player.usingWeaponIdx[0] != GameManager.instance.ItemGroup[i].data.itemId &&
+                        GameManager.instance.player.usingWeaponIdx[1] != GameManager.instance.ItemGroup[i].data.itemId)
+                    {
+                        GameManager.instance.ItemGroup[i].level = 0;
+                        GameManager.instance.ItemGroup[i].GetComponent<Button>().interactable = true;
+                    }
                 }
             }
         }

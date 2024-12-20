@@ -13,8 +13,25 @@ namespace Goldmetal.UndeadSurvivor
     {
         // 싱글톤 패턴을 사용하여 어디서든 GameManager.instance로 접근할 수 있게 합니다.
         public static GameManager instance;
-        public int EnemyNum;
-
+        int EnemyNum;
+        public int AddEnemyNum()
+        {
+            EnemyNum++;
+            return EnemyNum;
+        }
+        public int MinusEnemyNum()
+        {
+            EnemyNum--;
+            return EnemyNum;
+        }
+        public int GetEnemyNum()
+        {
+            return EnemyNum;
+        }
+        public int SetEnemyNum(int n)
+        {
+            EnemyNum = n; return EnemyNum;
+        }
         // [Header]는 인스펙터에서 변수들을 그룹화하여 보기 좋게 만듭니다.
         [Header("# Game Control")]
         // 게임이 진행 중인지 여부를 나타내는 변수입니다.
@@ -22,7 +39,7 @@ namespace Goldmetal.UndeadSurvivor
         // 게임이 진행된 시간을 저장하는 변수입니다.
         public float gameTime;
         // 게임의 최대 시간을 설정합니다 (여기서는 20초로 설정).
-        public float maxGameTime = 2 * 10f;
+        public float maxGameTime = 600f;
 
         [Header("# Player Info")]
         // 플레이어의 ID를 저장합니다 (캐릭터 선택 등에 사용될 수 있음).
@@ -30,7 +47,7 @@ namespace Goldmetal.UndeadSurvivor
         // 플레이어의 현재 체력을 나타냅니다.
         public float health;
         // 플레이어의 최대 체력을 설정합니다.
-        public float maxHealth = 100;
+        public float maxHealth = 200;
         // 플레이어가 처치한 적의 수를 기록합니다.
         public int kill;
         // 플레이어가 획득한 코인의 수를 기록합니다.
@@ -40,6 +57,10 @@ namespace Goldmetal.UndeadSurvivor
         public KeyCode weaponChangeKey = KeyCode.X;
         public KeyCode skillKey = KeyCode.C;
         public KeyCode dashKey = KeyCode.Space;
+        public KeyCode ghostKey = KeyCode.Q;
+        public KeyCode enhenceKey = KeyCode.W;
+        public KeyCode healKey = KeyCode.E;
+        public KeyCode bug = KeyCode.A;
         // 삭제 예정
         public int level;
         public int exp;
@@ -61,9 +82,14 @@ namespace Goldmetal.UndeadSurvivor
         public GameObject enemyCleaner;
         public StoreStd storeStd;
         public TMSHOP tmShop;  // Inspector에서 반드시 할당해야 함
+        public WIZARDSHOP wizardshop;  // Inspector에서 반드시 할당해야 함
+
         public StoreEntrance store;
         public Arrow arrow;
-        public ManaManager ManaManager; 
+        public ManaManager ManaManager;
+        public weaponThrow weaponPopup; // 버릴 무기를 선택하는 팝업창
+        public Setting settingPopup; // 설정창
+        public Item[] ItemGroup;
 
         // Awake는 스크립트가 처음 로드될 때 호출되는 함수입니다.
         void Awake()
@@ -82,7 +108,7 @@ namespace Goldmetal.UndeadSurvivor
             playerId = id;
             // 플레이어의 체력을 최대 체력으로 초기화합니다.
             health = maxHealth;
-
+            ManaManager.playerManas = ManaManager.maxManas;
             // 플레이어 오브젝트를 활성화하여 게임에 등장시킵니다.
             player.gameObject.SetActive(true);
             // 상점 오브젝트를 활성화하여 게임에 등장시키고, 위치를 지정합니다.
@@ -92,9 +118,11 @@ namespace Goldmetal.UndeadSurvivor
             // 상점 UI에서 플레이어 ID에 따른 선택을 설정합니다.
             //uiStore.Select(playerId % 2);
             // 게임을 재개합니다 (일시정지 상태에서 풀기 등).
-            Resume();
+            GameSetStart();
 
             // 배경음악을 재생하고, 선택 효과음을 재생합니다.
+            AudioManager.instance.SetBgmVolume(AudioManager.instance.bgmSlider.value);
+            AudioManager.instance.SetSfxVolume(AudioManager.instance.sfxSlider.value);
             AudioManager.instance.PlayBgm(true);
             AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
         }
@@ -170,6 +198,7 @@ namespace Goldmetal.UndeadSurvivor
         }
 
         // 매 프레임마다 호출되는 업데이트 함수입니다.
+        bool isBossSpawn=false;
         void Update()
         {
             // esc 키를 눌러 게임을 멈추거나 재개한다.
@@ -177,11 +206,13 @@ namespace Goldmetal.UndeadSurvivor
             // isLive가 true일 때 몬스터가 계속해서 생성되는 것 고치기
             if (Input.GetKeyDown(KeyCode.Escape) && isLive) {
                 Stop();
+                settingPopup.ShowSetting();
                 return;
                 }
             if (Input.GetKeyDown(KeyCode.Escape) && !isLive)
             {
                 Resume();
+                settingPopup.HideSetting();
             }
             // 게임이 진행 중일 때 아래 로직을 실행합니다.
             if (isLive)
@@ -196,10 +227,16 @@ namespace Goldmetal.UndeadSurvivor
                     // 게임 시간을 최대 시간으로 고정합니다.
                     gameTime = maxGameTime;
                     // 게임 승리 함수를 호출합니다.
-                    GameVictroy();
+                    if (!isBossSpawn)
+                    {
+                        player.GetComponentInChildren<Spawner>().SpawnBoss();
+                        isBossSpawn=true;
+                    }
                 }
             }
+            /*
             // 플레이어가 상점에 있을 때 아래 로직을 실행합니다.
+            // 이제 플레이어 코드에서 실행
             if (player.isStore == 1)
             {
                 player.inputVec.x = Input.GetAxisRaw("Horizontal");
@@ -207,6 +244,7 @@ namespace Goldmetal.UndeadSurvivor
                 Vector2 nextVec = player.inputVec.normalized * player.speed * Time.fixedDeltaTime;
                 player.rigid.MovePosition(player.rigid.position + nextVec);
             }
+            */
         }
 
         // 삭제 예정
@@ -237,9 +275,21 @@ namespace Goldmetal.UndeadSurvivor
         // 게임을 재개할 때 호출되는 함수입니다.
         public void Resume()
         {
+            if (player.isStore == 1)
+                isLive = false;
+            else
+                isLive = true;
             // 게임 진행 상태를 true로 설정합니다.
-            isLive = true;
+            //isLive = true;
             // 게임의 시간 흐름을 정상으로 돌립니다.
+            Time.timeScale = 1;
+        }
+
+        // 게임을 시작할 때 한번 호출된다
+        public void GameSetStart()
+        {
+            isLive = false;
+            player.isStore = 1;
             Time.timeScale = 1;
         }
         public void ShowShop(int id)
@@ -248,11 +298,18 @@ namespace Goldmetal.UndeadSurvivor
             {
                 // 상점에 들어가 있는 동안은 isLive = false 이기 때문에 Stop함수를 호출할 필요가 없음
                 storeStd.Show();
+                storeStd.ResetLevel(); // 사용중이 아닌 무기 레벨 초기화
             }
             else if (id == 2) // 보따리상점 UI
             {
                 Stop();  // Stop the game
                 tmShop.Show();  // Show the travelling merchant shop
+                tmShop.ResetLevel();
+            }
+            else if (id == 3) // 보따리상점 UI
+            {
+                Stop();  // Stop the game
+                wizardshop.Show();
             }
         }
         public void SwapWeapon(int curId)
@@ -291,8 +348,20 @@ namespace Goldmetal.UndeadSurvivor
         }
         public void RemoveWeapon(int id)
         {
-            GameManager.instance.player.hands[id].gameObject.SetActive(false);
-            Transform weaponTrs = GameManager.instance.player.transform.Find("Weapon " + id);
+            instance.player.hands[instance.player.usingWeaponIdx[instance.player.curWeapon]].gameObject.SetActive(false);
+            // 현재 사용중인 Hand를 비활성화
+            Transform weaponTrs = instance.player.transform.Find("Weapon " + instance.player.usingWeaponIdx[instance.player.curWeapon]);
+            if (weaponTrs != null)
+            {
+                weaponTrs.gameObject.SetActive(false); // 현재 사용중인 무기를 비활성화
+            }
+            else
+            {
+                Debug.LogWarning("Weapon 오브젝트를 찾을 수 없습니다.");
+            }
+
+            instance.player.hands[id].gameObject.SetActive(false);
+            weaponTrs = instance.player.transform.Find("Weapon " + id);
             if (weaponTrs != null)
             {
                 Weapon weaponScript = weaponTrs.GetComponent<Weapon>();

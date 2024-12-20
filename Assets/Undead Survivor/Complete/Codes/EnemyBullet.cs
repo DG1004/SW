@@ -1,4 +1,5 @@
 using Goldmetal.UndeadSurvivor;
+using System;
 using UnityEngine;
 
 
@@ -49,8 +50,8 @@ namespace Goldmetal.UndeadSurvivor
         public float damage = 10;            // 총알이 입히는 피해량
         public float lifetime = 5f;        // 총알 생존 시간
         public bool isLive = false;        // 총알의 활성 상태;
-        Enemy master;
-
+        Action<float> action;
+        bool 예측샷여부;
         private Rigidbody2D rb;
 
         /// <summary>
@@ -68,25 +69,34 @@ namespace Goldmetal.UndeadSurvivor
         /// <param name="speed">총알의 속도</param>
         /// <param name="lifetime">총알의 생존 시간</param>
         /// <param name="damage">총알이 입히는 피해량</param>
-        public void Init(Enemy master, float speed, float lifetime, float damage)
+        public void Init(Action<float> action, float speed, float lifetime, float damage,bool 예측샷여부)
         {
 
             rb = GetComponent<Rigidbody2D>();
-            this.master = master;
+            this.action = action;
             this.speed = speed;
             this.lifetime = lifetime;
             this.damage = damage;
             isLive = true;
-
+            this.예측샷여부 = 예측샷여부;
             // 플레이어의 현재 위치를 향해 총알의 방향 설정
             var target = GameManager.instance.player;
-            Vector2 direction = CalculateAimDirection(transform.position, target.transform.position, target.예측샷용플레이어속도, speed); //(GameManager.instance.player.transform.position - transform.position).normalized;
+            Vector2 direction;
+            if (예측샷여부)
+            {
+                direction=CalculateAimDirection(transform.position, target.transform.position, target.예측샷용플레이어속도, speed); //(GameManager.instance.player.transform.position - transform.position).normalized;
+
+            }
+            else
+            {
+                direction=(target.transform.position-transform.position).normalized;
+            }
             rb.velocity = direction * speed;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
             // 일정 시간이 지난 후 총알을 파괴
-            CancelInvoke("DestroyBullet");
-            Invoke("DestroyBullet", lifetime);
+            CancelInvoke("OnDead");
+            Invoke("OnDead", lifetime);
         }
 
         /// <summary>
@@ -102,7 +112,7 @@ namespace Goldmetal.UndeadSurvivor
         {
             if (collision.CompareTag("Player"))
             {
-                GameManager.instance.player.OnBeat(master.OnAttack, damage);
+                GameManager.instance.player.OnBeat(action, damage);
                 OnDead();
             }
             if (collision.CompareTag("Bullet"))

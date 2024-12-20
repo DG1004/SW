@@ -29,7 +29,7 @@ namespace Goldmetal.UndeadSurvivor
                     myText.text = string.Format("{0:F0}", GameManager.instance.kill);
                     break;
                 case InfoType.Time:
-                    float remainTime = GameManager.instance.maxGameTime - GameManager.instance.gameTime;
+                    float remainTime = GameManager.instance.gameTime;
                     int min = Mathf.FloorToInt(remainTime / 60);
                     int sec = Mathf.FloorToInt(remainTime % 60);
                     myText.text = string.Format("{0:D2}:{1:D2}", min, sec);
@@ -40,9 +40,9 @@ namespace Goldmetal.UndeadSurvivor
                     mySlider.value = curHealth / maxHealth;
                     break;
                 case InfoType.Mana:
-                    float curMana = ManaManager.playerManas;
-                    float maxMana = ManaManager.maxManas;
-                    mySlider.value = curMana / maxMana;
+                    double curMana = ManaManager.playerManas;
+                    double maxMana = ManaManager.maxManas;
+                    mySlider.value = (float)(curMana / maxMana);
                     break;
             }
         }

@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83984a6d1af8c174c869ca6daf0aa713, type: 3}
+  m_Name: Item 14
+  m_EditorClassIdentifier: 
+  itemType: 14
+  itemId: 14
+  itemName: "\uB808\uB4DC\uCE74\uD0C0\uB098"
+  itemPrice: 100000
+  itemDesc: "\uD76C\uADC0\uD55C \uAC80\uC774\uB2E4.\n15\uBA85\uC758 \uC801\uC744
+    45\uC758 \uB300\uBBF8\uC9C0\uB85C \uACF5\uACA9\uD55C\uB2E4.\n\n\uB9C8\uB098 \uCF54\uC2A4\uD2B8
+    : 0"
+  itemIcon: {fileID: 21300000, guid: 0663b39a7792ad24180a00ad77d394b9, type: 3}
+  baseDamage: 50
+  baseCount: 15
+  damages:
+  - 0.1
+  - 0.2
+  counts: 0000000000000000
+  projectile: {fileID: 1718743280274413628, guid: 5eb112c870b5edb4da42d663bf31a068, type: 3}
+  hand: {fileID: 21300000, guid: 0663b39a7792ad24180a00ad77d394b9, type: 3}

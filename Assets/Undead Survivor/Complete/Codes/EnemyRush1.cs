@@ -11,7 +11,7 @@ public class EnemyRush1 : Enemy
     public float angleChangeThreshold = 2f;      // 각도 변화 허용 범위 (도 단위)
     public float requiredStableTime = 1f;        // 각도 변화 없이 유지해야 하는 시간 (초)
     public float rushDuration = 1f;              // 돌진 지속 시간 (초)
-    public float rushSpeedMultiplier = 7f;       // 돌진 시 속도 배율
+    float rushSpeedMultiplier = 7f;       // 돌진 시 속도 배율
 
     private Quaternion initialRotation;          // 시작 시 몬스터의 초기 로테이션
     private float stableTime = 0f;               // 각도 안정 시간 체크용
@@ -151,9 +151,10 @@ public class EnemyRush1 : Enemy
     protected override void race_init()//오버라이딩 초기 스탯 결정 (기존 로직 유지)
     {
         this.race_index = 5;
-        this.coe_attack = 0.025;
-        this.coe_defence = 0.125;
-        this.coe_health = 0.005;
+        this.coe_attack = 0.01;
+        this.coe_defence = 0.5;
+        this.coe_race = 0.005;
         this.coe_speed = 0.25;
+        this.maxhealth = 70;
     }
 }

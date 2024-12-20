@@ -27,7 +27,7 @@ public class Coin : MonoBehaviour
     private bool isLive;
     private bool isFollow;
     private Transform target;
-
+    float lifetime = 15f;
     private float speed = 5f; // 코인 이동 속도
 
     void OnEnable()
@@ -40,6 +40,8 @@ public class Coin : MonoBehaviour
         target = GameManager.instance.player.transform;
         isLive = true;
         isFollow = false;
+        CancelInvoke("OnDead");
+        Invoke("OnDead", lifetime);
     }
 
     void Update()
@@ -59,11 +61,14 @@ public class Coin : MonoBehaviour
             return;
 
         CoinManager.playerCoins += value;
+        OnDead();
+    }
+    void OnDead()
+    {
         isLive = false;
         gameObject.SetActive(false); // 비활성화
         Destroy(gameObject, 0.1f);   // 딜레이 후 오브젝트 제거
     }
-
     // 코인 따라가기 시작 메서드 (자식 오브젝트의 스크립트에서 호출)
     public void StartFollowing()
     {
@@ -76,6 +81,7 @@ public class Coin : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Collect();
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.Coin);
         }
     }
 }

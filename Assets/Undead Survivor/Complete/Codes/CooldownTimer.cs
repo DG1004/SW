@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
@@ -6,15 +8,40 @@ namespace Goldmetal.UndeadSurvivor
 {
     public class CooldownTimer : MonoBehaviour
     {
-        public Text cooldownText;
-        public Image cooldownImage;
-        public float cooldownTime = 3f;  // 쿨다운 시간 설정 (초 단위)
-        private bool isCooldown = false;
+        [Header("Dash Skill UI")]
+        public Text dashCooldownText;
+        public Image dashCooldownImage;
+        public float dashCooldownTime = 3f;
+        private bool isDashCooldown = false;
+
+        [Header("Ghost Skill UI")]
+        public Text ghostCooldownText;
+        public Image ghostCooldownImage;
+        public float ghostCooldownTime = 30f;
+        private bool isGhostCooldown = false;
+        private bool isGhostSkillPurchased = false;
+
+        [Header("Enhence Skill UI")]
+        public Text enhenceCooldownText;
+        public Image enhenceCooldownImage;
+        public float enhenceCooldownTime = 30f;
+        private bool isEnhenceCooldown = false;
+        private bool isEnhenceSkillPurchased = false;
+
+        [Header("Heal Skill UI")]
+        public Text healCooldownText;
+        public Image healCooldownImage;
+        public float healCooldownTime = 60f;
+        private bool isHealCooldown = false;
+        private bool isHealSkillPurchased = false;
 
         private void Start()
         {
-            cooldownText.gameObject.SetActive(false);  // 처음에는 텍스트를 보이지 않게 설정
-            cooldownImage.gameObject.SetActive(false);  // 처음에는 이미지를 보이지 않게 설정
+            // 처음에는 전부 안보이게
+            SetUIVisible(dashCooldownText, dashCooldownImage, false);
+            SetUIVisible(ghostCooldownText, ghostCooldownImage, false);
+            SetUIVisible(enhenceCooldownText, enhenceCooldownImage, false);
+            SetUIVisible(healCooldownText, healCooldownImage, false);
         }
 
         private void Update()
@@ -23,18 +50,40 @@ namespace Goldmetal.UndeadSurvivor
             if (!GameManager.instance.isLive)
                 return;
 
-            if (Input.GetKeyDown(KeyCode.Space) && !isCooldown)
+            // Dash 스킬 (Space)
+            if (Input.GetKeyDown(GameManager.instance.dashKey) && !isDashCooldown)
             {
-                cooldownText.gameObject.SetActive(true);  // 스페이스를 누르면 텍스트를 보이게 설정
-                cooldownImage.gameObject.SetActive(true);  // 스페이스를 누르면 이미지를 보이게 설정
-                StartCoroutine(StartCooldown());
+                StartCoroutine(StartCooldown(dashCooldownTime, dashCooldownText, dashCooldownImage,
+                    (val) => isDashCooldown = val));
+            }
+
+            // Ghost 스킬 (Q)
+            if (Input.GetKeyDown(GameManager.instance.ghostKey) && !isGhostCooldown && isGhostSkillPurchased)
+            {
+                StartCoroutine(StartCooldown(ghostCooldownTime, ghostCooldownText, ghostCooldownImage,
+                    (val) => isGhostCooldown = val));
+            }
+
+            // Enhence 스킬 (W)
+            if (Input.GetKeyDown(GameManager.instance.enhenceKey) && !isEnhenceCooldown && isEnhenceSkillPurchased)
+            {
+                StartCoroutine(StartCooldown(enhenceCooldownTime, enhenceCooldownText, enhenceCooldownImage,
+                    (val) => isEnhenceCooldown = val));
+            }
+
+            // Heal 스킬 (E)
+            if (Input.GetKeyDown(GameManager.instance.healKey) && !isHealCooldown && isHealSkillPurchased)
+            {
+                StartCoroutine(StartCooldown(healCooldownTime, healCooldownText, healCooldownImage,
+                    (val) => isHealCooldown = val));
             }
         }
 
-        private IEnumerator StartCooldown()
+        private IEnumerator StartCooldown(float cooldown, Text uiText, Image uiImage, System.Action<bool> setIsCooldown)
         {
-            isCooldown = true;
-            float currentTime = cooldownTime;
+            setIsCooldown(true);
+            SetUIVisible(uiText, uiImage, true);
+            float currentTime = cooldown;
 
             while (currentTime > 0)
             {
@@ -45,14 +94,36 @@ namespace Goldmetal.UndeadSurvivor
                     continue;
                 }
 
-                cooldownText.text = currentTime.ToString("0");
+                uiText.text = currentTime.ToString("0");
                 yield return new WaitForSeconds(1f);  // 1초 대기
                 currentTime--;
             }
 
-            isCooldown = false;
-            cooldownText.gameObject.SetActive(false);  // 텍스트 숨김
-            cooldownImage.gameObject.SetActive(false);  // 이미지 숨김
+            uiText.text = ""; // 텍스트 초기화
+            SetUIVisible(uiText, uiImage, false); // UI 숨김
+            setIsCooldown(false);
+        }
+
+        private void SetUIVisible(Text text, Image image, bool visible)
+        {
+            if (text != null) text.gameObject.SetActive(visible);
+            if (image != null) image.gameObject.SetActive(visible);
+        }
+
+        // 스킬 구매 상태 업데이트 메서드
+        public void PurchaseGhostSkill()
+        {
+            isGhostSkillPurchased = true;
+        }
+
+        public void PurchaseEnhenceSkill()
+        {
+            isEnhenceSkillPurchased = true;
+        }
+
+        public void PurchaseHealSkill()
+        {
+            isHealSkillPurchased = true;
         }
     }
 }

@@ -2,12 +2,13 @@ using Goldmetal.UndeadSurvivor;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class StoreStd : MonoBehaviour
 {
 	RectTransform rect;
     Item[] items;
-
 
     void Awake()
 	{
@@ -27,7 +28,8 @@ public class StoreStd : MonoBehaviour
 		rect.localScale = Vector3.zero;
 		AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
 		AudioManager.instance.EffectBgm(false);
-	}
+        EventSystem.current.SetSelectedGameObject(null);
+    }
 
 	// 상점을 닫는 버튼에 연결할 함수
 	public void CloseShop()
@@ -75,5 +77,19 @@ public class StoreStd : MonoBehaviour
             }
         }
     }
-
+    public void ResetLevel()
+    {
+        for (int i = 0; i < GameManager.instance.ItemGroup.Length; i++)
+        {
+            if ((i >= 0 && i <= 3) || i == 8) // 현재 일반 상점 무기들
+            {
+                if (GameManager.instance.player.usingWeaponIdx[0] != GameManager.instance.ItemGroup[i].data.itemId &&
+                    GameManager.instance.player.usingWeaponIdx[1] != GameManager.instance.ItemGroup[i].data.itemId)
+                {
+                    GameManager.instance.ItemGroup[i].level = 0;
+                    GameManager.instance.ItemGroup[i].GetComponent<Button>().interactable = true;
+                }
+            }
+        }
+    }
 }
